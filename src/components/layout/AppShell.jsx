@@ -9,6 +9,7 @@ import { useApp, useCurrentUser } from '../../app/AppContext';
 import { Avatar } from '../ui/Card';
 import { useToast } from '../../hooks/useToast';
 import { AuthModal } from '../auth/AuthModal';
+import { logoutApi } from '../../services/authApi';
 
 const participantNav = [
   { to: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard size={15} /> },
@@ -42,6 +43,7 @@ export function AppShell({ children }) {
   function switchRole(role) {
     dispatch({ type: 'SET_ROLE', payload: role });
     setRoleMenuOpen(false);
+    navigate(role === 'organizer' ? '/organizer' : '/dashboard');
     toast.info(`Switched to ${role === 'organizer' ? 'Organizer' : 'Participant'} view`);
   }
 
@@ -52,6 +54,7 @@ export function AppShell({ children }) {
   }
 
   function handleSignOut() {
+    logoutApi();
     dispatch({ type: 'LOGOUT' });
     setRoleMenuOpen(false);
     toast.info('Signed out of account');

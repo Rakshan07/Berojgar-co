@@ -7,6 +7,8 @@ import { X, ArrowRight, UserCheck, Shield, Sparkles, Check, Lock, Mail, User } f
 import { useApp } from '../../app/AppContext';
 import { BrandMark } from '../ui/BrandMark';
 import { useToast } from '../../hooks/useToast';
+import ForgotPassword from './ForgotPassword';
+import { loginApi, registerApi } from '../../services/authApi';
 
 const DEMO_PERSONAS = [
   { id: 'p1', name: 'Alex Chen', role: 'Frontend Lead', skill: 'React, TypeScript', accountType: 'participant' },
@@ -21,6 +23,7 @@ export function AuthModal({ isOpen, onClose, initialTab = 'signin', onAuthSucces
   const navigate = useNavigate();
 
   const [tab, setTab] = useState(initialTab); // 'signin' | 'signup'
+  const [forgot, setForgot] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -42,26 +45,25 @@ export function AuthModal({ isOpen, onClose, initialTab = 'signin', onAuthSucces
     navigate(persona.accountType === 'organizer' ? '/organizer' : '/dashboard');
   }
 
-  function handleSignInSubmit(e) {
+  async function handleSignInSubmit(e) {
     e.preventDefault();
-    if (!email) {
-      toast.warn('Please enter your email');
+    if (!email || !password) {
+      toast.warn('Please enter your email and password');
       return;
     }
-
-    // Find participant by email or fallback to first participant
-    const existing = state.participants.find(p => p.email?.toLowerCase() === email.toLowerCase()) || state.participants[1];
-    dispatch({
-      type: 'LOGIN',
-      payload: { userId: existing.id, role: 'participant' },
-    });
-    toast.success(`Welcome back, ${existing.name}!`);
-    if (onAuthSuccess) onAuthSuccess();
-    onClose();
-    navigate('/dashboard');
+    try {
+      const user = await loginApi(email.trim(), password);
+      dispatch({ type: 'AUTH_SUCCESS', payload: { user } });
+      toast.success(`Welcome back, ${user.name}!`);
+      if (onAuthSuccess) onAuthSuccess();
+      onClose();
+      navigate(user.role === 'organizer' ? '/organizer' : '/dashboard');
+    } catch (err) {
+      toast.error(err.message);
+    }
   }
 
-  function handleSignUpSubmit(e) {
+  async function handleSignUpSubmit(e) {
     e.preventDefault();
     if (!name.trim()) {
       toast.warn('Please enter your full name');
@@ -71,21 +73,20 @@ export function AuthModal({ isOpen, onClose, initialTab = 'signin', onAuthSucces
       toast.warn('Please enter your email');
       return;
     }
-
-    dispatch({
-      type: 'SIGNUP',
-      payload: {
-        name: name.trim(),
-        email: email.trim(),
-        role: accountType,
-        primarySkill: primarySkill.trim(),
-      },
-    });
-
-    toast.success(`Account created! Welcome to TeamWeave, ${name.split(' ')[0]}.`);
-    if (onAuthSuccess) onAuthSuccess();
-    onClose();
-    navigate(accountType === 'organizer' ? '/organizer' : '/dashboard');
+    if (password.length < 8) {
+      toast.warn('Password must be at least 8 characters');
+      return;
+    }
+    try {
+      const user = await registerApi({ email: email.trim(), name: name.trim(), password, role: accountType });
+      dispatch({ type: 'AUTH_SUCCESS', payload: { user, primarySkill: primarySkill.trim() } });
+      toast.success(`Account created! Welcome to TeamWeave, ${name.split(' ')[0]}.`);
+      if (onAuthSuccess) onAuthSuccess();
+      onClose();
+      navigate(accountType === 'organizer' ? '/organizer' : '/dashboard');
+    } catch (err) {
+      toast.error(err.message);
+    }
   }
 
   return (
@@ -147,7 +148,9 @@ export function AuthModal({ isOpen, onClose, initialTab = 'signin', onAuthSucces
             </button>
           </div>
 
-          {tab === 'signin' ? (
+          {tab === 'signin' && forgot ? (
+            <ForgotPassword initialEmail={email} onBack={() => setForgot(false)} />
+          ) : tab === 'signin' ? (
             /* ─── Sign In View ─── */
             <div className="space-y-5">
               {/* One-click demo personas */}
@@ -201,7 +204,7 @@ export function AuthModal({ isOpen, onClose, initialTab = 'signin', onAuthSucces
                 <div>
                   <div className="flex justify-between items-center mb-1">
                     <label className="text-xs font-medium text-[#D7B7C2]">Password</label>
-                    <span className="text-[11px] text-[#F28BA8] hover:underline cursor-pointer">Forgot?</span>
+                    <button type="button" onClick={() => setForgot(true)} className="text-[11px] text-[#F28BA8] hover:underline cursor-pointer">Forgot?</button>
                   </div>
                   <div className="relative">
                     <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#B68F9E]" />
@@ -252,6 +255,22 @@ export function AuthModal({ isOpen, onClose, initialTab = 'signin', onAuthSucces
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder="jordan@example.com"
+                    className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#17080F]/80 border border-[#633044] text-sm text-[#FFF4F6] placeholder:text-[#B68F9E] focus:outline-none focus:border-[#F7A5BD] focus:ring-1 focus:ring-[#F7A5BD]/50 transition-all"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-medium text-[#D7B7C2] block mb-1">Password</label>
+                <div className="relative">
+                  <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#B68F9E]" />
+                  <input
+                    type="password"
+                    required
+                    minLength={8}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="At least 8 characters"
                     className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#17080F]/80 border border-[#633044] text-sm text-[#FFF4F6] placeholder:text-[#B68F9E] focus:outline-none focus:border-[#F7A5BD] focus:ring-1 focus:ring-[#F7A5BD]/50 transition-all"
                   />
                 </div>

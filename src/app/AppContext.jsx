@@ -233,6 +233,39 @@ function reducer(state, action) {
       };
     }
 
+    // Real account from the backend (login or register). The local participant
+    // record is keyed by the backend user id so profile edits stay per-account.
+    case 'AUTH_SUCCESS': {
+      const { user, primarySkill } = action.payload;
+      const id = `acct-${user.id}`;
+      const exists = state.participants.some(p => p.id === id);
+      const initials = user.name.split(' ').filter(Boolean).map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'U';
+      const participants = exists
+        ? state.participants.map(p => (p.id === id ? { ...p, name: user.name, email: user.email } : p))
+        : [{
+            id,
+            name: user.name,
+            email: user.email,
+            initials,
+            tagline: `${primarySkill || 'Member'} contributor`,
+            bio: 'Excited to collaborate on ambitious events and build balanced teams.',
+            skills: primarySkill ? [{ id: `s-${Date.now()}`, name: primarySkill, category: 'Technical', proficiency: 3 }] : [],
+            interests: ['Hackathons', 'Collaborative Sprints'],
+            preferredRoles: [user.role === 'organizer' ? 'Event Host' : 'Contributor'],
+            availability: { hoursPerWeek: 15, timezone: 'UTC+0', constraints: [] },
+            links: { github: '', portfolio: '', linkedin: '' },
+            joinedAt: new Date().toISOString().split('T')[0],
+            isCustomProfile: true,
+          }, ...state.participants];
+      return {
+        ...state,
+        participants,
+        currentUserId: id,
+        currentRole: user.role,
+        isAuthenticated: true,
+      };
+    }
+
     case 'LOGOUT': {
       return {
         ...state,

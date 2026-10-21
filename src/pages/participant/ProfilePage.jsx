@@ -34,6 +34,7 @@ export default function ProfilePage() {
   const toast = useToast();
 
   const isBrandNew = !user.name?.trim() || (user.skills?.length ?? 0) === 0;
+  const nameLocked = Boolean(user.name?.trim());
 
   // Auto-enable edit mode if user hasn't set up their profile yet
   const [editMode, setEditMode] = useState(isBrandNew);
@@ -123,8 +124,8 @@ export default function ProfilePage() {
   function applyTemplate(tpl) {
     setForm(f => ({
       ...f,
-      name: tpl.data.name || f.name,
-      initials: computeInitials(tpl.data.name || f.name),
+      name: nameLocked ? f.name : tpl.data.name || f.name,
+      initials: computeInitials(nameLocked ? f.name : tpl.data.name || f.name),
       tagline: tpl.data.tagline,
       bio: tpl.data.bio,
       skills: [...tpl.data.skills],
@@ -137,8 +138,8 @@ export default function ProfilePage() {
   function clearToBlank() {
     setForm(f => ({
       ...f,
-      name: '',
-      initials: 'YOU',
+      name: nameLocked ? f.name : '',
+      initials: nameLocked ? f.initials : 'YOU',
       tagline: '',
       bio: '',
       skills: [],
@@ -393,11 +394,14 @@ export default function ProfilePage() {
         {editMode ? (
           <div className="space-y-4">
             <Field label="Display Name" required>
+              {/* Name is fixed once set at sign-up; only an empty name can be filled in. */}
               <input
-                className="input-base"
+                className="input-base disabled:opacity-60 disabled:cursor-not-allowed"
                 value={form.name}
                 onChange={e => handleNameChange(e.target.value)}
                 placeholder="e.g. Jordan Rivera"
+                disabled={nameLocked}
+                title={nameLocked ? 'Your name was set when you signed up and cannot be changed.' : undefined}
               />
             </Field>
             <Field label="Tagline / Professional Headline">
