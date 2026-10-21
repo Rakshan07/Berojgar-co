@@ -1,13 +1,13 @@
 // ─── Dedicated Login & Sign Up Page ──────────────────────────────────────────
-// Elegant, full-screen luxury purple and black experience.
+// Wine + Garnet Theme with Interactive 3D WebGL Tubes Cursor Background.
 
 import { useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Mail, Lock, User, Sparkles } from 'lucide-react';
-import { BrandWordmark, BrandMark } from '../../components/ui/BrandMark';
+import { ArrowLeft, ArrowRight, Mail, Lock, User } from 'lucide-react';
+import { BrandWordmark } from '../../components/ui/BrandMark';
 import { useApp } from '../../app/AppContext';
 import { useToast } from '../../hooks/useToast';
-import LightRays from '../../components/ui/LightRays';
+import TubesBackground from '../../components/ui/TubesBackground';
 
 const DEMO_PERSONAS = [
   { id: 'p1', name: 'Alex Chen', role: 'Frontend Lead', skill: 'React, TypeScript', accountType: 'participant' },
@@ -81,23 +81,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-[#07050D] text-slate-100 flex flex-col justify-between overflow-hidden">
-      {/* Subtle Purple Light Rays Background */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <LightRays
-          raysOrigin="top-center"
-          raysColor="#8B5CF6"
-          raysSpeed={0.8}
-          lightSpread={0.5}
-          rayLength={3}
-          glow={0.5}
-          haze={0.3}
-          rayDensity={1}
-          atmosphere={0.85}
-          intensity={0.9}
-          lightMode={false}
-        />
-      </div>
+    <div className="relative min-h-screen bg-[#17080F] text-[#FFF4F6] flex flex-col justify-between overflow-hidden">
+      {/* Interactive 3D Tubes Background exclusively mounted on initial Auth screen */}
+      <TubesBackground />
 
       {/* Top Navbar */}
       <header className="relative z-20 max-w-6xl w-full mx-auto px-6 py-6 flex items-center justify-between">
@@ -106,7 +92,7 @@ export default function LoginPage() {
         </Link>
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-300 hover:text-white px-3.5 py-1.5 rounded-xl border border-purple-500/20 bg-purple-950/20 hover:bg-purple-900/30 transition-all"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-[#D7B7C2] hover:text-[#FFF4F6] px-3.5 py-1.5 rounded-xl border border-[#633044] bg-[#2C101C]/70 hover:bg-[#3A1524] transition-all shadow-sm focus-visible:outline-[#F7A5BD]"
         >
           <ArrowLeft size={13} />
           <span>Back to Home</span>
@@ -115,12 +101,12 @@ export default function LoginPage() {
 
       {/* Main Auth Container */}
       <main className="relative z-20 max-w-md w-full mx-auto px-5 my-auto py-8">
-        <div className="bg-[#0C0816]/90 border border-purple-500/25 rounded-3xl p-6 sm:p-8 shadow-[0_20px_70px_rgba(0,0,0,0.9),0_0_35px_rgba(139,92,246,0.15)] backdrop-blur-2xl space-y-6">
+        <div className="auth-interactive-card bg-[#2C101C]/92 border border-[#633044] rounded-3xl p-6 sm:p-8 shadow-[0_20px_70px_rgba(0,0,0,0.85),0_0_35px_rgba(185,35,69,0.18)] backdrop-blur-2xl space-y-6">
           <div className="text-center space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-heading font-bold text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-heading font-bold text-[#FFF4F6] tracking-tight">
               {tab === 'signin' ? 'Sign in to your account' : 'Start with TeamWeave'}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-300">
+            <p className="text-xs sm:text-sm text-[#D7B7C2]">
               {tab === 'signin'
                 ? 'Welcome back. Form high-performing teams with explainable match algorithms.'
                 : 'Create your profile once and unlock balanced team recommendations.'}
@@ -128,23 +114,25 @@ export default function LoginPage() {
           </div>
 
           {/* Mode Switcher */}
-          <div className="grid grid-cols-2 p-1 bg-black/40 border border-purple-500/20 rounded-xl">
+          <div className="grid grid-cols-2 p-1 bg-[#17080F]/80 border border-[#633044] rounded-xl">
             <button
+              type="button"
               onClick={() => setTab('signin')}
-              className={`py-2 text-xs font-semibold rounded-lg transition-all ${
+              className={`py-2 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                 tab === 'signin'
-                  ? 'bg-gradient-to-r from-purple-700 to-violet-600 text-white shadow-md shadow-purple-950/50'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-[#B92345] text-[#FFF4F6] shadow-md shadow-[#17080F]/50'
+                  : 'text-[#B68F9E] hover:text-[#FFF4F6]'
               }`}
             >
               Sign In
             </button>
             <button
+              type="button"
               onClick={() => setTab('signup')}
-              className={`py-2 text-xs font-semibold rounded-lg transition-all ${
+              className={`py-2 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                 tab === 'signup'
-                  ? 'bg-gradient-to-r from-purple-700 to-violet-600 text-white shadow-md shadow-purple-950/50'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-[#B92345] text-[#FFF4F6] shadow-md shadow-[#17080F]/50'
+                  : 'text-[#B68F9E] hover:text-[#FFF4F6]'
               }`}
             >
               Sign Up
@@ -155,71 +143,72 @@ export default function LoginPage() {
             <div className="space-y-5">
               {/* Quick demo personas */}
               <div className="space-y-2">
-                <label className="text-[11px] font-mono uppercase tracking-wider text-purple-300 font-semibold block">
+                <label className="text-[11px] font-mono uppercase tracking-wider text-[#F28BA8] font-semibold block">
                   Quick Demo Access
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   {DEMO_PERSONAS.map(p => (
                     <button
                       key={p.id}
+                      type="button"
                       onClick={() => handlePersonaLogin(p)}
-                      className="flex flex-col items-start p-2.5 rounded-xl border border-purple-500/20 bg-purple-950/20 hover:bg-purple-900/30 hover:border-purple-400/50 transition-all text-left group cursor-pointer"
+                      className="flex flex-col items-start p-2.5 rounded-xl border border-[#633044] bg-[#220B15]/70 hover:bg-[#3A1524] hover:border-[#B92345]/60 transition-all text-left group cursor-pointer"
                     >
                       <div className="flex items-center justify-between w-full">
-                        <span className="text-xs font-semibold text-white group-hover:text-purple-300 transition-colors">
+                        <span className="text-xs font-semibold text-[#FFF4F6] group-hover:text-[#F28BA8] transition-colors">
                           {p.name}
                         </span>
-                        <span className="text-[10px] font-mono uppercase text-purple-300 px-1 rounded bg-purple-900/40">
+                        <span className="text-[10px] font-mono uppercase text-[#F7C5D2] px-1 rounded bg-[#3A1524] border border-[#633044]">
                           {p.accountType === 'organizer' ? 'Host' : 'User'}
                         </span>
                       </div>
-                      <span className="text-[11px] text-slate-400 truncate w-full mt-0.5">{p.role}</span>
+                      <span className="text-[11px] text-[#B68F9E] truncate w-full mt-0.5">{p.role}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 text-xs text-slate-400">
-                <div className="h-px flex-1 bg-white/10" />
+              <div className="flex items-center gap-3 text-xs text-[#B68F9E]">
+                <div className="h-px flex-1 bg-[#633044]/60" />
                 <span>or with credentials</span>
-                <div className="h-px flex-1 bg-white/10" />
+                <div className="h-px flex-1 bg-[#633044]/60" />
               </div>
 
               <form onSubmit={handleSignInSubmit} className="space-y-3.5">
                 <div>
-                  <label className="text-xs font-medium text-slate-300 block mb-1">Email address</label>
+                  <label className="text-xs font-medium text-[#D7B7C2] block mb-1">Email address</label>
                   <div className="relative">
-                    <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#B68F9E]" />
                     <input
                       type="email"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       placeholder="alex.chen@example.com"
-                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-black/50 border border-purple-500/20 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400/50 transition-all"
+                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#17080F]/80 border border-[#633044] text-sm text-[#FFF4F6] placeholder:text-[#B68F9E] focus:outline-none focus:border-[#F7A5BD] focus:ring-1 focus:ring-[#F7A5BD]/50 transition-all"
                     />
                   </div>
                 </div>
 
                 <div>
                   <div className="flex justify-between items-center mb-1">
-                    <label className="text-xs font-medium text-slate-300">Password</label>
-                    <span className="text-[11px] text-purple-400 hover:underline cursor-pointer">Forgot?</span>
+                    <label className="text-xs font-medium text-[#D7B7C2]">Password</label>
+                    <span className="text-[11px] text-[#F28BA8] hover:underline cursor-pointer">Forgot?</span>
                   </div>
                   <div className="relative">
-                    <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#B68F9E]" />
                     <input
                       type="password"
                       value={password}
                       onChange={e => setPassword(e.target.value)}
                       placeholder="••••••••••••"
-                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-black/50 border border-purple-500/20 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400/50 transition-all"
+                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#17080F]/80 border border-[#633044] text-sm text-[#FFF4F6] placeholder:text-[#B68F9E] focus:outline-none focus:border-[#F7A5BD] focus:ring-1 focus:ring-[#F7A5BD]/50 transition-all"
                     />
                   </div>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full mt-2 py-3 px-4 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 shadow-lg shadow-purple-900/40 hover:shadow-purple-700/50 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full mt-2 py-3 px-4 rounded-xl font-semibold text-sm text-[#FFF4F6] bg-[#B92345] hover:bg-[#D23357] shadow-lg shadow-[#B92345]/30 hover:shadow-[#D23357]/40 transition-all flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-[#F7A5BD]"
                 >
                   <span>Sign In to Account</span>
                   <ArrowRight size={15} />
@@ -229,85 +218,85 @@ export default function LoginPage() {
           ) : (
             <form onSubmit={handleSignUpSubmit} className="space-y-3.5">
               <div>
-                <label className="text-xs font-medium text-slate-300 block mb-1">Full name</label>
+                <label className="text-xs font-medium text-[#D7B7C2] block mb-1">Full name</label>
                 <div className="relative">
-                  <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#B68F9E]" />
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={e => setName(e.target.value)}
                     placeholder="Jordan Lee"
-                    className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-black/50 border border-purple-500/20 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400/50 transition-all"
+                    className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#17080F]/80 border border-[#633044] text-sm text-[#FFF4F6] placeholder:text-[#B68F9E] focus:outline-none focus:border-[#F7A5BD] focus:ring-1 focus:ring-[#F7A5BD]/50 transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-medium text-slate-300 block mb-1">Email address</label>
+                <label className="text-xs font-medium text-[#D7B7C2] block mb-1">Email address</label>
                 <div className="relative">
-                  <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#B68F9E]" />
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder="jordan@example.com"
-                    className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-black/50 border border-purple-500/20 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400/50 transition-all"
+                    className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#17080F]/80 border border-[#633044] text-sm text-[#FFF4F6] placeholder:text-[#B68F9E] focus:outline-none focus:border-[#F7A5BD] focus:ring-1 focus:ring-[#F7A5BD]/50 transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-medium text-slate-300 block mb-1.5">I am joining as:</label>
+                <label className="text-xs font-medium text-[#D7B7C2] block mb-1.5">I am joining as:</label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => setAccountType('participant')}
-                    className={`p-2.5 rounded-xl border text-left transition-all ${
+                    className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                       accountType === 'participant'
-                        ? 'border-purple-400 bg-purple-950/40 text-white font-medium shadow-sm shadow-purple-900/30'
-                        : 'border-white/10 bg-black/40 text-slate-400 hover:text-white'
+                        ? 'border-[#B92345] bg-[#3A1524] text-[#FFF4F6] font-medium shadow-sm shadow-[#B92345]/30'
+                        : 'border-[#633044] bg-[#17080F]/80 text-[#B68F9E] hover:text-[#FFF4F6]'
                     }`}
                   >
                     <p className="text-xs font-semibold">Participant</p>
-                    <p className="text-[10px] text-slate-400 mt-0.5">Join teams & events</p>
+                    <p className="text-[10px] text-[#B68F9E] mt-0.5">Join teams & events</p>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setAccountType('organizer')}
-                    className={`p-2.5 rounded-xl border text-left transition-all ${
+                    className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                       accountType === 'organizer'
-                        ? 'border-purple-400 bg-purple-950/40 text-white font-medium shadow-sm shadow-purple-900/30'
-                        : 'border-white/10 bg-black/40 text-slate-400 hover:text-white'
+                        ? 'border-[#B92345] bg-[#3A1524] text-[#FFF4F6] font-medium shadow-sm shadow-[#B92345]/30'
+                        : 'border-[#633044] bg-[#17080F]/80 text-[#B68F9E] hover:text-[#FFF4F6]'
                     }`}
                   >
                     <p className="text-xs font-semibold">Event Host</p>
-                    <p className="text-[10px] text-slate-400 mt-0.5">Organize & form teams</p>
+                    <p className="text-[10px] text-[#B68F9E] mt-0.5">Organize & form teams</p>
                   </button>
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-medium text-slate-300 block mb-1">Primary Discipline / Skill</label>
+                <label className="text-xs font-medium text-[#D7B7C2] block mb-1">Primary Discipline / Skill</label>
                 <select
                   value={primarySkill}
                   onChange={e => setPrimarySkill(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/50 border border-purple-500/20 text-sm text-white focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400/50 transition-all"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#17080F]/80 border border-[#633044] text-sm text-[#FFF4F6] focus:outline-none focus:border-[#F7A5BD] focus:ring-1 focus:ring-[#F7A5BD]/50 transition-all cursor-pointer"
                 >
-                  <option value="Frontend Development">Frontend Development (React, Vue, Web)</option>
-                  <option value="Backend Development">Backend Development (Python, Node, Go)</option>
-                  <option value="UI/UX Design">UI/UX Design & Prototyping</option>
-                  <option value="AI & Machine Learning">AI & Machine Learning</option>
-                  <option value="Data Visualization">Data Visualization & Analytics</option>
-                  <option value="Project Management">Project Management & Strategy</option>
+                  <option value="Frontend Development" className="bg-[#2C101C] text-[#FFF4F6]">Frontend Development (React, Vue, Web)</option>
+                  <option value="Backend Development" className="bg-[#2C101C] text-[#FFF4F6]">Backend Development (Python, Node, Go)</option>
+                  <option value="UI/UX Design" className="bg-[#2C101C] text-[#FFF4F6]">UI/UX Design & Prototyping</option>
+                  <option value="AI & Machine Learning" className="bg-[#2C101C] text-[#FFF4F6]">AI & Machine Learning</option>
+                  <option value="Data Visualization" className="bg-[#2C101C] text-[#FFF4F6]">Data Visualization & Analytics</option>
+                  <option value="Project Management" className="bg-[#2C101C] text-[#FFF4F6]">Project Management & Strategy</option>
                 </select>
               </div>
 
               <button
                 type="submit"
-                className="w-full mt-2 py-3 px-4 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 shadow-lg shadow-purple-900/40 hover:shadow-purple-700/50 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full mt-2 py-3 px-4 rounded-xl font-semibold text-sm text-[#FFF4F6] bg-[#B92345] hover:bg-[#D23357] shadow-lg shadow-[#B92345]/30 hover:shadow-[#D23357]/40 transition-all flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-[#F7A5BD]"
               >
                 <span>Create Account & Enter</span>
                 <ArrowRight size={15} />
@@ -318,7 +307,7 @@ export default function LoginPage() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-20 py-4 text-center text-xs text-slate-400">
+      <footer className="relative z-20 py-4 text-center text-xs text-[#B68F9E]">
         TeamWeave — Professional Skill-Based Teaming Architecture
       </footer>
     </div>

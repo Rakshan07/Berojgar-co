@@ -1,45 +1,56 @@
 @import "tailwindcss";
 
-
-/* ─── Living Weave AeroShards Design Tokens ─────────────────────────────────────────── */
+/* ─── Wine + Garnet Design Tokens ─────────────────────────────────────────── */
 @theme {
-  /* Foundation: Deep obsidian black and velvet purple surfaces */
-  --color-paper: #07050D;
-  --color-surface: #0E0919;
-  --color-surface-elevated: #160F26;
-  --color-ink: #F8FAFC;
-  --color-ink-secondary: #CBD5E1;
-  --color-ink-muted: #94A3B8;
-  --color-border: rgba(139, 92, 246, 0.2);
-  --color-border-strong: rgba(168, 85, 247, 0.35);
+  /* Foundation: Very dark wine backgrounds and deep burgundy surfaces */
+  --color-paper: #17080F;
+  --color-surface: #220B15;
+  --color-surface-card: #2C101C;
+  --color-surface-elevated: #3A1524;
+  --color-ink: #FFF4F6;
+  --color-ink-secondary: #D7B7C2;
+  --color-ink-muted: #B68F9E;
+  --color-border: #633044;
+  --color-border-strong: #8C3B58;
 
-  /* Brand: Royal & Electric Purples */
-  --color-purple: #8B5CF6;
-  --color-purple-dark: #6D28D9;
-  --color-purple-light: rgba(139, 92, 246, 0.2);
-  --color-purple-pale: rgba(139, 92, 246, 0.1);
-  --color-violet: #A855F7;
-  --color-violet-light: rgba(168, 85, 247, 0.2);
-  --color-indigo: #6366F1;
-  --color-lavender: #DDD6FE;
+  /* Wine + Garnet Brand Palette */
+  --color-garnet: #B92345;
+  --color-garnet-hover: #D23357;
+  --color-garnet-light: rgba(185, 35, 69, 0.2);
+  --color-garnet-pale: rgba(185, 35, 69, 0.1);
+  --color-pink: #F28BA8;
+  --color-pink-light: rgba(242, 139, 168, 0.2);
+  --color-wine: #220B15;
+  --color-wine-dark: #17080F;
+  --color-wine-surface: #2C101C;
+  --color-wine-elevated: #3A1524;
+  --color-focus: #F7A5BD;
 
-  /* Backward compatible aliases */
-  --color-teal: #8B5CF6;
-  --color-teal-dark: #6D28D9;
-  --color-teal-light: rgba(139, 92, 246, 0.2);
-  --color-teal-pale: rgba(139, 92, 246, 0.1);
-  --color-cobalt: #7C3AED;
-  --color-cobalt-light: rgba(124, 58, 237, 0.2);
-  --color-coral: #F43F5E;
-  --color-coral-light: rgba(244, 63, 94, 0.2);
+  /* Backward-compatible aliases for existing component utilities */
+  --color-teal: #B92345;
+  --color-teal-dark: #D23357;
+  --color-teal-light: rgba(185, 35, 69, 0.2);
+  --color-teal-pale: rgba(185, 35, 69, 0.1);
+  --color-purple: #B92345;
+  --color-purple-dark: #8C1538;
+  --color-purple-light: rgba(185, 35, 69, 0.2);
+  --color-purple-pale: rgba(185, 35, 69, 0.1);
+  --color-violet: #D23357;
+  --color-violet-light: rgba(210, 51, 87, 0.2);
+  --color-indigo: #9E1F3B;
+  --color-lavender: #F7C5D2;
+  --color-cobalt: #9E1F3B;
+  --color-cobalt-light: rgba(158, 31, 59, 0.2);
+  --color-coral: #E56B8B;
+  --color-coral-light: rgba(229, 107, 139, 0.2);
   --color-gold: #F59E0B;
   --color-gold-light: rgba(245, 158, 11, 0.2);
 
-  /* Semantic */
+  /* Semantic - preserve distinct, accessible status states */
   --color-success: #10B981;
   --color-warning: #F59E0B;
   --color-error: #EF4444;
-  --color-info: #8B5CF6;
+  --color-info: #B92345;
 
   /* Typography */
   --font-heading: 'Space Grotesk', system-ui, sans-serif;
@@ -58,10 +69,10 @@
   --radius-xl: 18px;
   --radius-2xl: 26px;
 
-  /* Shadows for dark glass crystalline UI */
-  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.07);
-  --shadow-elevated: 0 10px 32px -4px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.12);
-  --shadow-modal: 0 25px 60px -10px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.15);
+  /* Shadows for Wine + Garnet luxury UI */
+  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(99, 48, 68, 0.35);
+  --shadow-elevated: 0 10px 32px -4px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(185, 35, 69, 0.25);
+  --shadow-modal: 0 25px 60px -10px rgba(0, 0, 0, 0.92), 0 0 0 1px rgba(99, 48, 68, 0.5);
 }
 
 /* ─── Base Resets ────────────────────────────────────────────────────────── */
@@ -76,8 +87,8 @@ html {
 
 body {
   margin: 0;
-  background-color: #07050D;
-  color: #F8FAFC;
+  background-color: #17080F;
+  color: #FFF4F6;
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 15px;
   line-height: 1.6;
@@ -90,6 +101,7 @@ body {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
+  background-color: #17080F;
 }
 
 /* ─── Typography Utilities ───────────────────────────────────────────────── */
@@ -98,7 +110,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  color: #F8FAFC;
+  color: #FFF4F6;
   margin: 0;
 }
 
@@ -107,13 +119,13 @@ a { color: inherit; text-decoration: none; }
 
 /* ─── Scrollbar ──────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: rgba(7, 5, 13, 0.8); }
-::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.25); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(168, 85, 247, 0.45); }
+::-webkit-scrollbar-track { background: rgba(23, 8, 15, 0.95); }
+::-webkit-scrollbar-thumb { background: rgba(185, 35, 69, 0.35); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(210, 51, 87, 0.6); }
 
 /* ─── Focus ──────────────────────────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid #8B5CF6;
+  outline: 2px solid #F7A5BD;
   outline-offset: 2px;
 }
 
@@ -162,46 +174,46 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
-/* ─── Weave grid texture (subtle) ───────────────────────────────────────── */
+/* ─── Weave grid texture ─────────────────────────────────────────────────── */
 .weave-texture {
   background-image:
     repeating-linear-gradient(
       0deg,
       transparent,
       transparent 19px,
-      rgba(255, 255, 255, 0.02) 20px
+      rgba(242, 139, 168, 0.03) 20px
     ),
     repeating-linear-gradient(
       90deg,
       transparent,
       transparent 19px,
-      rgba(255, 255, 255, 0.02) 20px
+      rgba(242, 139, 168, 0.03) 20px
     );
 }
 
-/* ─── Global form input styles ────────────────────────────────────────────── */
+/* ─── Global Form Input Styles ───────────────────────────────────────────── */
 .input-base,
 .input-field {
   width: 100%;
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  border: 1px solid #633044;
   border-radius: 12px;
   padding: 9px 14px;
   font-size: 14px;
-  color: #F8FAFC;
-  background: rgba(14, 9, 25, 0.85);
+  color: #FFF4F6;
+  background: #2C101C;
   font-family: 'Inter', system-ui, sans-serif;
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
 }
 .input-base:focus,
 .input-field:focus {
-  border-color: #A855F7;
-  background: rgba(22, 15, 38, 0.95);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+  border-color: #F7A5BD;
+  background: #3A1524;
+  box-shadow: 0 0 0 3px rgba(247, 165, 189, 0.25);
 }
 .input-base::placeholder,
 .input-field::placeholder {
-  color: #94A3B8;
+  color: #B68F9E;
 }
 textarea.input-base,
 textarea.input-field {
@@ -214,16 +226,16 @@ select.input-field {
 }
 select.input-base option,
 select.input-field option {
-  background-color: #0E0919;
-  color: #F8FAFC;
+  background-color: #2C101C;
+  color: #FFF4F6;
 }
 
-/* ─── Font family utilities ───────────────────────────────────────────────── */
+/* ─── Font Family Utilities ──────────────────────────────────────────────── */
 .font-heading { font-family: 'Space Grotesk', system-ui, sans-serif; }
 .font-body    { font-family: 'Inter', system-ui, sans-serif; }
 .font-mono    { font-family: 'DM Mono', ui-monospace, monospace; }
 
-/* ─── Line clamp ───────────────────────────────────────────────────────────── */
+/* ─── Line Clamp ─────────────────────────────────────────────────────────── */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -231,80 +243,80 @@ select.input-field option {
   overflow: hidden;
 }
 
-/* ─── Elegant Luxury Purple & Black UI Utilities (Non-Neon) ───────────────── */
+/* ─── Wine + Garnet UI Utilities ─────────────────────────────────────────── */
 .text-gradient-purple {
-  background: linear-gradient(135deg, #FFFFFF 0%, #EDE9FE 45%, #C4B5FD 100%);
+  background: linear-gradient(135deg, #FFF4F6 0%, #F7C5D2 45%, #F28BA8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gradient-royal {
-  background: linear-gradient(135deg, #DDD6FE 0%, #A78BFA 50%, #8B5CF6 100%);
+  background: linear-gradient(135deg, #F7C5D2 0%, #F28BA8 50%, #B92345 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.purple-glow {
-  box-shadow: 0 0 25px rgba(139, 92, 246, 0.2);
+.purple-glow,
+.garnet-glow {
+  box-shadow: 0 0 25px rgba(185, 35, 69, 0.28);
 }
 
 .card-luxury {
-  background: rgba(14, 9, 25, 0.85);
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  background: rgba(44, 16, 28, 0.88);
+  border: 1px solid #633044;
   backdrop-filter: blur(16px);
   border-radius: 18px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .card-luxury:hover {
-  border-color: rgba(168, 85, 247, 0.45);
-  box-shadow: 0 14px 40px -10px rgba(0, 0, 0, 0.8), 0 0 25px rgba(139, 92, 246, 0.12);
+  border-color: #8C3B58;
+  box-shadow: 0 14px 40px -10px rgba(0, 0, 0, 0.85), 0 0 25px rgba(185, 35, 69, 0.18);
   transform: translateY(-2px);
 }
 
-/* Backward-compatible graceful fallbacks for existing references (NO harsh neon) */
+/* Backward-compatible graceful fallbacks for existing references */
 .neon-text-cyan {
-  color: #DDD6FE;
+  color: #F7C5D2;
   font-weight: 700;
 }
 
 .neon-text-pink {
-  color: #F472B6;
+  color: #F28BA8;
   font-weight: 600;
 }
 
 .neon-text-violet {
-  color: #C084FC;
+  color: #D23357;
   font-weight: 600;
 }
 
 .neon-text-white {
-  color: #FFFFFF;
+  color: #FFF4F6;
   font-weight: 700;
 }
 
 .neon-border-cyan {
-  border-color: rgba(139, 92, 246, 0.35);
+  border-color: rgba(185, 35, 69, 0.4);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 .neon-border-cyan:hover {
-  border-color: rgba(168, 85, 247, 0.6);
-  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.2);
+  border-color: rgba(210, 51, 87, 0.6);
+  box-shadow: 0 8px 25px rgba(185, 35, 69, 0.25);
 }
 
 .neon-border-pink {
-  border-color: rgba(244, 114, 182, 0.35);
+  border-color: rgba(242, 139, 168, 0.4);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .cyber-card {
-  background: rgba(14, 9, 25, 0.85);
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  background: rgba(44, 16, 28, 0.88);
+  border: 1px solid #633044;
   backdrop-filter: blur(16px);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .cyber-card:hover {
-  border-color: rgba(168, 85, 247, 0.45);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(139, 92, 246, 0.15);
+  border-color: #8C3B58;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.85), 0 0 20px rgba(185, 35, 69, 0.18);
   transform: translateY(-2px);
 }
-

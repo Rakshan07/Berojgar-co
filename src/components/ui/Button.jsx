@@ -1,10 +1,10 @@
 // ─── Reusable Button component ───────────────────────────────────────────
 const variants = {
-  primary:   'bg-teal text-white hover:bg-teal-dark active:scale-[0.98] shadow-sm',
-  secondary: 'bg-surface text-ink border border-border hover:bg-paper active:scale-[0.98]',
-  ghost:     'bg-transparent text-ink-secondary hover:bg-paper hover:text-ink active:scale-[0.98]',
+  primary:   'bg-[#B92345] text-[#FFF4F6] hover:bg-[#D23357] active:scale-[0.98] shadow-sm shadow-[#B92345]/30',
+  secondary: 'bg-[#220B15] text-[#FFF4F6] border border-[#633044] hover:bg-[#3A1524] hover:border-[#8C3B58] active:scale-[0.98]',
+  ghost:     'bg-transparent text-[#D7B7C2] hover:bg-[#2C101C] hover:text-[#FFF4F6] active:scale-[0.98]',
   danger:    'bg-red-600 text-white hover:bg-red-700 active:scale-[0.98]',
-  outline:   'bg-transparent text-teal border border-teal hover:bg-teal-pale active:scale-[0.98]',
+  outline:   'bg-transparent text-[#F28BA8] border border-[#B92345] hover:bg-[#B92345]/15 active:scale-[0.98]',
 };
 
 const sizes = {
@@ -29,10 +29,10 @@ export function Button({
     <button
       disabled={disabled || loading}
       className={`
-        inline-flex items-center justify-center font-medium rounded-md
+        inline-flex items-center justify-center font-medium rounded-xl
         transition-all duration-150 cursor-pointer select-none
         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
-        focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal
+        focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F7A5BD]
         ${variants[variant] ?? variants.primary}
         ${sizes[size] ?? sizes.md}
         ${className}

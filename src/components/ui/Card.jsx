@@ -7,9 +7,9 @@ export function Card({ children, className = '', padding = 'md', hoverable = fal
   return (
     <div
       className={`
-        bg-surface/85 backdrop-blur-md border border-white/10 rounded-2xl shadow-card
+        bg-[#220B15]/90 backdrop-blur-md border border-[#633044] rounded-2xl shadow-card
         ${pads[padding] ?? pads.md}
-        ${hoverable ? 'hover:shadow-elevated hover:border-slate-400/30 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer' : ''}
+        ${hoverable ? 'hover:shadow-elevated hover:border-[#8C3B58] hover:-translate-y-0.5 transition-all duration-200 cursor-pointer' : ''}
         ${className}
       `}
       {...props}
@@ -34,12 +34,12 @@ export function SectionHeader({ title, subtitle, action, className = '' }) {
 
 // ─── Divider ──────────────────────────────────────────────────────────────
 export function Divider({ label, className = '' }) {
-  if (!label) return <hr className={`border-white/10 my-4 ${className}`} />;
+  if (!label) return <hr className={`border-[#633044]/50 my-4 ${className}`} />;
   return (
     <div className={`flex items-center gap-3 my-4 ${className}`}>
-      <span className="flex-1 border-t border-white/10" />
-      <span className="text-xs text-slate-400 uppercase tracking-widest">{label}</span>
-      <span className="flex-1 border-t border-white/10" />
+      <span className="flex-1 border-t border-[#633044]/50" />
+      <span className="text-xs text-[#B68F9E] uppercase tracking-widest">{label}</span>
+      <span className="flex-1 border-t border-[#633044]/50" />
     </div>
   );
 }
@@ -49,7 +49,7 @@ export function EmptyState({ icon, title, description, action, className = '' })
   return (
     <div className={`flex flex-col items-center justify-center text-center py-14 px-6 ${className}`}>
       {icon && (
-        <div className="w-12 h-12 rounded-2xl bg-surface/80 border border-white/10 flex items-center justify-center mb-4 text-teal shadow-sm">
+        <div className="w-12 h-12 rounded-2xl bg-[#2C101C] border border-[#633044] flex items-center justify-center mb-4 text-[#F28BA8] shadow-sm">
           {icon}
         </div>
       )}
@@ -62,19 +62,19 @@ export function EmptyState({ icon, title, description, action, className = '' })
 
 // ─── Stat card ────────────────────────────────────────────────────────────
 export function StatCard({ label, value, sub, color = 'ink', className = '' }) {
-  const colors = { ink: 'text-white', teal: 'text-teal', cobalt: 'text-indigo-400', coral: 'text-rose-400', gold: 'text-amber-400' };
+  const colors = { ink: 'text-[#FFF4F6]', teal: 'text-[#F28BA8]', cobalt: 'text-[#D7B7C2]', coral: 'text-[#F28BA8]', gold: 'text-amber-400' };
   const glows = {
-    teal: 'border-teal/25 bg-gradient-to-b from-teal/10 to-surface/80 shadow-teal/5',
-    cobalt: 'border-indigo-500/25 bg-gradient-to-b from-indigo-500/10 to-surface/80',
-    coral: 'border-rose-500/25 bg-gradient-to-b from-rose-500/10 to-surface/80',
-    gold: 'border-amber-500/25 bg-gradient-to-b from-amber-500/10 to-surface/80',
-    ink: 'border-white/10 bg-surface/80',
+    teal: 'border-[#B92345]/30 bg-gradient-to-b from-[#B92345]/15 to-[#220B15]/90 shadow-[#B92345]/10',
+    cobalt: 'border-[#8C3B58]/30 bg-gradient-to-b from-[#8C3B58]/15 to-[#220B15]/90',
+    coral: 'border-rose-500/25 bg-gradient-to-b from-rose-500/10 to-[#220B15]/90',
+    gold: 'border-amber-500/25 bg-gradient-to-b from-amber-500/10 to-[#220B15]/90',
+    ink: 'border-[#633044] bg-[#220B15]/90',
   };
   return (
-    <div className={`border rounded-2xl p-5 shadow-card backdrop-blur-md transition-all hover:border-slate-400/40 ${glows[color] ?? glows.ink} ${className}`}>
-      <p className="text-xs text-slate-400 uppercase tracking-wider mb-1 font-medium">{label}</p>
+    <div className={`border rounded-2xl p-5 shadow-card backdrop-blur-md transition-all hover:border-[#8C3B58] ${glows[color] ?? glows.ink} ${className}`}>
+      <p className="text-xs text-[#B68F9E] uppercase tracking-wider mb-1 font-medium">{label}</p>
       <p className={`text-3xl font-heading font-bold tracking-tight ${colors[color] ?? colors.ink}`}>{value}</p>
-      {sub && <p className="text-xs text-slate-400 mt-1">{sub}</p>}
+      {sub && <p className="text-xs text-[#B68F9E] mt-1">{sub}</p>}
     </div>
   );
 }
@@ -84,13 +84,13 @@ export function ConfirmDialog({ open, title, description, confirmLabel = 'Confir
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onCancel} />
-      <div className="relative bg-surface border border-white/10 rounded-2xl shadow-modal w-full max-w-sm p-6 animate-scaleIn backdrop-blur-xl">
+      <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" onClick={onCancel} />
+      <div className="relative bg-[#2C101C] border border-[#633044] rounded-2xl shadow-modal w-full max-w-sm p-6 animate-scaleIn backdrop-blur-xl">
         <div className="flex items-start justify-between mb-3">
           <h3 id="confirm-title" className="text-base font-heading font-semibold text-white">{title}</h3>
-          <button onClick={onCancel} className="text-slate-400 hover:text-white -mt-0.5 -mr-1 p-1 rounded-lg hover:bg-white/5" aria-label="Close"><X size={16} /></button>
+          <button onClick={onCancel} className="text-[#B68F9E] hover:text-[#FFF4F6] -mt-0.5 -mr-1 p-1 rounded-lg hover:bg-white/5" aria-label="Close"><X size={16} /></button>
         </div>
-        {description && <p className="text-sm text-slate-300 leading-relaxed mb-5">{description}</p>}
+        {description && <p className="text-sm text-[#D7B7C2] leading-relaxed mb-5">{description}</p>}
         <div className="flex gap-2 justify-end">
           <Button variant="ghost" size="sm" onClick={onCancel}>{cancelLabel}</Button>
           <Button variant={danger ? 'danger' : 'primary'} size="sm" onClick={onConfirm}>{confirmLabel}</Button>
@@ -104,7 +104,7 @@ export function ConfirmDialog({ open, title, description, confirmLabel = 'Confir
 export function Spinner({ size = 20, className = '' }) {
   return (
     <div
-      className={`rounded-full border-2 border-white/10 border-t-teal animate-spin ${className}`}
+      className={`rounded-full border-2 border-[#633044] border-t-[#B92345] animate-spin ${className}`}
       style={{ width: size, height: size }}
       role="status"
       aria-label="Loading"
@@ -125,17 +125,17 @@ export function ProgressSteps({ steps, current }) {
               <div
                 className={`
                   w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold border-2 transition-all
-                  ${done ? 'bg-teal border-teal text-surface shadow-sm' : active ? 'border-teal text-teal bg-teal/15' : 'border-white/10 text-slate-400 bg-surface'}
+                  ${done ? 'bg-[#B92345] border-[#B92345] text-white shadow-sm' : active ? 'border-[#B92345] text-[#F28BA8] bg-[#B92345]/15' : 'border-[#633044] text-[#B68F9E] bg-[#220B15]'}
                 `}
               >
                 {done ? <Check size={12} className="stroke-[3]" /> : i + 1}
               </div>
-              <span className={`text-xs mt-1 hidden sm:block text-center max-w-16 leading-tight ${active ? 'text-white font-medium' : done ? 'text-slate-300' : 'text-slate-500'}`}>
+              <span className={`text-xs mt-1 hidden sm:block text-center max-w-16 leading-tight ${active ? 'text-white font-medium' : done ? 'text-[#D7B7C2]' : 'text-[#B68F9E]'}`}>
                 {step}
               </span>
             </div>
             {i < steps.length - 1 && (
-              <div className={`h-0.5 w-8 sm:w-12 mx-1 mb-4 transition-all ${done ? 'bg-teal' : 'bg-white/10'}`} />
+              <div className={`h-0.5 w-8 sm:w-12 mx-1 mb-4 transition-all ${done ? 'bg-[#B92345]' : 'bg-[#633044]'}`} />
             )}
           </div>
         );
@@ -147,16 +147,16 @@ export function ProgressSteps({ steps, current }) {
 // ─── Coverage bar ─────────────────────────────────────────────────────────
 export function CoverageBar({ label, covered, total, required }) {
   const pct = total > 0 ? Math.round((covered / total) * 100) : 0;
-  const color = pct === 100 ? 'bg-teal' : pct >= 60 ? 'bg-amber-400' : 'bg-rose-400';
+  const color = pct === 100 ? 'bg-[#B92345]' : pct >= 60 ? 'bg-amber-400' : 'bg-rose-400';
   return (
     <div>
       <div className="flex justify-between items-center mb-1.5">
-        <span className="text-xs text-slate-300">{label}</span>
-        <span className={`text-xs font-mono font-medium ${pct === 100 ? 'text-teal' : pct >= 60 ? 'text-amber-400' : 'text-rose-400'}`}>
+        <span className="text-xs text-[#D7B7C2]">{label}</span>
+        <span className={`text-xs font-mono font-medium ${pct === 100 ? 'text-[#F28BA8]' : pct >= 60 ? 'text-amber-400' : 'text-rose-400'}`}>
           {covered}/{total}
         </span>
       </div>
-      <div className="h-1.5 bg-paper rounded-full overflow-hidden">
+      <div className="h-1.5 bg-[#17080F] rounded-full overflow-hidden">
         <div className={`h-full rounded-full transition-all duration-500 ${color}`} style={{ width: `${pct}%` }} />
       </div>
     </div>
@@ -170,7 +170,7 @@ export function ProficiencyPips({ level, max = 4 }) {
       {Array.from({ length: max }, (_, i) => (
         <span
           key={i}
-          className={`w-2 h-2 rounded-full ${i < level ? 'bg-teal shadow-[0_0_4px_rgba(20,184,166,0.5)]' : 'bg-white/10'}`}
+          className={`w-2 h-2 rounded-full ${i < level ? 'bg-[#B92345] shadow-[0_0_6px_rgba(185,35,69,0.5)]' : 'bg-[#633044]'}`}
         />
       ))}
     </span>
@@ -179,11 +179,11 @@ export function ProficiencyPips({ level, max = 4 }) {
 
 // ─── Avatar ───────────────────────────────────────────────────────────────
 const AVATAR_COLORS = [
-  'bg-teal/20 text-teal border border-teal/30',
-  'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30',
-  'bg-rose-500/20 text-rose-300 border border-rose-500/30',
+  'bg-[#B92345]/20 text-[#F28BA8] border border-[#B92345]/30',
+  'bg-[#8C1538]/25 text-[#F7C5D2] border border-[#8C1538]/40',
+  'bg-[#633044]/30 text-[#D7B7C2] border border-[#633044]/50',
   'bg-amber-500/20 text-amber-300 border border-amber-500/30',
-  'bg-violet-500/20 text-violet-300 border border-violet-500/30',
+  'bg-[#D23357]/20 text-[#FFF4F6] border border-[#D23357]/30',
 ];
 
 export function Avatar({ initials, size = 'md', index = 0, className = '' }) {

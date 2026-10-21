@@ -76,12 +76,12 @@ export function AppShell({ children }) {
             className={`
               flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-150
               ${active
-                ? 'bg-purple-600/20 text-purple-200 font-semibold border border-purple-500/40 shadow-sm shadow-purple-950/40'
-                : 'text-slate-300 hover:text-white hover:bg-white/5'
+                ? 'bg-[#B92345]/20 text-[#FFF4F6] font-semibold border border-[#B92345]/50 shadow-sm shadow-[#17080F]/50'
+                : 'text-[#D7B7C2] hover:text-[#FFF4F6] hover:bg-white/5'
               }
             `}
           >
-            <span className={active ? 'text-purple-300' : 'text-slate-400'}>{item.icon}</span>
+            <span className={active ? 'text-[#F28BA8]' : 'text-[#B68F9E]'}>{item.icon}</span>
             {item.label}
           </Link>
         );
@@ -90,17 +90,17 @@ export function AppShell({ children }) {
   );
 
   return (
-    <div className="relative min-h-screen flex flex-col text-ink bg-[#07050D] overflow-x-hidden">
+    <div className="relative min-h-screen flex flex-col text-[#FFF4F6] bg-[#17080F] overflow-x-hidden">
       {/* ─── Ambient Atmospheric Background Lighting across all pages ─── */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1100px] h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.12),transparent_70%)]" />
-        <div className="absolute top-[30%] -right-40 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(168,85,247,0.06),transparent_65%)]" />
-        <div className="absolute bottom-0 left-[-10%] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(124,58,237,0.06),transparent_60%)]" />
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1100px] h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(185,35,69,0.12),transparent_70%)]" />
+        <div className="absolute top-[30%] -right-40 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(99,48,68,0.15),transparent_65%)]" />
+        <div className="absolute bottom-0 left-[-10%] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(140,21,56,0.10),transparent_60%)]" />
       </div>
 
       <div className="relative z-10 flex flex-col flex-1 min-h-screen">
-        {/* Header - Glassmorphic floating nav with purple hairline border */}
-        <header className="sticky top-0 z-40 bg-[#0C0818]/85 backdrop-blur-2xl border-b border-purple-500/20 shadow-[0_4px_30px_rgba(0,0,0,0.6)]">
+        {/* Header - Glassmorphic floating nav with garnet hairline border */}
+        <header className="sticky top-0 z-40 bg-[#220B15]/90 backdrop-blur-2xl border-b border-[#633044]/80 shadow-[0_4px_30px_rgba(0,0,0,0.7)]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center gap-5">
             {/* Brand */}
             <Link to="/" className="shrink-0 hover:opacity-90 transition-opacity">
@@ -118,66 +118,66 @@ export function AppShell({ children }) {
               <div className="relative">
                 <button
                   onClick={() => setRoleMenuOpen(v => !v)}
-                  className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-purple-500/30 bg-[#140E24]/90 hover:border-purple-400/60 hover:bg-[#1A1230] text-xs font-mono uppercase tracking-wider text-slate-200 transition-all shadow-sm"
+                  className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-[#633044] bg-[#2C101C]/90 hover:border-[#8C3B58] hover:bg-[#3A1524] text-xs font-mono uppercase tracking-wider text-[#FFF4F6] transition-all shadow-sm cursor-pointer focus-visible:outline-[#F7A5BD]"
                   aria-expanded={roleMenuOpen}
                 >
-                  <span className={`w-2 h-2 rounded-full ${isOrganizer ? 'bg-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.8)]' : 'bg-violet-400 shadow-[0_0_8px_rgba(139,92,246,0.8)]'}`} />
+                  <span className={`w-2 h-2 rounded-full ${isOrganizer ? 'bg-[#D23357] shadow-[0_0_8px_rgba(210,51,87,0.8)]' : 'bg-[#B92345] shadow-[0_0_8px_rgba(185,35,69,0.8)]'}`} />
                   <span>{isOrganizer ? 'Organizer' : 'Participant'}</span>
-                  <ChevronDown size={13} className={`text-slate-400 transition-transform ${roleMenuOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown size={13} className={`text-[#B68F9E] transition-transform ${roleMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {roleMenuOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-60 bg-[#0F0A1F]/95 border border-purple-500/25 rounded-2xl shadow-2xl z-50 p-2 animate-fadeIn backdrop-blur-2xl">
-                    <div className="px-3 py-2 border-b border-purple-500/15 mb-1.5">
-                      <p className="text-[11px] font-mono text-purple-300 uppercase tracking-wider font-semibold">Active Profile</p>
-                      <p className="text-sm font-semibold text-white truncate">{user?.name || 'Active User'}</p>
-                      <p className="text-[11px] text-slate-400 truncate">{user?.email || 'user@example.com'}</p>
+                  <div className="absolute right-0 top-full mt-2 w-60 bg-[#2C101C] border border-[#633044] rounded-2xl shadow-2xl z-50 p-2 animate-fadeIn backdrop-blur-2xl">
+                    <div className="px-3 py-2 border-b border-[#633044]/50 mb-1.5">
+                      <p className="text-[11px] font-mono text-[#F28BA8] uppercase tracking-wider font-semibold">Active Profile</p>
+                      <p className="text-sm font-semibold text-[#FFF4F6] truncate">{user?.name || 'Active User'}</p>
+                      <p className="text-[11px] text-[#B68F9E] truncate">{user?.email || 'user@example.com'}</p>
                     </div>
 
                     <button
                       onClick={() => switchRole('participant')}
-                      className={`w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 hover:bg-white/5 transition-colors cursor-pointer ${state.currentRole === 'participant' ? 'text-purple-300 font-medium bg-purple-950/40' : 'text-slate-300'}`}
+                      className={`w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 hover:bg-white/5 transition-colors cursor-pointer ${state.currentRole === 'participant' ? 'text-[#F28BA8] font-medium bg-[#3A1524]' : 'text-[#D7B7C2]'}`}
                     >
-                      <span className="w-2 h-2 rounded-full bg-purple-400" />
+                      <span className="w-2 h-2 rounded-full bg-[#B92345]" />
                       <span>Participant view</span>
-                      {state.currentRole === 'participant' && <Check size={14} className="ml-auto text-purple-400" />}
+                      {state.currentRole === 'participant' && <Check size={14} className="ml-auto text-[#F28BA8]" />}
                     </button>
                     <button
                       onClick={() => switchRole('organizer')}
-                      className={`w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 hover:bg-white/5 transition-colors cursor-pointer ${state.currentRole === 'organizer' ? 'text-purple-300 font-medium bg-purple-950/40' : 'text-slate-300'}`}
+                      className={`w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 hover:bg-white/5 transition-colors cursor-pointer ${state.currentRole === 'organizer' ? 'text-[#F28BA8] font-medium bg-[#3A1524]' : 'text-[#D7B7C2]'}`}
                     >
-                      <span className="w-2 h-2 rounded-full bg-violet-400" />
+                      <span className="w-2 h-2 rounded-full bg-[#D23357]" />
                       <span>Organizer view</span>
-                      {state.currentRole === 'organizer' && <Check size={14} className="ml-auto text-violet-400" />}
+                      {state.currentRole === 'organizer' && <Check size={14} className="ml-auto text-[#F28BA8]" />}
                     </button>
 
-                    <div className="border-t border-purple-500/15 my-1.5" />
+                    <div className="border-t border-[#633044]/50 my-1.5" />
 
                     <button
                       onClick={() => openAuth('signin')}
-                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-slate-300 hover:bg-white/5 hover:text-white transition-colors cursor-pointer"
+                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#D7B7C2] hover:bg-white/5 hover:text-[#FFF4F6] transition-colors cursor-pointer"
                     >
-                      <LogIn size={14} className="text-purple-400" />
+                      <LogIn size={14} className="text-[#F28BA8]" />
                       <span>Switch persona / Sign In</span>
                     </button>
 
                     <button
                       onClick={() => openAuth('signup')}
-                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-slate-300 hover:bg-white/5 hover:text-white transition-colors cursor-pointer"
+                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#D7B7C2] hover:bg-white/5 hover:text-[#FFF4F6] transition-colors cursor-pointer"
                     >
-                      <UserPlus size={14} className="text-purple-400" />
+                      <UserPlus size={14} className="text-[#F28BA8]" />
                       <span>Create new account</span>
                     </button>
 
                     <button
                       onClick={resetDemo}
-                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-slate-400 hover:bg-white/5 hover:text-slate-200 transition-colors cursor-pointer"
+                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#B68F9E] hover:bg-white/5 hover:text-[#FFF4F6] transition-colors cursor-pointer"
                     >
                       <RefreshCw size={13} />
                       <span>Reset demo state</span>
                     </button>
 
-                    <div className="border-t border-purple-500/15 my-1.5" />
+                    <div className="border-t border-[#633044]/50 my-1.5" />
 
                     <button
                       onClick={handleSignOut}
@@ -192,12 +192,12 @@ export function AppShell({ children }) {
 
               {/* User avatar */}
               <Link to="/profile" className="shrink-0" aria-label="Your profile">
-                <Avatar initials={user?.initials} size="sm" index={0} className="ring-1 ring-purple-500/30 hover:ring-2 hover:ring-purple-400/60 transition-all" />
+                <Avatar initials={user?.initials} size="sm" index={0} className="ring-1 ring-[#633044] hover:ring-2 hover:ring-[#F28BA8] transition-all" />
               </Link>
 
               {/* Mobile toggle */}
               <button
-                className="md:hidden text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/5"
+                className="md:hidden text-[#B68F9E] hover:text-[#FFF4F6] p-1 rounded-lg hover:bg-white/5"
                 onClick={() => setMobileOpen(v => !v)}
                 aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               >
@@ -210,9 +210,9 @@ export function AppShell({ children }) {
         {/* Mobile nav drawer */}
         {mobileOpen && (
           <div className="md:hidden fixed inset-0 z-50 pt-16" onClick={() => setMobileOpen(false)}>
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+            <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
             <nav
-              className="relative bg-surface border-r border-white/10 h-full w-64 shadow-modal p-4 flex flex-col gap-1 animate-slideInRight overflow-y-auto"
+              className="relative bg-[#220B15] border-r border-[#633044] h-full w-64 shadow-modal p-4 flex flex-col gap-1 animate-slideInRight overflow-y-auto"
               onClick={e => e.stopPropagation()}
               aria-label="Mobile navigation"
             >
@@ -227,7 +227,7 @@ export function AppShell({ children }) {
         </main>
 
         {/* Footer */}
-        <footer className="border-t border-purple-500/15 bg-[#0C0818]/60 backdrop-blur-md py-6 px-6 text-center text-xs text-slate-400">
+        <footer className="border-t border-[#633044]/40 bg-[#220B15]/60 backdrop-blur-md py-6 px-6 text-center text-xs text-[#B68F9E]">
           TeamWeave — Professional Skill-Based Teaming Architecture
         </footer>
       </div>
