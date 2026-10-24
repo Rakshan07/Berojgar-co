@@ -2,13 +2,13 @@ import { AlertTriangle, X } from 'lucide-react';
 
 // ─── Badge / Tag component ────────────────────────────────────────────────
 const colorMap = {
-  teal:   'bg-[#3A1524] text-[#F7C5D2] border-[#633044]',
-  cobalt: 'bg-[#2C101C] text-[#F28BA8] border-[#633044]',
-  coral:  'bg-[#4A1526] text-[#F28BA8] border-[#8C3B58]',
+  teal:   'bg-[#171717] text-[#E56E6D] border-[#333D38]',
+  cobalt: 'bg-[#171717] text-[#C8D1CC] border-[#333D38]',
+  coral:  'bg-[#a31c1b]/20 text-[#E56E6D] border-[#a31c1b]/40',
   gold:   'bg-amber-950/40 text-amber-200 border-amber-500/30',
-  violet: 'bg-[#3A1524] text-[#F7C5D2] border-[#8C3B58]',
-  ink:    'bg-[#2C101C] text-[#D7B7C2] border-[#633044]',
-  red:    'bg-rose-950/50 text-rose-300 border-rose-500/50',
+  violet: 'bg-[#171717] text-[#F7FAF8] border-[#333D38]',
+  ink:    'bg-[#06110C] text-[#C8D1CC] border-[#333D38]',
+  red:    'bg-[#a31c1b]/30 text-rose-200 border-[#a31c1b]',
 };
 
 export function Badge({ children, color = 'ink', size = 'sm', dot = false, className = '' }) {

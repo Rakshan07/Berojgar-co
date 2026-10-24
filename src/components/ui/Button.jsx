@@ -1,10 +1,10 @@
 // ─── Reusable Button component ───────────────────────────────────────────
 const variants = {
-  primary:   'bg-[#B92345] text-[#FFF4F6] hover:bg-[#D23357] active:scale-[0.98] shadow-sm shadow-[#B92345]/30',
-  secondary: 'bg-[#220B15] text-[#FFF4F6] border border-[#633044] hover:bg-[#3A1524] hover:border-[#8C3B58] active:scale-[0.98]',
-  ghost:     'bg-transparent text-[#D7B7C2] hover:bg-[#2C101C] hover:text-[#FFF4F6] active:scale-[0.98]',
-  danger:    'bg-red-600 text-white hover:bg-red-700 active:scale-[0.98]',
-  outline:   'bg-transparent text-[#F28BA8] border border-[#B92345] hover:bg-[#B92345]/15 active:scale-[0.98]',
+  primary:   'bg-[#a31c1b] text-[#F7FAF8] hover:bg-[#bf2625] hover:shadow-lg hover:shadow-[#a31c1b]/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] shadow-sm shadow-[#a31c1b]/30',
+  secondary: 'bg-[#171717] text-[#F7FAF8] border border-[#333D38] hover:bg-[#222624] hover:border-[#45524B] hover:shadow-md hover:shadow-black/60 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
+  ghost:     'bg-transparent text-[#C8D1CC] hover:bg-[#171717] hover:text-[#F7FAF8] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
+  danger:    'bg-[#a31c1b] text-white hover:bg-[#bf2625] hover:shadow-lg hover:shadow-[#a31c1b]/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
+  outline:   'bg-transparent text-[#E56E6D] border border-[#a31c1b] hover:bg-[#a31c1b]/20 hover:border-[#E56E6D] hover:shadow-sm hover:shadow-[#a31c1b]/30 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
 };
 
 const sizes = {
@@ -30,9 +30,9 @@ export function Button({
       disabled={disabled || loading}
       className={`
         inline-flex items-center justify-center font-medium rounded-xl
-        transition-all duration-150 cursor-pointer select-none
+        transition-all duration-200 cursor-pointer select-none
         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
-        focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F7A5BD]
+        focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a31c1b]
         ${variants[variant] ?? variants.primary}
         ${sizes[size] ?? sizes.md}
         ${className}

@@ -106,15 +106,56 @@ export default function CreateEventPage() {
     }, 900);
   }
 
-  function saveEvent(status = 'open') {
+  async function saveEvent(status = 'open') {
     if (!validateStep(0) || !validateStep(1)) { setStep(0); return; }
+    const eventId = `ev-${Date.now()}`;
+    const orgId = state.currentUserId || 'org1';
     const event = {
       ...form,
-      id: `ev-${Date.now()}`,
+      id: eventId,
       status,
       registeredCount: 0,
-      organizer: { id: 'org-demo', name: 'Demo Organizer', role: 'organizer' },
+      organizer: { id: orgId, name: 'Lead Organizer', role: 'organizer' },
+      organizerId: orgId,
+      _isNew: true,
     };
+
+    // Sync with backend API if accessible
+    try {
+      const token = localStorage.getItem('teamweave_token');
+      await fetch('http://localhost:8000/api/v1/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+          'X-User-Id': orgId,
+        },
+        body: JSON.stringify({
+          title: form.title,
+          description: form.description,
+          category: form.category || 'hackathon',
+          participation_mode: form.mode || 'remote',
+          location: form.location || null,
+          min_team_size: form.teamSize?.min || 3,
+          max_team_size: form.teamSize?.max || 5,
+          starts_at: new Date(form.dates.start).toISOString(),
+          ends_at: form.dates.end ? new Date(form.dates.end).toISOString() : new Date(form.dates.start).toISOString(),
+          registration_deadline: form.dates.registrationDeadline ? new Date(form.dates.registrationDeadline).toISOString() : null,
+          max_participants: form.maxParticipants || 100,
+          tracks: form.tracks || ['General'],
+          skill_requirements: (form.requirements || []).map(r => ({
+            skill_name: r.skill,
+            category_name: r.category || 'General',
+            min_proficiency: r.proficiency || 2,
+            is_mandatory: !!r.required,
+            target_count: r.count || 1,
+          })),
+        }),
+      });
+    } catch {
+      // Backend offline or local demo fallback
+    }
+
     dispatch({ type: 'ADD_EVENT', payload: event });
     toast.success(status === 'open' ? 'Event published!' : 'Draft saved');
     navigate('/organizer');
@@ -425,10 +466,10 @@ export default function CreateEventPage() {
 
 function WizField({ label, children, error, className = '' }) {
   return (
-    <div className={`space-y-1 ${className}`}>
-      <label className="text-xs font-medium text-ink-secondary uppercase tracking-wide">{label}</label>
+    <div className={`space-y-1.5 ${className}`}>
+      <label className="text-xs font-semibold text-[#C8D1CC] uppercase tracking-wider block">{label}</label>
       {children}
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {error && <p className="text-xs text-rose-400 font-medium mt-1 animate-fadeIn">{error}</p>}
     </div>
   );
 }
@@ -446,12 +487,4 @@ function setNested(obj, path, value) {
   const keys = path.split('.');
   if (keys.length === 1) return { ...obj, [path]: value };
   return { ...obj, [keys[0]]: setNested(obj[keys[0]], keys.slice(1).join('.'), value) };
-}
-
-// Inject input style if not already present
-if (!document.getElementById('input-field-style')) {
-  const s = document.createElement('style');
-  s.id = 'input-field-style';
-  s.textContent = `.input-field{width:100%;border:1px solid #E2E3DB;border-radius:8px;padding:8px 12px;font-size:14px;color:#182724;background:#FFFDF8;font-family:Inter,sans-serif;outline:none;transition:border-color .15s;}.input-field:focus{border-color:#17A982;}`;
-  document.head.appendChild(s);
 }

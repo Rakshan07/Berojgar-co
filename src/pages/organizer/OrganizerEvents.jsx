@@ -9,8 +9,15 @@ import { Badge } from '../../components/ui/Badge';
 
 export default function OrganizerEventsPage() {
   const { state, dispatch } = useApp();
-  const orgEventIds = ['ev1', 'ev3', 'ev4'];
-  const myEvents = state.events.filter(e => orgEventIds.includes(e.id) || e._isNew);
+  const defaultOrgEventIds = ['ev1', 'ev3', 'ev4'];
+  const myEvents = state.events.filter(e =>
+    defaultOrgEventIds.includes(e.id) ||
+    e._isNew ||
+    (typeof e.id === 'string' && e.id.startsWith('ev-')) ||
+    e.organizerId === state.currentUserId ||
+    e.organizer?.id === state.currentUserId ||
+    e.organizer?.role === 'organizer'
+  );
 
   return (
     <div className="space-y-6 animate-fadeIn">

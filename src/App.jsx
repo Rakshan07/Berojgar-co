@@ -1,12 +1,13 @@
 // ─── App Router ────────────────────────────────────────────────────────────
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AppProvider } from './app/AppContext';
+import { AppProvider, useApp } from './app/AppContext';
 import { AppShell } from './components/layout/AppShell';
 import { ToastContainer } from './components/ui/ToastContainer';
 
 // Public
 import LandingPage from './pages/public/LandingPage';
 import LoginPage from './pages/public/LoginPage';
+import OrganizerAuthPage from './pages/public/OrganizerAuthPage';
 
 // Participant
 import ParticipantDashboard from './pages/participant/Dashboard';
@@ -23,6 +24,14 @@ import CreateEventWizard from './pages/organizer/CreateEventWizard';
 import ParticipantRosterPage from './pages/organizer/ParticipantRoster';
 import TeamFormationPage from './pages/organizer/TeamFormation';
 
+function OrganizerGuard({ children }) {
+  const { state } = useApp();
+  if (state.currentRole !== 'organizer') {
+    return <Navigate to="/organizer/auth" replace />;
+  }
+  return children;
+}
+
 export default function App() {
   return (
     <AppProvider>
@@ -31,8 +40,10 @@ export default function App() {
           {/* Landing & Auth (no shell) */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/organizer/auth" element={<OrganizerAuthPage />} />
+          <Route path="/organizer/login" element={<OrganizerAuthPage />} />
 
-          {/* App shell wraps all authenticated-ish routes */}
+          {/* App shell wraps all authenticated routes */}
           <Route
             path="/*"
             element={
@@ -46,12 +57,12 @@ export default function App() {
                   <Route path="/my-team" element={<ParticipantTeamPage />} />
                   <Route path="/challenge" element={<DailyChallengePage />} />
 
-                  {/* Organizer */}
-                  <Route path="/organizer" element={<OrganizerDashboard />} />
-                  <Route path="/organizer/events" element={<OrganizerEventsPage />} />
-                  <Route path="/organizer/create" element={<CreateEventWizard />} />
-                  <Route path="/organizer/roster" element={<ParticipantRosterPage />} />
-                  <Route path="/organizer/teams" element={<TeamFormationPage />} />
+                  {/* Organizer - guarded so only organizers can view */}
+                  <Route path="/organizer" element={<OrganizerGuard><OrganizerDashboard /></OrganizerGuard>} />
+                  <Route path="/organizer/events" element={<OrganizerGuard><OrganizerEventsPage /></OrganizerGuard>} />
+                  <Route path="/organizer/create" element={<OrganizerGuard><CreateEventWizard /></OrganizerGuard>} />
+                  <Route path="/organizer/roster" element={<OrganizerGuard><ParticipantRosterPage /></OrganizerGuard>} />
+                  <Route path="/organizer/teams" element={<OrganizerGuard><TeamFormationPage /></OrganizerGuard>} />
 
                   {/* Fallback */}
                   <Route path="*" element={<Navigate to="/dashboard" replace />} />

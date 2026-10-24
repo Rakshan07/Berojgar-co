@@ -4,24 +4,24 @@ import { Play, Pause } from 'lucide-react';
 
 export const WINE_GARNET_PALETTES = [
   {
-    name: 'Garnet & Ruby Radiance',
-    tubes: ['#8C1538', '#B92345', '#D95B7C'],
-    lights: ['#A61E42', '#D94B70', '#F28BA8', '#F7C5D2'],
+    name: 'Ruby & Emerald Obsidian',
+    tubes: ['#a31c1b', '#bf2625', '#06110C'],
+    lights: ['#a31c1b', '#E56E6D', '#171717', '#F7FAF8'],
   },
   {
-    name: 'Velvet Wine & Rose',
-    tubes: ['#5E0D24', '#A81C43', '#E06588'],
-    lights: ['#8C1538', '#B92345', '#F28BA8', '#FFF4F6'],
+    name: 'Deep Crimson & Dark Forest',
+    tubes: ['#590f0e', '#a31c1b', '#1f382a'],
+    lights: ['#a31c1b', '#E56E6D', '#06110C', '#FFFFFF'],
   },
   {
-    name: 'Black Cherry & Rose Gold',
-    tubes: ['#4A0A1C', '#841533', '#C74B6E'],
-    lights: ['#7A142E', '#AB2243', '#E87D9A', '#F7C5D2'],
+    name: 'Charcoal & Garnet',
+    tubes: ['#171717', '#871615', '#a31c1b'],
+    lights: ['#a31c1b', '#bf2625', '#C8D1CC', '#F7FAF8'],
   },
   {
-    name: 'Imperial Burgundy',
-    tubes: ['#540920', '#A31D3F', '#D23357'],
-    lights: ['#8C1538', '#C42A4E', '#F28BA8', '#FFCCD8'],
+    name: 'Obsidian Blaze',
+    tubes: ['#06110C', '#a31c1b', '#bf2625'],
+    lights: ['#a31c1b', '#E56E6D', '#171717', '#FFCCD8'],
   },
 ];
 
@@ -38,155 +38,112 @@ function checkWebGLSupport() {
   }
 }
 
-export default function TubesBackground({ onPaletteChange, className = '' }) {
-  const containerRef = useRef(null);
+export function TubesBackground({ children, className = '' }) {
   const canvasRef = useRef(null);
-  const appRef = useRef(null);
-
-  const [hasWebGL] = useState(() => checkWebGLSupport());
-  const [reducedMotion] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches || false;
-  });
-
-  const [isPaused, setIsPaused] = useState(false);
-  const isPausedRef = useRef(false);
-  isPausedRef.current = isPaused;
-
-  const [paletteIdx, setPaletteIdx] = useState(0);
-  const paletteIdxRef = useRef(0);
-  paletteIdxRef.current = paletteIdx;
-
+  const tubesInstance = useRef(null);
+  const [paletteIndex, setPaletteIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [hasWebGL, setHasWebGL] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
-  // Cycle palette safely
-  const cyclePalette = useCallback(() => {
-    const nextIdx = (paletteIdxRef.current + 1) % WINE_GARNET_PALETTES.length;
-    paletteIdxRef.current = nextIdx;
-    setPaletteIdx(nextIdx);
-
-    const palette = WINE_GARNET_PALETTES[nextIdx];
-    if (appRef.current?.tubes) {
-      try {
-        appRef.current.tubes.setColors(palette.tubes);
-        appRef.current.tubes.setLightsColors(palette.lights);
-      } catch (err) {
-        console.warn('Failed to update tube colors:', err);
-      }
-    }
-    if (onPaletteChange) {
-      onPaletteChange(palette);
-    }
-  }, [onPaletteChange]);
-
-  // Handle click on empty background
-  const handleContainerClick = useCallback((e) => {
-    // If click is on interactive controls, inputs, buttons, dialogs, don't cycle
-    const target = e.target;
-    if (
-      target.closest('button') ||
-      target.closest('a') ||
-      target.closest('input') ||
-      target.closest('select') ||
-      target.closest('textarea') ||
-      target.closest('form') ||
-      target.closest('label') ||
-      target.closest('[role="button"]') ||
-      target.closest('.auth-interactive-card')
-    ) {
-      return;
-    }
-    cyclePalette();
-  }, [cyclePalette]);
-
-  // Initialize TubesCursor
   useEffect(() => {
-    if (!hasWebGL || reducedMotion) {
-      return;
-    }
+    if (typeof window === 'undefined') return;
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReducedMotion(mediaQuery.matches);
+    const handler = (e) => setReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
 
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  useEffect(() => {
+    setHasWebGL(checkWebGLSupport());
+  }, []);
 
-    let isCancelled = false;
-
-    // Clean up any stale instance before creating a new one
-    if (appRef.current) {
-      try {
-        appRef.current.dispose();
-      } catch (e) {
-        console.warn('Previous Tubes instance cleanup:', e);
-      }
-      appRef.current = null;
-    }
-
-    const initialPalette = WINE_GARNET_PALETTES[paletteIdxRef.current];
+  useEffect(() => {
+    if (!hasWebGL || reducedMotion || !canvasRef.current) return;
 
     try {
-      const app = TubesCursor(canvas, {
+      const currentPalette = WINE_GARNET_PALETTES[paletteIndex];
+      const instance = new TubesCursor(canvasRef.current, {
         tubes: {
-          colors: initialPalette.tubes,
-          lights: {
-            intensity: 70,
-            colors: initialPalette.lights,
-          },
+          colors: currentPalette.tubes,
+          radius: 4,
+          count: 14,
+          subdivision: 24,
+          length: 40,
+        },
+        lights: {
+          colors: currentPalette.lights,
+          intensity: 220,
         },
       });
 
-      if (isCancelled) {
-        app.dispose();
-        return;
-      }
-
-      // Cap pixel ratio for performance
-      if (app.three) {
-        app.three.maxPixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
-        app.three.minPixelRatio = 1;
-        app.three.resize();
-
-        // Pause/resume interceptor
-        const origRender = app.three.render;
-        app.three.render = function () {
-          if (isPausedRef.current) return;
-          origRender.call(app.three);
-        };
-      }
-
-      appRef.current = app;
+      tubesInstance.current = instance;
       setInitialized(true);
-    } catch (err) {
-      console.warn('TubesCursor initialization error:', err);
-      setInitialized(false);
-    }
 
-    return () => {
-      isCancelled = true;
-      if (appRef.current) {
-        try {
-          appRef.current.dispose();
-        } catch (err) {
-          console.warn('TubesCursor dispose error:', err);
+      const handleResize = () => {
+        if (tubesInstance.current?.resize) {
+          tubesInstance.current.resize();
         }
-        appRef.current = null;
-      }
-    };
+      };
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        if (tubesInstance.current?.destroy) {
+          try {
+            tubesInstance.current.destroy();
+          } catch {
+            // ignore cleanup errors
+          }
+        }
+        tubesInstance.current = null;
+        setInitialized(false);
+      };
+    } catch (err) {
+      console.warn('Three.js TubesCursor initialization failed, using static fallback:', err);
+      setHasWebGL(false);
+    }
   }, [hasWebGL, reducedMotion]);
 
-  const togglePause = useCallback((e) => {
-    e.stopPropagation();
-    setIsPaused(prev => !prev);
-  }, []);
+  useEffect(() => {
+    if (!tubesInstance.current || !initialized) return;
+    try {
+      const palette = WINE_GARNET_PALETTES[paletteIndex];
+      if (tubesInstance.current.setColors) {
+        tubesInstance.current.setColors(palette.tubes, palette.lights);
+      }
+    } catch (err) {
+      console.warn('Failed to update tube colors:', err);
+    }
+  }, [paletteIndex, initialized]);
+
+  const togglePlayback = useCallback(() => {
+    if (!tubesInstance.current) return;
+    try {
+      if (isPlaying) {
+        if (tubesInstance.current.pause) tubesInstance.current.pause();
+        setIsPlaying(false);
+      } else {
+        if (tubesInstance.current.play) tubesInstance.current.play();
+        setIsPlaying(true);
+      }
+    } catch (e) {
+      console.warn('Play/pause toggle error', e);
+    }
+  }, [isPlaying]);
 
   return (
     <div
-      ref={containerRef}
-      onClick={handleContainerClick}
-      className={`absolute inset-0 overflow-hidden select-none ${className}`}
-      style={{ backgroundColor: '#17080F' }}
-      aria-hidden="true"
+      className={
+        children
+          ? `relative w-full min-h-screen overflow-hidden bg-[#06110C] ${className}`
+          : `absolute inset-0 pointer-events-none z-0 overflow-hidden ${className}`
+      }
+      style={{ isolation: 'isolate' }}
     >
-      {/* Real 3D Tubes Canvas */}
-      {!reducedMotion && hasWebGL ? (
+      {hasWebGL && !reducedMotion ? (
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full block pointer-events-none z-0"
@@ -194,73 +151,49 @@ export default function TubesBackground({ onPaletteChange, className = '' }) {
         />
       ) : null}
 
-      {/* Static Fallback for reduced-motion or WebGL-unsupported devices */}
       {(reducedMotion || !hasWebGL || !initialized) && (
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
           <div
             className="absolute -top-[20%] left-1/2 -translate-x-1/2 w-[900px] h-[700px] rounded-full opacity-60 blur-[120px]"
             style={{
-              background: 'radial-gradient(circle, #B92345 0%, #8C1538 40%, #220B15 70%, transparent 100%)',
+              background: 'radial-gradient(circle, #a31c1b 0%, #590f0e 40%, #06110C 70%, transparent 100%)',
             }}
           />
           <div
             className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full opacity-40 blur-[100px]"
             style={{
-              background: 'radial-gradient(circle, #F28BA8 0%, #B92345 35%, transparent 70%)',
+              background: 'radial-gradient(circle, #E56E6D 0%, #a31c1b 35%, transparent 70%)',
             }}
           />
         </div>
       )}
 
-      {/* Atmospheric dark-wine vignette to preserve excellent contrast for text & inputs */}
+      {/* Atmospheric vignette */}
       <div
         className="absolute inset-0 pointer-events-none z-10"
         style={{
           background:
-            'radial-gradient(ellipse at center, rgba(23,8,15,0.3) 0%, rgba(23,8,15,0.7) 70%, rgba(23,8,15,0.92) 100%)',
+            'radial-gradient(ellipse at center, rgba(6,17,12,0.3) 0%, rgba(6,17,12,0.7) 70%, rgba(6,17,12,0.95) 100%)',
         }}
       />
 
-      {/* Subtle Wine Weave Texture */}
-      <div className="absolute inset-0 pointer-events-none z-10 opacity-20 weave-texture" />
+      {children && (
+        <div className="relative z-20 w-full min-h-screen flex flex-col">
+          {children}
+        </div>
+      )}
 
-      {/* Discreet accessible pause / resume and theme palette indicator */}
-      {!reducedMotion && hasWebGL && (
-        <aside
-          aria-label="Background animation controls"
-          className="absolute bottom-4 right-4 z-30 pointer-events-auto flex items-center gap-2"
-        >
+      {hasWebGL && !reducedMotion && children && (
+        <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 bg-[#171717]/85 backdrop-blur-md border border-[#333D38] p-1.5 rounded-full shadow-lg">
           <button
-            type="button"
-            onClick={togglePause}
-            aria-label={isPaused ? 'Resume background animation' : 'Pause background animation'}
-            title={isPaused ? 'Resume background 3D animation' : 'Pause background 3D animation'}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border border-[#633044] bg-[#2C101C]/80 hover:bg-[#3A1524] text-[#D7B7C2] hover:text-[#FFF4F6] backdrop-blur-md transition-all shadow-md cursor-pointer focus-visible:outline-[#F7A5BD]"
+            onClick={togglePlayback}
+            className="p-1.5 rounded-full text-[#C8D1CC] hover:text-[#F7FAF8] hover:bg-white/10 transition-colors pointer-events-auto cursor-pointer"
+            title={isPlaying ? 'Pause interactive background' : 'Play interactive background'}
+            aria-label={isPlaying ? 'Pause background animation' : 'Play background animation'}
           >
-            {isPaused ? <Play size={13} className="text-[#F28BA8]" /> : <Pause size={13} className="text-[#F28BA8]" />}
-            <span className="hidden sm:inline">{isPaused ? 'Resume 3D' : 'Pause 3D'}</span>
+            {isPlaying ? <Pause size={14} /> : <Play size={14} />}
           </button>
-
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              cyclePalette();
-            }}
-            aria-label="Cycle Wine & Garnet palette"
-            title={`Palette: ${WINE_GARNET_PALETTES[paletteIdx].name} (Click to change)`}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-mono border border-[#633044] bg-[#2C101C]/80 hover:bg-[#3A1524] text-[#D7B7C2] hover:text-[#FFF4F6] backdrop-blur-md transition-all shadow-md cursor-pointer focus-visible:outline-[#F7A5BD]"
-          >
-            <span
-              className="w-2.5 h-2.5 rounded-full shrink-0 border border-white/20 shadow-[0_0_8px_currentColor]"
-              style={{
-                backgroundColor: WINE_GARNET_PALETTES[paletteIdx].tubes[1],
-                color: WINE_GARNET_PALETTES[paletteIdx].tubes[1],
-              }}
-            />
-            <span className="text-[11px] hidden md:inline">{WINE_GARNET_PALETTES[paletteIdx].name}</span>
-          </button>
-        </aside>
+        </div>
       )}
     </div>
   );

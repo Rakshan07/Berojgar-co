@@ -11,8 +11,16 @@ export default function ParticipantRosterPage() {
   const [query, setQuery] = useState('');
   const [selectedEvent, setSelectedEvent] = useState('all');
 
-  const orgEventIds = ['ev1', 'ev3', 'ev4'];
-  const orgEvents = state.events.filter(e => orgEventIds.includes(e.id));
+  const defaultOrgEventIds = ['ev1', 'ev3', 'ev4'];
+  const orgEvents = state.events.filter(e =>
+    defaultOrgEventIds.includes(e.id) ||
+    e._isNew ||
+    (typeof e.id === 'string' && e.id.startsWith('ev-')) ||
+    e.organizerId === state.currentUserId ||
+    e.organizer?.id === state.currentUserId ||
+    e.organizer?.role === 'organizer'
+  );
+  const orgEventIds = orgEvents.map(e => e.id);
 
   const registeredParticipants = useMemo(() => {
     const regsByEvent = state.registrations.filter(r =>

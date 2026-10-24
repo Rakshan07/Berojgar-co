@@ -10,9 +10,17 @@ import { BrandWordmark } from '../../components/ui/BrandMark';
 export default function OrganizerDashboard() {
   const { state, dispatch } = useApp();
 
-  // In demo mode, the organizer "owns" the first 2 events
-  const myEventIds = ['ev1', 'ev3', 'ev4'];
-  const myEvents = state.events.filter(e => myEventIds.includes(e.id));
+  // In demo mode, the organizer owns default events + any newly created events
+  const defaultOrgEventIds = ['ev1', 'ev3', 'ev4'];
+  const myEvents = state.events.filter(e =>
+    defaultOrgEventIds.includes(e.id) ||
+    e._isNew ||
+    (typeof e.id === 'string' && e.id.startsWith('ev-')) ||
+    e.organizerId === state.currentUserId ||
+    e.organizer?.id === state.currentUserId ||
+    e.organizer?.role === 'organizer'
+  );
+  const myEventIds = myEvents.map(e => e.id);
 
   const totalParticipants = myEvents.reduce((acc, e) => {
     const count = state.registrations.filter(r => r.eventId === e.id).length;

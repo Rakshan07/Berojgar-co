@@ -10,34 +10,34 @@ export function BrandMark({ size = 32, className = '' }) {
       aria-label="TeamWeave mark"
       className={className}
     >
-      {/* Strand 1 — Primary garnet */}
+      {/* Strand 1 — Primary Crimson #a31c1b */}
       <path
         d="M6 28 C6 18, 16 12, 20 20 C24 28, 34 22, 34 12"
-        stroke="#B92345"
+        stroke="#a31c1b"
         strokeWidth="3.5"
         strokeLinecap="round"
         fill="none"
       />
-      {/* Strand 2 — Highlight pink */}
+      {/* Strand 2 — Highlight Coral-Crimson */}
       <path
         d="M6 20 C10 10, 20 8, 20 20 C20 32, 30 30, 34 20"
-        stroke="#F28BA8"
+        stroke="#E56E6D"
         strokeWidth="3.5"
         strokeLinecap="round"
         fill="none"
         opacity="0.9"
       />
-      {/* Strand 3 — Deep wine ruby */}
+      {/* Strand 3 — Deep Obsidian Pine #06110C with hint of emerald */}
       <path
         d="M6 12 C6 22, 16 28, 20 20 C24 12, 34 18, 34 28"
-        stroke="#8C1538"
+        stroke="#10B981"
         strokeWidth="3.5"
         strokeLinecap="round"
         fill="none"
         opacity="0.85"
       />
       {/* Weave knot center node */}
-      <circle cx="20" cy="20" r="2.5" fill="#FFF4F6" />
+      <circle cx="20" cy="20" r="2.5" fill="#F7FAF8" />
     </svg>
   );
 }
@@ -49,8 +49,8 @@ export function BrandWordmark({ size = 28, className = '' }) {
       style={{ fontSize: size }}
     >
       <BrandMark size={size * 1.15} />
-      <span className="text-[#FFF4F6]">
-        Team<span className="text-[#F28BA8]">Weave</span>
+      <span className="text-[#F7FAF8]">
+        Team<span className="text-[#a31c1b]">Weave</span>
       </span>
     </span>
   );

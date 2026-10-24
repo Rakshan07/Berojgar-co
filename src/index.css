@@ -1,56 +1,56 @@
 @import "tailwindcss";
 
-/* ─── Wine + Garnet Design Tokens ─────────────────────────────────────────── */
+/* ─── Obsidian (#171717) + Emerald Night (#06110C) + Crimson (#a31c1b) Design Tokens ─── */
 @theme {
-  /* Foundation: Very dark wine backgrounds and deep burgundy surfaces */
-  --color-paper: #17080F;
-  --color-surface: #220B15;
-  --color-surface-card: #2C101C;
-  --color-surface-elevated: #3A1524;
-  --color-ink: #FFF4F6;
-  --color-ink-secondary: #D7B7C2;
-  --color-ink-muted: #B68F9E;
-  --color-border: #633044;
-  --color-border-strong: #8C3B58;
+  /* Foundation: Deep Charcoal (#171717) and Forest Obsidian (#06110C) */
+  --color-paper: #171717;
+  --color-surface: #1E2220;
+  --color-surface-card: #242926;
+  --color-surface-elevated: #2D3330;
+  --color-ink: #F7FAF8;
+  --color-ink-secondary: #C8D1CC;
+  --color-ink-muted: #8F9E97;
+  --color-border: #333D38;
+  --color-border-strong: #45524B;
 
-  /* Wine + Garnet Brand Palette */
-  --color-garnet: #B92345;
-  --color-garnet-hover: #D23357;
-  --color-garnet-light: rgba(185, 35, 69, 0.2);
-  --color-garnet-pale: rgba(185, 35, 69, 0.1);
-  --color-pink: #F28BA8;
-  --color-pink-light: rgba(242, 139, 168, 0.2);
-  --color-wine: #220B15;
-  --color-wine-dark: #17080F;
-  --color-wine-surface: #2C101C;
-  --color-wine-elevated: #3A1524;
-  --color-focus: #F7A5BD;
+  /* Brand Palette (#a31c1b) */
+  --color-garnet: #a31c1b;
+  --color-garnet-hover: #bf2625;
+  --color-garnet-light: rgba(163, 28, 27, 0.22);
+  --color-garnet-pale: rgba(163, 28, 27, 0.12);
+  --color-pink: #E56E6D;
+  --color-pink-light: rgba(229, 110, 109, 0.2);
+  --color-wine: #06110C;
+  --color-wine-dark: #06110C;
+  --color-wine-surface: #171717;
+  --color-wine-elevated: #242926;
+  --color-focus: #F08C8B;
 
   /* Backward-compatible aliases for existing component utilities */
-  --color-teal: #B92345;
-  --color-teal-dark: #D23357;
-  --color-teal-light: rgba(185, 35, 69, 0.2);
-  --color-teal-pale: rgba(185, 35, 69, 0.1);
-  --color-purple: #B92345;
-  --color-purple-dark: #8C1538;
-  --color-purple-light: rgba(185, 35, 69, 0.2);
-  --color-purple-pale: rgba(185, 35, 69, 0.1);
-  --color-violet: #D23357;
-  --color-violet-light: rgba(210, 51, 87, 0.2);
-  --color-indigo: #9E1F3B;
-  --color-lavender: #F7C5D2;
-  --color-cobalt: #9E1F3B;
-  --color-cobalt-light: rgba(158, 31, 59, 0.2);
-  --color-coral: #E56B8B;
-  --color-coral-light: rgba(229, 107, 139, 0.2);
+  --color-teal: #a31c1b;
+  --color-teal-dark: #bf2625;
+  --color-teal-light: rgba(163, 28, 27, 0.22);
+  --color-teal-pale: rgba(163, 28, 27, 0.12);
+  --color-purple: #a31c1b;
+  --color-purple-dark: #7d1514;
+  --color-purple-light: rgba(163, 28, 27, 0.22);
+  --color-purple-pale: rgba(163, 28, 27, 0.12);
+  --color-violet: #bf2625;
+  --color-violet-light: rgba(191, 38, 37, 0.22);
+  --color-indigo: #871716;
+  --color-lavender: #E56E6D;
+  --color-cobalt: #871716;
+  --color-cobalt-light: rgba(135, 23, 22, 0.22);
+  --color-coral: #E56E6D;
+  --color-coral-light: rgba(229, 110, 109, 0.2);
   --color-gold: #F59E0B;
   --color-gold-light: rgba(245, 158, 11, 0.2);
 
-  /* Semantic - preserve distinct, accessible status states */
+  /* Semantic status states */
   --color-success: #10B981;
   --color-warning: #F59E0B;
-  --color-error: #EF4444;
-  --color-info: #B92345;
+  --color-error: #a31c1b;
+  --color-info: #a31c1b;
 
   /* Typography */
   --font-heading: 'Space Grotesk', system-ui, sans-serif;
@@ -69,10 +69,10 @@
   --radius-xl: 18px;
   --radius-2xl: 26px;
 
-  /* Shadows for Wine + Garnet luxury UI */
-  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(99, 48, 68, 0.35);
-  --shadow-elevated: 0 10px 32px -4px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(185, 35, 69, 0.25);
-  --shadow-modal: 0 25px 60px -10px rgba(0, 0, 0, 0.92), 0 0 0 1px rgba(99, 48, 68, 0.5);
+  /* Luxury shadows */
+  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(51, 61, 56, 0.5);
+  --shadow-elevated: 0 10px 32px -4px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(163, 28, 27, 0.35);
+  --shadow-modal: 0 25px 60px -10px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(51, 61, 56, 0.7);
 }
 
 /* ─── Base Resets ────────────────────────────────────────────────────────── */
@@ -87,8 +87,8 @@ html {
 
 body {
   margin: 0;
-  background-color: #17080F;
-  color: #FFF4F6;
+  background-color: #06110C;
+  color: #F7FAF8;
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 15px;
   line-height: 1.6;
@@ -101,7 +101,7 @@ body {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  background-color: #17080F;
+  background-color: #06110C;
 }
 
 /* ─── Typography Utilities ───────────────────────────────────────────────── */
@@ -110,7 +110,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  color: #FFF4F6;
+  color: #F7FAF8;
   margin: 0;
 }
 
@@ -119,13 +119,13 @@ a { color: inherit; text-decoration: none; }
 
 /* ─── Scrollbar ──────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: rgba(23, 8, 15, 0.95); }
-::-webkit-scrollbar-thumb { background: rgba(185, 35, 69, 0.35); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(210, 51, 87, 0.6); }
+::-webkit-scrollbar-track { background: #06110C; }
+::-webkit-scrollbar-thumb { background: #333D38; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #a31c1b; }
 
 /* ─── Focus ──────────────────────────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid #F7A5BD;
+  outline: 2px solid #a31c1b;
   outline-offset: 2px;
 }
 
@@ -181,53 +181,110 @@ a { color: inherit; text-decoration: none; }
       0deg,
       transparent,
       transparent 19px,
-      rgba(242, 139, 168, 0.03) 20px
+      rgba(163, 28, 27, 0.05) 20px
     ),
     repeating-linear-gradient(
       90deg,
       transparent,
       transparent 19px,
-      rgba(242, 139, 168, 0.03) 20px
+      rgba(163, 28, 27, 0.05) 20px
     );
 }
 
-/* ─── Global Form Input Styles ───────────────────────────────────────────── */
+/* ─── Global Form Input & Textbox Styles with Crisp Alignment & Micro-Interactions ─── */
 .input-base,
-.input-field {
+.input-field,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+textarea,
+select {
   width: 100%;
-  border: 1px solid #633044;
+  border: 1px solid #333D38;
   border-radius: 12px;
-  padding: 9px 14px;
+  padding: 10px 14px;
   font-size: 14px;
-  color: #FFF4F6;
-  background: #2C101C;
+  line-height: 1.5;
+  color: #F7FAF8;
+  background-color: #171717;
   font-family: 'Inter', system-ui, sans-serif;
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.input-base:hover,
+.input-field:hover,
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+input[type="date"]:hover,
+textarea:hover,
+select:hover {
+  border-color: #45524B;
+  background-color: #1E2220;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(163, 28, 27, 0.3);
+  transform: translateY(-0.5px);
+}
+
 .input-base:focus,
-.input-field:focus {
-  border-color: #F7A5BD;
-  background: #3A1524;
-  box-shadow: 0 0 0 3px rgba(247, 165, 189, 0.25);
+.input-field:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+textarea:focus,
+select:focus {
+  border-color: #a31c1b;
+  background-color: #242926;
+  box-shadow: 0 0 0 3px rgba(163, 28, 27, 0.3), 0 4px 16px rgba(163, 28, 27, 0.25);
+  transform: translateY(-1px);
 }
+
 .input-base::placeholder,
-.input-field::placeholder {
-  color: #B68F9E;
+.input-field::placeholder,
+input::placeholder,
+textarea::placeholder {
+  color: #8F9E97;
+  opacity: 0.85;
 }
+
 textarea.input-base,
-textarea.input-field {
+textarea.input-field,
+textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 90px;
 }
+
 select.input-base,
-select.input-field {
+select.input-field,
+select {
   cursor: pointer;
 }
+
+select option,
 select.input-base option,
 select.input-field option {
-  background-color: #2C101C;
-  color: #FFF4F6;
+  background-color: #171717;
+  color: #F7FAF8;
+}
+
+/* ─── Global Button Hover Animation & Crisp Interaction ────────────────────── */
+button,
+.btn-interactive,
+a.btn-interactive {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:hover:not(:disabled),
+.btn-interactive:hover:not(:disabled) {
+  transform: translateY(-1.5px);
+}
+
+button:active:not(:disabled),
+.btn-interactive:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
 }
 
 /* ─── Font Family Utilities ──────────────────────────────────────────────── */
@@ -243,80 +300,71 @@ select.input-field option {
   overflow: hidden;
 }
 
-/* ─── Wine + Garnet UI Utilities ─────────────────────────────────────────── */
-.text-gradient-purple {
-  background: linear-gradient(135deg, #FFF4F6 0%, #F7C5D2 45%, #F28BA8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
+/* ─── Obsidian + Crimson UI Utilities ────────────────────────────────────── */
+.text-gradient-purple,
 .text-gradient-royal {
-  background: linear-gradient(135deg, #F7C5D2 0%, #F28BA8 50%, #B92345 100%);
+  background: linear-gradient(135deg, #F7FAF8 0%, #E56E6D 50%, #a31c1b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .purple-glow,
 .garnet-glow {
-  box-shadow: 0 0 25px rgba(185, 35, 69, 0.28);
+  box-shadow: 0 0 25px rgba(163, 28, 27, 0.35);
 }
 
 .card-luxury {
-  background: rgba(44, 16, 28, 0.88);
-  border: 1px solid #633044;
+  background: rgba(23, 23, 23, 0.92);
+  border: 1px solid #333D38;
   backdrop-filter: blur(16px);
   border-radius: 18px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .card-luxury:hover {
-  border-color: #8C3B58;
-  box-shadow: 0 14px 40px -10px rgba(0, 0, 0, 0.85), 0 0 25px rgba(185, 35, 69, 0.18);
+  border-color: #45524B;
+  box-shadow: 0 14px 40px -10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(163, 28, 27, 0.25);
   transform: translateY(-2px);
 }
 
-/* Backward-compatible graceful fallbacks for existing references */
-.neon-text-cyan {
-  color: #F7C5D2;
+/* Backward-compatible graceful fallbacks */
+.neon-text-cyan,
+.neon-text-white {
+  color: #F7FAF8;
   font-weight: 700;
 }
 
 .neon-text-pink {
-  color: #F28BA8;
+  color: #E56E6D;
   font-weight: 600;
 }
 
 .neon-text-violet {
-  color: #D23357;
+  color: #a31c1b;
   font-weight: 600;
 }
 
-.neon-text-white {
-  color: #FFF4F6;
-  font-weight: 700;
-}
-
 .neon-border-cyan {
-  border-color: rgba(185, 35, 69, 0.4);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  border-color: rgba(163, 28, 27, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 .neon-border-cyan:hover {
-  border-color: rgba(210, 51, 87, 0.6);
-  box-shadow: 0 8px 25px rgba(185, 35, 69, 0.25);
+  border-color: rgba(191, 38, 37, 0.6);
+  box-shadow: 0 8px 25px rgba(163, 28, 27, 0.3);
 }
 
 .neon-border-pink {
-  border-color: rgba(242, 139, 168, 0.4);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  border-color: rgba(229, 110, 109, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 .cyber-card {
-  background: rgba(44, 16, 28, 0.88);
-  border: 1px solid #633044;
+  background: rgba(23, 23, 23, 0.92);
+  border: 1px solid #333D38;
   backdrop-filter: blur(16px);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .cyber-card:hover {
-  border-color: #8C3B58;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.85), 0 0 20px rgba(185, 35, 69, 0.18);
+  border-color: #45524B;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.9), 0 0 20px rgba(163, 28, 27, 0.22);
   transform: translateY(-2px);
 }

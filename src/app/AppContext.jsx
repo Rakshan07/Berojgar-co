@@ -278,8 +278,19 @@ function reducer(state, action) {
 
     // Events
     case 'ADD_EVENT': {
-      const newEvent = { ...action.payload, id: `ev-${Date.now()}`, status: 'open', registeredCount: 0 };
-      return { ...state, events: [...state.events, newEvent] };
+      const newEvent = {
+        ...action.payload,
+        id: action.payload.id || `ev-${Date.now()}`,
+        status: action.payload.status || 'open',
+        registeredCount: 0,
+        _isNew: true,
+        organizerId: action.payload.organizerId || state.currentUserId || 'org1',
+      };
+      return {
+        ...state,
+        events: [newEvent, ...state.events],
+        organizerEventId: newEvent.id,
+      };
     }
     case 'UPDATE_EVENT': {
       const updated = state.events.map(e =>

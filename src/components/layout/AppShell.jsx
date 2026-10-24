@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, User, Calendar, Users, Trophy,
-  Menu, X, ChevronDown, RefreshCw, Check, ArrowRight, LogIn, LogOut, UserPlus
+  Menu, X, ChevronDown, RefreshCw, Check, ArrowRight, LogIn, LogOut, UserPlus, Sparkles, Plus
 } from 'lucide-react';
 import { BrandWordmark } from '../ui/BrandMark';
 import { useApp, useCurrentUser } from '../../app/AppContext';
@@ -76,12 +76,12 @@ export function AppShell({ children }) {
             className={`
               flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-150
               ${active
-                ? 'bg-[#B92345]/20 text-[#FFF4F6] font-semibold border border-[#B92345]/50 shadow-sm shadow-[#17080F]/50'
-                : 'text-[#D7B7C2] hover:text-[#FFF4F6] hover:bg-white/5'
+                ? 'bg-[#a31c1b]/20 text-[#F7FAF8] font-semibold border border-[#a31c1b]/50 shadow-sm shadow-black/60'
+                : 'text-[#C8D1CC] hover:text-[#F7FAF8] hover:bg-white/5'
               }
             `}
           >
-            <span className={active ? 'text-[#F28BA8]' : 'text-[#B68F9E]'}>{item.icon}</span>
+            <span className={active ? 'text-[#E56E6D]' : 'text-[#8F9E97]'}>{item.icon}</span>
             {item.label}
           </Link>
         );
@@ -90,17 +90,17 @@ export function AppShell({ children }) {
   );
 
   return (
-    <div className="relative min-h-screen flex flex-col text-[#FFF4F6] bg-[#17080F] overflow-x-hidden">
+    <div className="relative min-h-screen flex flex-col text-[#F7FAF8] bg-[#06110C] overflow-x-hidden">
       {/* ─── Ambient Atmospheric Background Lighting across all pages ─── */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1100px] h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(185,35,69,0.12),transparent_70%)]" />
-        <div className="absolute top-[30%] -right-40 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(99,48,68,0.15),transparent_65%)]" />
-        <div className="absolute bottom-0 left-[-10%] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(140,21,56,0.10),transparent_60%)]" />
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1100px] h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(163,28,27,0.18),transparent_70%)]" />
+        <div className="absolute top-[30%] -right-40 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(23,23,23,0.85),transparent_65%)]" />
+        <div className="absolute bottom-0 left-[-10%] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(6,17,12,0.8),transparent_60%)]" />
       </div>
 
       <div className="relative z-10 flex flex-col flex-1 min-h-screen">
-        {/* Header - Glassmorphic floating nav with garnet hairline border */}
-        <header className="sticky top-0 z-40 bg-[#220B15]/90 backdrop-blur-2xl border-b border-[#633044]/80 shadow-[0_4px_30px_rgba(0,0,0,0.7)]">
+        {/* Header - Glassmorphic floating nav with crisp border */}
+        <header className="sticky top-0 z-40 bg-[#171717]/92 backdrop-blur-2xl border-b border-[#333D38]/80 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center gap-5">
             {/* Brand */}
             <Link to="/" className="shrink-0 hover:opacity-90 transition-opacity">
@@ -114,70 +114,112 @@ export function AppShell({ children }) {
 
             {/* Right side controls */}
             <div className="ml-auto flex items-center gap-3">
-              {/* Role switcher & Profile Menu */}
+              {/* Unified Account & Avatar Button */}
               <div className="relative">
                 <button
                   onClick={() => setRoleMenuOpen(v => !v)}
-                  className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-[#633044] bg-[#2C101C]/90 hover:border-[#8C3B58] hover:bg-[#3A1524] text-xs font-mono uppercase tracking-wider text-[#FFF4F6] transition-all shadow-sm cursor-pointer focus-visible:outline-[#F7A5BD]"
+                  className="flex items-center gap-2.5 pl-1.5 pr-3 py-1 rounded-full border border-[#333D38] bg-[#171717]/95 hover:border-[#a31c1b] hover:bg-[#222624] text-xs text-[#F7FAF8] transition-all shadow-sm cursor-pointer focus-visible:outline-[#a31c1b] group"
                   aria-expanded={roleMenuOpen}
                 >
-                  <span className={`w-2 h-2 rounded-full ${isOrganizer ? 'bg-[#D23357] shadow-[0_0_8px_rgba(210,51,87,0.8)]' : 'bg-[#B92345] shadow-[0_0_8px_rgba(185,35,69,0.8)]'}`} />
-                  <span>{isOrganizer ? 'Organizer' : 'Participant'}</span>
-                  <ChevronDown size={13} className={`text-[#B68F9E] transition-transform ${roleMenuOpen ? 'rotate-180' : ''}`} />
+                  <Avatar
+                    initials={user?.initials}
+                    size="sm"
+                    index={0}
+                    className="w-7 h-7 text-[11px] ring-1 ring-[#333D38] group-hover:ring-[#a31c1b] transition-all"
+                  />
+                  <div className="flex flex-col text-left leading-tight hidden sm:flex">
+                    <span className="font-semibold text-xs text-[#F7FAF8] max-w-[110px] truncate group-hover:text-[#E56E6D] transition-colors">
+                      {user?.name || 'Account'}
+                    </span>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#8F9E97] flex items-center gap-1">
+                      <span className={`w-1.5 h-1.5 rounded-full ${isOrganizer ? 'bg-[#a31c1b]' : 'bg-[#10B981]'}`} />
+                      {isOrganizer ? 'Host' : 'Participant'}
+                    </span>
+                  </div>
+                  <ChevronDown size={13} className={`text-[#8F9E97] transition-transform ${roleMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {roleMenuOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-60 bg-[#2C101C] border border-[#633044] rounded-2xl shadow-2xl z-50 p-2 animate-fadeIn backdrop-blur-2xl">
-                    <div className="px-3 py-2 border-b border-[#633044]/50 mb-1.5">
-                      <p className="text-[11px] font-mono text-[#F28BA8] uppercase tracking-wider font-semibold">Active Profile</p>
-                      <p className="text-sm font-semibold text-[#FFF4F6] truncate">{user?.name || 'Active User'}</p>
-                      <p className="text-[11px] text-[#B68F9E] truncate">{user?.email || 'user@example.com'}</p>
+                  <div className="absolute right-0 top-full mt-2 w-64 bg-[#171717] border border-[#333D38] rounded-2xl shadow-2xl z-50 p-2 animate-fadeIn backdrop-blur-2xl">
+                    <div className="px-3 py-2.5 border-b border-[#333D38]/60 mb-1.5">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[10px] font-mono text-[#E56E6D] uppercase tracking-wider font-semibold">Account Profile</span>
+                        <span className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-full font-semibold ${isOrganizer ? 'bg-[#a31c1b]/20 text-[#E56E6D] border border-[#a31c1b]/50' : 'bg-[#10B981]/20 text-[#10B981] border border-[#10B981]/40'}`}>
+                          {isOrganizer ? 'Organizer Account' : 'Participant Account'}
+                        </span>
+                      </div>
+                      <p className="text-sm font-semibold text-[#F7FAF8] truncate">{user?.name || 'Active User'}</p>
+                      <p className="text-[11px] text-[#8F9E97] truncate">{user?.email || 'user@example.com'}</p>
                     </div>
 
-                    <button
-                      onClick={() => switchRole('participant')}
-                      className={`w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 hover:bg-white/5 transition-colors cursor-pointer ${state.currentRole === 'participant' ? 'text-[#F28BA8] font-medium bg-[#3A1524]' : 'text-[#D7B7C2]'}`}
+                    <Link
+                      to="/profile"
+                      onClick={() => setRoleMenuOpen(false)}
+                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#F7FAF8] hover:bg-white/5 transition-colors"
                     >
-                      <span className="w-2 h-2 rounded-full bg-[#B92345]" />
-                      <span>Participant view</span>
-                      {state.currentRole === 'participant' && <Check size={14} className="ml-auto text-[#F28BA8]" />}
-                    </button>
-                    <button
-                      onClick={() => switchRole('organizer')}
-                      className={`w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 hover:bg-white/5 transition-colors cursor-pointer ${state.currentRole === 'organizer' ? 'text-[#F28BA8] font-medium bg-[#3A1524]' : 'text-[#D7B7C2]'}`}
-                    >
-                      <span className="w-2 h-2 rounded-full bg-[#D23357]" />
-                      <span>Organizer view</span>
-                      {state.currentRole === 'organizer' && <Check size={14} className="ml-auto text-[#F28BA8]" />}
-                    </button>
+                      <User size={14} className="text-[#E56E6D]" />
+                      <span>My Profile</span>
+                    </Link>
 
-                    <div className="border-t border-[#633044]/50 my-1.5" />
+                    {isOrganizer ? (
+                      <>
+                        <Link
+                          to="/organizer"
+                          onClick={() => setRoleMenuOpen(false)}
+                          className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#F7FAF8] hover:bg-white/5 transition-colors"
+                        >
+                          <LayoutDashboard size={14} className="text-[#E56E6D]" />
+                          <span>Organizer Workspace</span>
+                        </Link>
+                        <Link
+                          to="/organizer/create"
+                          onClick={() => setRoleMenuOpen(false)}
+                          className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#F7FAF8] hover:bg-white/5 transition-colors"
+                        >
+                          <Plus size={14} className="text-[#E56E6D]" />
+                          <span>Create New Event</span>
+                        </Link>
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          to="/dashboard"
+                          onClick={() => setRoleMenuOpen(false)}
+                          className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#F7FAF8] hover:bg-white/5 transition-colors"
+                        >
+                          <LayoutDashboard size={14} className="text-[#E56E6D]" />
+                          <span>Participant Dashboard</span>
+                        </Link>
+                        <Link
+                          to="/organizer/auth"
+                          onClick={() => setRoleMenuOpen(false)}
+                          className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#E56E6D] bg-[#222624] hover:bg-[#2A302C] border border-[#333D38] transition-colors"
+                        >
+                          <Sparkles size={14} className="text-[#a31c1b]" />
+                          <span>Host an Event / Organizer Portal</span>
+                        </Link>
+                      </>
+                    )}
+
+                    <div className="border-t border-[#333D38]/50 my-1.5" />
 
                     <button
                       onClick={() => openAuth('signin')}
-                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#D7B7C2] hover:bg-white/5 hover:text-[#FFF4F6] transition-colors cursor-pointer"
+                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#C8D1CC] hover:bg-white/5 hover:text-[#F7FAF8] transition-colors cursor-pointer"
                     >
-                      <LogIn size={14} className="text-[#F28BA8]" />
-                      <span>Switch persona / Sign In</span>
+                      <LogIn size={14} className="text-[#E56E6D]" />
+                      <span>Switch account / Sign in</span>
                     </button>
 
                     <button
                       onClick={() => openAuth('signup')}
-                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#D7B7C2] hover:bg-white/5 hover:text-[#FFF4F6] transition-colors cursor-pointer"
+                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#C8D1CC] hover:bg-white/5 hover:text-[#F7FAF8] transition-colors cursor-pointer"
                     >
-                      <UserPlus size={14} className="text-[#F28BA8]" />
+                      <UserPlus size={14} className="text-[#E56E6D]" />
                       <span>Create new account</span>
                     </button>
 
-                    <button
-                      onClick={resetDemo}
-                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#B68F9E] hover:bg-white/5 hover:text-[#FFF4F6] transition-colors cursor-pointer"
-                    >
-                      <RefreshCw size={13} />
-                      <span>Reset demo state</span>
-                    </button>
-
-                    <div className="border-t border-[#633044]/50 my-1.5" />
+                    <div className="border-t border-[#333D38]/50 my-1.5" />
 
                     <button
                       onClick={handleSignOut}
@@ -190,14 +232,9 @@ export function AppShell({ children }) {
                 )}
               </div>
 
-              {/* User avatar */}
-              <Link to="/profile" className="shrink-0" aria-label="Your profile">
-                <Avatar initials={user?.initials} size="sm" index={0} className="ring-1 ring-[#633044] hover:ring-2 hover:ring-[#F28BA8] transition-all" />
-              </Link>
-
               {/* Mobile toggle */}
               <button
-                className="md:hidden text-[#B68F9E] hover:text-[#FFF4F6] p-1 rounded-lg hover:bg-white/5"
+                className="md:hidden text-[#9EAAA4] hover:text-[#F7FAF8] p-1 rounded-lg hover:bg-white/5"
                 onClick={() => setMobileOpen(v => !v)}
                 aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               >
@@ -212,7 +249,7 @@ export function AppShell({ children }) {
           <div className="md:hidden fixed inset-0 z-50 pt-16" onClick={() => setMobileOpen(false)}>
             <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
             <nav
-              className="relative bg-[#220B15] border-r border-[#633044] h-full w-64 shadow-modal p-4 flex flex-col gap-1 animate-slideInRight overflow-y-auto"
+              className="relative bg-[#171717] border-r border-[#333D38] h-full w-64 shadow-modal p-4 flex flex-col gap-1 animate-slideInRight overflow-y-auto"
               onClick={e => e.stopPropagation()}
               aria-label="Mobile navigation"
             >
@@ -227,7 +264,7 @@ export function AppShell({ children }) {
         </main>
 
         {/* Footer */}
-        <footer className="border-t border-[#633044]/40 bg-[#220B15]/60 backdrop-blur-md py-6 px-6 text-center text-xs text-[#B68F9E]">
+        <footer className="border-t border-[#333D38]/40 bg-[#171717]/60 backdrop-blur-md py-6 px-6 text-center text-xs text-[#9EAAA4]">
           TeamWeave — Professional Skill-Based Teaming Architecture
         </footer>
       </div>
