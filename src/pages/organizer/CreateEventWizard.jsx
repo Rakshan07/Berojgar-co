@@ -1,6 +1,5 @@
-// ─── Event Creation Wizard ────────────────────────────────────────────────
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Sparkles, Plus, Trash2, X, ChevronDown, ChevronUp, Info, ArrowLeft, ArrowRight } from 'lucide-react';
 import { useApp } from '../../app/AppContext';
 import { Card, SectionHeader, ProgressSteps } from '../../components/ui/Card';
@@ -26,8 +25,10 @@ const emptyForm = {
 };
 
 export default function CreateEventPage() {
-  const { dispatch } = useApp();
+  const { state, dispatch } = useApp();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const editEventId = searchParams.get('edit');
   const toast = useToast();
 
   const [step, setStep] = useState(0);
@@ -39,6 +40,40 @@ export default function CreateEventPage() {
   const [reqSearch, setReqSearch] = useState('');
   const [showReqPicker, setShowReqPicker] = useState(false);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (editEventId && state?.events) {
+      const existing = state.events.find(e => e.id === editEventId);
+      if (existing) {
+        setForm({
+          title: existing.title || '',
+          description: existing.description || '',
+          category: existing.category || existing.category_id || 'hackathon',
+          mode: existing.mode || 'hybrid',
+          location: existing.location || '',
+          dates: {
+            start: existing.dates?.start || (existing.start_date ? new Date(existing.start_date).toISOString().slice(0, 10) : ''),
+            end: existing.dates?.end || (existing.end_date ? new Date(existing.end_date).toISOString().slice(0, 10) : ''),
+            registrationDeadline: existing.dates?.registrationDeadline || (existing.registration_deadline ? new Date(existing.registration_deadline).toISOString().slice(0, 10) : ''),
+          },
+          teamSize: {
+            min: existing.teamSize?.min || existing.min_team_size || 3,
+            max: existing.teamSize?.max || existing.max_team_size || 5,
+          },
+          requirements: (existing.requirements || []).map((r, i) => ({
+            id: r.id || `r-${i}`,
+            skill: r.skill || r.skill_name,
+            category: r.category || 'Technical',
+            required: r.required !== undefined ? r.required : true,
+            proficiency: r.proficiency || r.min_proficiency || 2,
+            count: r.count || r.target_count || 1,
+          })),
+          tags: existing.tags || [],
+          maxParticipants: existing.maxParticipants || existing.max_participants || 60,
+        });
+      }
+    }
+  }, [editEventId, state?.events]);
 
   function setField(path, value) {
     setForm(f => setNested(f, path, value));
@@ -108,8 +143,44 @@ export default function CreateEventPage() {
 
   async function saveEvent(status = 'open') {
     if (!validateStep(0) || !validateStep(1)) { setStep(0); return; }
+    if (editEventId) {
+      dispatch({
+        type: 'UPDATE_EVENT',
+        payload: {
+          id: editEventId,
+          data: {
+            ...form,
+            status,
+          },
+        },
+      });
+      try {
+        const token = localStorage.getItem('teamweave_token');
+        await fetch(`http://localhost:8000/api/v1/events/${editEventId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+            'X-User-Id': orgId === 'user-me' ? 'asel' : orgId,
+          },
+          body: JSON.stringify({
+            title: form.title,
+            description: form.description,
+            mode: form.mode || 'hybrid',
+            location: form.location || null,
+            min_team_size: form.teamSize?.min || 3,
+            max_team_size: form.teamSize?.max || 5,
+          }),
+        });
+      } catch {}
+
+      toast.success('Event updated successfully!');
+      navigate('/organizer/events');
+      return;
+    }
+
     const eventId = `ev-${Date.now()}`;
-    const orgId = state.currentUserId || 'org1';
+    const orgId = state?.currentUserId || 'org1';
     const event = {
       ...form,
       id: eventId,
@@ -123,33 +194,40 @@ export default function CreateEventPage() {
     // Sync with backend API if accessible
     try {
       const token = localStorage.getItem('teamweave_token');
+      const startIso = form.dates?.start ? new Date(form.dates.start).toISOString() : new Date().toISOString();
+      const endIso = form.dates?.end ? new Date(form.dates.end).toISOString() : startIso;
+      const deadlineIso = form.dates?.registrationDeadline ? new Date(form.dates.registrationDeadline).toISOString() : startIso;
+
       await fetch('http://localhost:8000/api/v1/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-          'X-User-Id': orgId,
+          'X-User-Id': orgId === 'user-me' ? 'asel' : orgId,
         },
         body: JSON.stringify({
           title: form.title,
+          category_id: form.category || 'hackathon',
           description: form.description,
-          category: form.category || 'hackathon',
-          participation_mode: form.mode || 'remote',
+          mode: form.mode || 'hybrid',
           location: form.location || null,
           min_team_size: form.teamSize?.min || 3,
           max_team_size: form.teamSize?.max || 5,
-          starts_at: new Date(form.dates.start).toISOString(),
-          ends_at: form.dates.end ? new Date(form.dates.end).toISOString() : new Date(form.dates.start).toISOString(),
-          registration_deadline: form.dates.registrationDeadline ? new Date(form.dates.registrationDeadline).toISOString() : null,
+          start_date: startIso,
+          end_date: endIso,
+          registration_deadline: deadlineIso,
           max_participants: form.maxParticipants || 100,
-          tracks: form.tracks || ['General'],
-          skill_requirements: (form.requirements || []).map(r => ({
+          tags: form.tags?.length ? form.tags : ['General'],
+          requirements: (form.requirements || []).map(r => ({
             skill_name: r.skill,
-            category_name: r.category || 'General',
+            category: r.category || 'Technical',
             min_proficiency: r.proficiency || 2,
-            is_mandatory: !!r.required,
+            required: !!r.required,
             target_count: r.count || 1,
+            priority: 1,
+            is_custom: false,
           })),
+          roles: [],
         }),
       });
     } catch {
@@ -157,6 +235,9 @@ export default function CreateEventPage() {
     }
 
     dispatch({ type: 'ADD_EVENT', payload: event });
+    if (state?.currentRole !== 'organizer') {
+      dispatch({ type: 'SET_ROLE', payload: 'organizer' });
+    }
     toast.success(status === 'open' ? 'Event published!' : 'Draft saved');
     navigate('/organizer');
   }
@@ -169,8 +250,8 @@ export default function CreateEventPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6 animate-fadeIn">
       <div>
-        <h1 className="text-2xl font-heading font-bold text-ink">Create Event</h1>
-        <p className="text-sm text-ink-secondary mt-1">Set up your event in four steps.</p>
+        <h1 className="text-2xl font-heading font-bold text-ink">{editEventId ? 'Edit Event' : 'Create Event'}</h1>
+        <p className="text-sm text-ink-secondary mt-1">{editEventId ? 'Update your event details and requirements.' : 'Set up your event in four steps.'}</p>
       </div>
 
       <ProgressSteps steps={STEPS} current={step} />
@@ -449,8 +530,10 @@ export default function CreateEventPage() {
           )}
 
           <div className="flex flex-wrap gap-2 pt-2 border-t border-border">
-            <Button variant="secondary" onClick={() => saveEvent('draft')}>Save as draft</Button>
-            <Button onClick={() => saveEvent('open')} disabled={!form.title || !form.description || !form.dates.start}>Publish event</Button>
+            <Button variant="secondary" onClick={() => saveEvent('draft')}>{editEventId ? 'Save draft changes' : 'Save as draft'}</Button>
+            <Button onClick={() => saveEvent('open')} disabled={!form.title || !form.description || !form.dates.start}>
+              {editEventId ? 'Save changes' : 'Publish event'}
+            </Button>
           </div>
         </Card>
       )}

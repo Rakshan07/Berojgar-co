@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import select, func, and_, or_
 
 from backend.app.models.event import Event, EventCategory, EventRequirement, EventRole, EventRegistration
+from backend.app.models.auth import User
 from backend.app.schemas.event import EventCreate, EventUpdate, EventRequirementCreate, EventRoleCreate
 
 def slugify(text: str) -> str:
@@ -200,3 +201,15 @@ class EventService:
         self.db.commit()
         self.db.refresh(item)
         return item
+
+    def delete_event(self, event_id: uuid.UUID, organizer_id: uuid.UUID) -> bool:
+        event = self.get_event(event_id)
+        if not event:
+            raise ValueError("Event not found")
+        user = self.db.get(User, organizer_id)
+        is_admin = user and any(r.id == "admin" for r in user.roles)
+        if event.organizer_id != organizer_id and not is_admin:
+            raise PermissionError("Only the event organizer or an admin can delete this event")
+        self.db.delete(event)
+        self.db.commit()
+        return True

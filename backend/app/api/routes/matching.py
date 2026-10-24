@@ -11,6 +11,13 @@ from backend.app.schemas.matching import (
     ProposedTeamResponse,
     ProposedMemberResponse,
     MatchExplanationResponse,
+    IntakeQuestionsRequest,
+    IntakeQuestionsResponse,
+    IntakeQuestion,
+    IntakeOption,
+    CalculateCompatibilityRequest,
+    CalculateCompatibilityResponse,
+    TeamCompatibilityItem,
 )
 from backend.app.schemas.team import TeamResponse, TeamMemberResponse
 from backend.app.api.dependencies import get_current_user, require_role
@@ -164,3 +171,217 @@ def reject_matching_run(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+
+
+@router.post("/events/{event_id}/intake-questions", response_model=IntakeQuestionsResponse)
+def get_event_intake_questions(
+    event_id: uuid.UUID,
+    req: IntakeQuestionsRequest,
+    db: Session = Depends(get_db)
+):
+    """Generates non-technical contribution questions based on participant skills and 1-3 personality questions."""
+    skill_names = [s.get("name", "").lower() for s in req.user_skills]
+    skill_questions = []
+
+    # Frontend focus
+    if any("react" in s or "vue" in s or "front" in s or "css" in s for s in skill_names):
+        skill_questions.append(
+            IntakeQuestion(
+                id="q_skill_frontend",
+                type="skill_focus",
+                title="In frontend and UI development, what part of the build do you enjoy driving most?",
+                subtitle="Focus on your contribution style — non-technical.",
+                options=[
+                    IntakeOption(id="rapid_ui", label="Rapid UI layout & styling", desc="Translating wireframes into responsive, polished components quickly"),
+                    IntakeOption(id="state_data", label="State & API integration", desc="Wiring data flows, client state, and backend endpoints"),
+                    IntakeOption(id="design_sys", label="Design systems & micro-interactions", desc="Component libraries, tokens, and UX polish"),
+                ]
+            )
+        )
+
+    # Backend focus
+    if any("python" in s or "node" in s or "back" in s or "fastapi" in s or "sql" in s for s in skill_names):
+        skill_questions.append(
+            IntakeQuestion(
+                id="q_skill_backend",
+                type="skill_focus",
+                title="When working on backend deliverables, where do you spend most of your energy?",
+                subtitle="Focus on your contribution style — non-technical.",
+                options=[
+                    IntakeOption(id="core_api", label="REST/GraphQL API endpoints", desc="Designing clean contracts, input validation, and business logic"),
+                    IntakeOption(id="db_modeling", label="Data modeling & query design", desc="Database schemas, relations, migrations, and performance"),
+                    IntakeOption(id="integrations", label="Third-party integrations & pipelines", desc="Auth, background workers, webhooks, and cloud infrastructure"),
+                ]
+            )
+        )
+
+    # Fallback if fewer than 2
+    if len(skill_questions) < 2:
+        skill_questions.append(
+            IntakeQuestion(
+                id="q_skill_general",
+                type="skill_focus",
+                title="What type of hands-on contribution energizes you most during a team sprint?",
+                subtitle="Focus on your contribution style — non-technical.",
+                options=[
+                    IntakeOption(id="feature_ship", label="Shipping core user features", desc="Delivering functional, testable milestones from start to finish"),
+                    IntakeOption(id="architecture", label="Systems connection & glue logic", desc="Connecting frontend to backend, setting up configs, and debugging"),
+                    IntakeOption(id="product_polish", label="User experience & presentation polish", desc="Sharpening the pitch, user onboarding, and demo flow"),
+                ]
+            )
+        )
+
+    # 1 to 3 Personality / Collaboration questions
+    personality_questions = [
+        IntakeQuestion(
+            id="p_comm",
+            type="personality",
+            title="Communication & Working Rhythm",
+            subtitle="How do you naturally collaborate best with your teammates during active hours?",
+            options=[
+                IntakeOption(id="async", label="Async-First Builder", desc="Deep solo focus blocks with frequent written updates"),
+                IntakeOption(id="cadence", label="Structured Syncs", desc="Quick morning & afternoon standups, then autonomous execution"),
+                IntakeOption(id="pairing", label="Live Pairing & Huddles", desc="Continuous voice room open, active screensharing and brainstorming"),
+            ]
+        ),
+        IntakeQuestion(
+            id="p_crunch",
+            type="personality",
+            title="Blocker & Crunch Handling",
+            subtitle="When facing an unexpected roadblock or a tight deadline, what is your instinct?",
+            options=[
+                IntakeOption(id="scope_down", label="Pragmatic Scope-Down", desc="Aggressively trim secondary features to guarantee a polished core MVP"),
+                IntakeOption(id="swarm", label="Team Swarm", desc="Rally the whole team into a quick huddle to brainstorm and crack it together"),
+                IntakeOption(id="workaround", label="Fast Pivot / Workaround", desc="Immediately substitute with a proven library or simplified approach"),
+            ]
+        ),
+        IntakeQuestion(
+            id="p_ambition",
+            type="personality",
+            title="Event Ambition & Mindset",
+            subtitle="What is your primary personal motivation for joining this event?",
+            options=[
+                IntakeOption(id="podium", label="Competitive Podium Finish", desc="Aiming to build a standout winner, polish the presentation, and win"),
+                IntakeOption(id="learning", label="Skill Expansion & Tech Experimentation", desc="Trying new frameworks, expanding capabilities, and taking creative risks"),
+                IntakeOption(id="community", label="Peer Connection & Collaborative Fun", desc="Meeting great builders, having fun, and shipping a cool project together"),
+            ]
+        ),
+    ]
+
+    return IntakeQuestionsResponse(
+        skill_questions=skill_questions[:2],
+        personality_questions=personality_questions
+    )
+
+
+@router.post("/events/{event_id}/calculate-compatibility", response_model=CalculateCompatibilityResponse)
+def calculate_event_team_compatibility(
+    event_id: uuid.UUID,
+    req: CalculateCompatibilityRequest,
+    db: Session = Depends(get_db)
+):
+    """Calculates explainable 4-factor compatibility for candidate teams with role-need matching and full-stack flex."""
+    results = []
+    user_skill_names = [s.get("name", "").lower() for s in req.user_skills]
+    user_categories = [s.get("category", "").lower() for s in req.user_skills]
+    user_preferred_roles = [r.lower() for r in (req.preferred_roles or [])]
+
+    user_has_frontend = any("front" in s or "react" in s or "vue" in s or "ui" in s for s in user_skill_names) or "frontend" in user_categories
+    user_has_backend = any("back" in s or "python" in s or "node" in s or "fastapi" in s or "sql" in s for s in user_skill_names) or "backend" in user_categories
+    is_fullstack = (user_has_frontend and user_has_backend) or any("full" in r or "stack" in r for r in user_preferred_roles)
+
+    user_comm = req.answers.get("p_comm", "cadence")
+    user_ambition = req.answers.get("p_ambition", "podium")
+
+    for team in req.teams:
+        team_id = str(team.get("id", ""))
+        team_name = team.get("name", "Unnamed Team")
+        members = team.get("members", [])
+        member_roles = [m.get("role", "").lower() for m in members]
+
+        spots_left = max(0, 5 - len(members))
+        is_full = spots_left == 0
+
+        team_has_frontend = any("front" in r or "react" in r or "ui lead" in r for r in member_roles)
+        team_has_backend = any("back" in r or "python" in r or "backend lead" in r for r in member_roles)
+
+        need_bonus = 0
+        redundancy_penalty = 0
+        role_overlap_warning = None
+        proposed_role = "Contributor"
+
+        if is_fullstack:
+            if not team_has_frontend and team_has_backend:
+                proposed_role = "Frontend Lead / UI Architect (Full-Stack Flex)"
+                need_bonus += 36
+            elif not team_has_backend and team_has_frontend:
+                proposed_role = "Backend Lead / API Architect (Full-Stack Flex)"
+                need_bonus += 36
+            elif not team_has_frontend and not team_has_backend:
+                proposed_role = "Lead Full-Stack Architect"
+                need_bonus += 40
+            else:
+                proposed_role = "Systems Integrator & DevOps"
+                redundancy_penalty += 16
+                role_overlap_warning = "Team already has dedicated Frontend and Backend leads."
+        elif user_has_frontend and not user_has_backend:
+            if not team_has_frontend:
+                proposed_role = "Frontend Lead"
+                need_bonus += 38
+            else:
+                proposed_role = "Secondary Frontend Support"
+                redundancy_penalty += 32
+                role_overlap_warning = "Role Overlap: Team already has a Frontend Lead. Joining duplicates existing UI ownership."
+        elif user_has_backend and not user_has_frontend:
+            if not team_has_backend:
+                proposed_role = "Backend Lead"
+                need_bonus += 38
+            else:
+                proposed_role = "Secondary Backend Support"
+                redundancy_penalty += 32
+                role_overlap_warning = "Role Overlap: Team already has a Backend Lead. Joining duplicates backend ownership."
+        else:
+            proposed_role = "Technical Contributor"
+            need_bonus += 15
+
+        skill_score = max(5, min(40, 15 + need_bonus - redundancy_penalty))
+        comm_score = 25 if user_comm in ["async", "cadence"] else 20
+        ambition_score = 18 if user_ambition == "podium" else 15
+        capacity_score = 10 if spots_left > 0 else 0
+
+        overall = skill_score + comm_score + ambition_score + capacity_score
+        if is_full:
+            overall = min(40, overall)
+        if role_overlap_warning:
+            overall = min(60, overall)
+        overall = max(25, min(98, overall))
+
+        tier = "Top Synergy · Critical Need" if overall >= 90 else "High Compatibility" if overall >= 78 else "Moderate Match" if overall >= 65 else "Role Overlap / Low Need"
+
+        highlights = []
+        if role_overlap_warning:
+            highlights.append(role_overlap_warning)
+        else:
+            highlights.append(f"Direct Need Match: Fills this team's empty {proposed_role} requirement")
+
+        if is_fullstack and not role_overlap_warning:
+            highlights.append("Bridges technical communication across UI, API, and database workflows")
+
+        highlights.append(f"Aligned on {user_comm} collaboration cadence")
+
+        results.append(
+            TeamCompatibilityItem(
+                team_id=team_id,
+                team_name=team_name,
+                overall_score=overall,
+                synergy_tier=tier,
+                proposed_role=proposed_role,
+                spots_left=spots_left,
+                is_full=is_full,
+                highlights=highlights
+            )
+        )
+
+    # Sort descending by compatibility
+    results.sort(key=lambda x: x.overall_score, reverse=True)
+    return CalculateCompatibilityResponse(compatible_teams=results)

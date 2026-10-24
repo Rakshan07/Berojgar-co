@@ -135,6 +135,21 @@ def update_event(
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
+@router.delete("/{event_id}", response_model=MessageResponse)
+def delete_event(
+    event_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    try:
+        service = EventService(db)
+        service.delete_event(event_id, current_user.id)
+        return MessageResponse(message="Event deleted successfully")
+    except PermissionError as e:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+
 @router.post("/{event_id}/publish", response_model=EventResponse)
 def publish_event(
     event_id: uuid.UUID,

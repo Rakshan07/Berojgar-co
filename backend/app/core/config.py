@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import List, Union
+from typing import List, Union, Optional
 from pydantic import AnyHttpUrl, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -14,9 +14,19 @@ class Settings(BaseSettings):
 
     # Database
     DATABASE_URL: str = (
-        "postgresql+psycopg://neondb_owner:npg_SKZfLsUm5g2u@ep-cold-meadow-b55av3de-pooler.c-7.us-east-2.aws.neon.tech/neondb?sslmode=require"
+        "postgresql+psycopg://neondb_owner:npg_SKZfLsUm5g2u@ep-cold-meadow-b55av3de-pooler.c-7.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
     )
     DB_SCHEMA: str = "hackloop"
+
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def assemble_database_url(cls, v: str) -> str:
+        if isinstance(v, str):
+            if v.startswith("postgresql://"):
+                return v.replace("postgresql://", "postgresql+psycopg://", 1)
+            elif v.startswith("postgres://"):
+                return v.replace("postgres://", "postgresql+psycopg://", 1)
+        return v
 
     # Security
     SECRET_KEY: str = "teamweave_super_secret_local_dev_key_2026_x87y29"
@@ -40,10 +50,15 @@ class Settings(BaseSettings):
         return v
 
     # AI Provider
-    AI_PROVIDER: str = "mock"  # 'mock', 'openai', 'gemini', 'anthropic'
-    AI_API_KEY: str = "mock-key"
-    AI_MODEL: str = "gpt-4o-mini"
+    AI_PROVIDER: str = "gemini"  # 'gemini', 'openai', 'mock'
+    AI_API_KEY: Optional[str] = None
+    GEMINI_API_KEY: Optional[str] = None
+    AI_MODEL: str = "gemini-2.5-flash"
     AI_REQUEST_TIMEOUT_SECONDS: int = 30
+
+    @property
+    def effective_gemini_api_key(self) -> Optional[str]:
+        return self.GEMINI_API_KEY or self.AI_API_KEY
 
     model_config = SettingsConfigDict(
         env_file=(BASE_DIR / ".env", ".env"),

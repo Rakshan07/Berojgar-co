@@ -81,8 +81,41 @@ class ProfileService:
         self.db.commit()
         return True
 
+    def ensure_skill(self, name: str, category: Optional[str] = None) -> Skill:
+        # Normalize skill name
+        clean_name = name.strip()
+        slug = clean_name.lower().replace(" ", "-").replace("/", "-").replace(".", "-")[:50]
+        
+        # Check by id or name
+        skill = self.db.scalars(
+            select(Skill).where((Skill.id == slug) | (Skill.name.ilike(clean_name)))
+        ).first()
+        if skill:
+            return skill
+
+        valid_categories = ['Frontend', 'Backend', 'Design', 'Data', 'AI/ML', 'Research', 'Debate', 'Soft Skills', 'Management', 'Creative']
+        matched_cat = "Backend"
+        if category:
+            for c in valid_categories:
+                if c.lower() in category.lower() or category.lower() in c.lower():
+                    matched_cat = c
+                    break
+
+        new_skill = Skill(
+            id=slug,
+            name=clean_name,
+            category_id=matched_cat,
+            description=f"Skill extracted from candidate evidence ({matched_cat})",
+            is_verified=True
+        )
+        self.db.add(new_skill)
+        self.db.commit()
+        self.db.refresh(new_skill)
+        return new_skill
+
     def list_skills(self, category_id: Optional[str] = None) -> List[Skill]:
         query = select(Skill)
         if category_id:
             query = query.where(Skill.category_id == category_id)
         return list(self.db.scalars(query).all())
+

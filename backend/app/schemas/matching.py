@@ -56,7 +56,51 @@ class MatchingRunResponse(BaseModel):
     summary: Dict[str, Any] = {}
     proposed_teams: List[ProposedTeamResponse] = []
     created_at: datetime
-    completed_at: Optional[datetime] = None
-
     class Config:
         from_attributes = True
+
+
+class IntakeOption(BaseModel):
+    id: str
+    label: str
+    desc: Optional[str] = None
+
+
+class IntakeQuestion(BaseModel):
+    id: str
+    type: str  # 'skill_focus' or 'personality'
+    title: str
+    subtitle: Optional[str] = None
+    options: List[IntakeOption]
+
+
+class IntakeQuestionsRequest(BaseModel):
+    user_skills: List[Dict[str, Any]] = []
+    preferred_roles: Optional[List[str]] = None
+
+
+class IntakeQuestionsResponse(BaseModel):
+    skill_questions: List[IntakeQuestion] = []
+    personality_questions: List[IntakeQuestion] = []
+
+
+class TeamCompatibilityItem(BaseModel):
+    team_id: str
+    team_name: str
+    overall_score: int
+    synergy_tier: str
+    proposed_role: str
+    spots_left: int
+    is_full: bool
+    highlights: List[str] = []
+
+
+class CalculateCompatibilityRequest(BaseModel):
+    user_skills: List[Dict[str, Any]] = []
+    preferred_roles: Optional[List[str]] = None
+    answers: Dict[str, str] = {}
+    teams: List[Dict[str, Any]] = []
+
+
+class CalculateCompatibilityResponse(BaseModel):
+    compatible_teams: List[TeamCompatibilityItem] = []

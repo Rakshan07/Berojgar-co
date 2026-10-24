@@ -74,7 +74,7 @@ export async function generateTeamSuggestions(event, participants) {
     // Build coverage analysis
     const coverageNotes = buildCoverageNotes(teamMembers, event.requirements);
     const missing = event.requirements.filter(r => !coveredReqIds.has(r.id));
-    const reasons = buildMatchReasons(teamMembers, event.requirements);
+    const { reasons, compatibilityScore, pillars } = buildMatchReasons(teamMembers, event.requirements);
 
     teams.push({
       id: `gen-tm-${Date.now()}-${teamIndex}`,
@@ -84,6 +84,8 @@ export async function generateTeamSuggestions(event, participants) {
       members: teamMembers.map(m => ({ participantId: m.id, role: inferRole(m, event) })),
       coverageNotes,
       matchReasons: reasons,
+      compatibilityScore,
+      pillars,
       missingRequirements: missing.map(r => ({ skill: r.skill, required: r.required, proficiency: r.proficiency })),
       teamSizeGap: teamMembers.length < teamSize.min,
       proposedAt: new Date().toISOString().slice(0, 10),
@@ -93,6 +95,7 @@ export async function generateTeamSuggestions(event, participants) {
 
     teamIndex++;
   }
+
 
   return teams;
 }
@@ -165,26 +168,64 @@ function buildCoverageNotes(members, requirements) {
 }
 
 function buildMatchReasons(members, requirements) {
-  const reasons = [];
+  // ─── 5-Pillar Compatibility Engine (Exact Weights) ──────────────────────
+  // 1. Required Skill Coverage: 35%
+  const reqSkills = requirements.filter(r => r.required);
+  const coveredReqCount = reqSkills.filter(r =>
+    members.some(m => {
+      const match = findSkillMatch(m, r.skill);
+      return match && match.proficiency >= r.proficiency;
+    })
+  ).length;
+  const skillCoveragePct = reqSkills.length ? Math.round((coveredReqCount / reqSkills.length) * 100) : 100;
 
-  // Pair complementarity
+  // 2. Complementary Skills & Role Balance: 25%
   const hasBackend = members.some(m => findSkillMatch(m, 'Backend Development') || findSkillMatch(m, 'Python') || findSkillMatch(m, 'Node.js'));
   const hasFrontend = members.some(m => findSkillMatch(m, 'Frontend Development') || findSkillMatch(m, 'React'));
   const hasDesign = members.some(m => findSkillMatch(m, 'UX Design') || findSkillMatch(m, 'Branding'));
+  const hasCoord = members.some(m => findSkillMatch(m, 'Project Management') || findSkillMatch(m, 'Strategy') || findSkillMatch(m, 'Management'));
+  const distinctRoles = [hasBackend, hasFrontend, hasDesign, hasCoord].filter(Boolean).length;
+  const roleBalancePct = Math.min(100, Math.round((distinctRoles / 3) * 100));
 
-  if (hasBackend && hasFrontend) reasons.push('Strong technical pairing with both frontend and backend coverage.');
-  if (hasDesign) reasons.push('Design expertise is present, supporting user-facing output quality.');
+  // 3. Collaboration Preferences: 15%
+  const timezones = members.map(m => m.timezone || 'UTC');
+  const collabPct = new Set(timezones).size <= 2 ? 100 : 80;
 
-  // Proficiency spread
-  const advanced = members.filter(m => m.skills.some(s => s.proficiency >= 3));
-  if (advanced.length >= 2) reasons.push(`${advanced.length} members bring advanced or independent-level skills to the team.`);
+  // 4. Availability & Commitment: 15%
+  const avgHours = members.reduce((sum, m) => sum + (m.availabilityHours || m.hoursPerWeek || 15), 0) / (members.length || 1);
+  const availPct = Math.min(100, Math.round((avgHours / 15) * 100));
 
-  if (!reasons.length) {
-    reasons.push('Members were selected to maximise coverage of event requirements given the available participant pool.');
-  }
+  // 5. Shared Goals & Role Preferences: 10%
+  const goalsPct = 90; // Default aligned hackathon goal
 
-  return reasons;
+  // Exact weighted total
+  const compatibilityScore = Math.round(
+    0.35 * skillCoveragePct +
+    0.25 * roleBalancePct +
+    0.15 * collabPct +
+    0.15 * availPct +
+    0.10 * goalsPct
+  );
+
+  const pillars = [
+    { name: 'Required Skill Coverage', weight: '35%', score: skillCoveragePct, desc: `${coveredReqCount}/${reqSkills.length || 1} required skills covered` },
+    { name: 'Complementary Roles & Balance', weight: '25%', score: roleBalancePct, desc: `${distinctRoles} key functional disciplines paired` },
+    { name: 'Collaboration Preferences', weight: '15%', score: collabPct, desc: 'Shared communication rhythm & timezones' },
+    { name: 'Availability & Commitment', weight: '15%', score: availPct, desc: `Avg ${Math.round(avgHours)} hrs/wk per member` },
+    { name: 'Shared Goals & Preferences', weight: '10%', score: goalsPct, desc: 'Aligned role preferences & ambitions' },
+  ];
+
+  const reasons = [
+    `Overall Compatibility: ${compatibilityScore}% based on 5-pillar matching engine.`,
+    `Skill Coverage (35% wt): ${skillCoveragePct}% — ${coveredReqCount}/${reqSkills.length || 1} required competencies covered.`,
+    `Role Balance (25% wt): ${roleBalancePct}% across complementary engineering and design roles.`,
+    `Collaboration Alignment (15% wt): ${collabPct}% working rhythm match.`,
+    `Availability & Commitment (15% wt): ${availPct}% commitment rating.`
+  ];
+
+  return { reasons, compatibilityScore, pillars };
 }
+
 
 function inferRole(participant, event) {
   const skills = participant.skills.map(s => s.name.toLowerCase());

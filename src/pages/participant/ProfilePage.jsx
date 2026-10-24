@@ -2,7 +2,8 @@
 import { useState, useMemo, useEffect } from 'react';
 import {
   Plus, Trash2, ExternalLink, Info, Save, Sparkles, RefreshCw,
-  CheckCircle2, AlertCircle, Award, Compass, Zap, HelpCircle
+  CheckCircle2, AlertCircle, Award, Compass, Zap, HelpCircle,
+  FileText, Check, Upload, FileUp, CheckCircle
 } from 'lucide-react';
 import { useApp, useCurrentUser, PROFILE_TEMPLATES } from '../../app/AppContext';
 import { Card, SectionHeader, Avatar, ProficiencyPips, Divider } from '../../components/ui/Card';
@@ -11,6 +12,9 @@ import { Badge, SkillTag, categoryColor } from '../../components/ui/Badge';
 import { PROFICIENCY_LEVELS, SKILL_LIBRARY } from '../../data/demoData';
 import { useToast } from '../../hooks/useToast';
 import LatticeLoader from '../../components/ui/LatticeLoader';
+import { analyzeProfileEvidence, uploadProfileEvidence } from '../../services/aiService';
+
+
 
 const ROLE_OPTIONS = [
   'Frontend Developer', 'Backend Developer', 'Full-stack Engineer',
@@ -83,6 +87,96 @@ export default function ProfilePage() {
 
   // AI Matching Simulation state using LatticeLoader
   const [simStatus, setSimStatus] = useState('idle'); // 'idle' | 'working' | 'done'
+
+  // Resume & Portfolio Evidence Upload state
+  const [evidenceText, setEvidenceText] = useState('');
+  const [evidenceSourceType, setEvidenceSourceType] = useState('resume');
+  const [analyzingEvidence, setAnalyzingEvidence] = useState(false);
+  const [evidenceAnalysis, setEvidenceAnalysis] = useState(null);
+  const [showEvidencePanel, setShowEvidencePanel] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState('');
+  const [uploadMode, setUploadMode] = useState('file'); // 'file' or 'text'
+
+  async function handleFileUpload(file) {
+    if (!file) return;
+    setUploadedFileName(file.name);
+    setAnalyzingEvidence(true);
+    try {
+      toast.info(`Reading ${file.name}...`);
+      const res = await uploadProfileEvidence(file, 'resume', form.name);
+      setEvidenceAnalysis(res);
+      toast.success(`Analyzed ${file.name}: found ${res.extracted_skills?.length || 0} skills!`);
+    } catch (err) {
+      toast.error('File analysis failed');
+      console.error(err);
+    } finally {
+      setAnalyzingEvidence(false);
+    }
+  }
+
+  async function handleAnalyzeEvidence() {
+    if (!evidenceText.trim() || evidenceText.trim().length < 20) {
+      toast.warn('Please paste at least a paragraph of resume, portfolio, or project text.');
+      return;
+    }
+    setAnalyzingEvidence(true);
+    try {
+      const res = await analyzeProfileEvidence(evidenceText, evidenceSourceType, form.name);
+      setEvidenceAnalysis(res);
+      toast.success(`Extracted ${res.extracted_skills?.length || 0} skills from text!`);
+    } catch (err) {
+      toast.error('Analysis failed');
+      console.error(err);
+    } finally {
+      setAnalyzingEvidence(false);
+    }
+  }
+
+
+  function handleApplyExtractedSkills() {
+    if (!evidenceAnalysis?.extracted_skills?.length) return;
+    const existingMap = new Map((form.skills || []).map(s => [s.name.toLowerCase(), s]));
+
+    const newSkills = [...(form.skills || [])];
+    for (const es of evidenceAnalysis.extracted_skills) {
+      const lower = es.skill_name.toLowerCase();
+      if (existingMap.has(lower)) {
+        const existing = existingMap.get(lower);
+        if (es.estimated_proficiency > existing.proficiency) {
+          existing.proficiency = es.estimated_proficiency;
+          existing.evidenceSnippet = es.evidence_snippet;
+          existing.isVerified = es.is_verified;
+        }
+      } else {
+        const item = {
+          id: `sk-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+          name: es.skill_name,
+          category: es.category || 'Backend',
+          proficiency: es.estimated_proficiency || 2,
+          evidenceSnippet: es.evidence_snippet,
+          isVerified: es.is_verified,
+        };
+        newSkills.push(item);
+        existingMap.set(lower, item);
+      }
+    }
+
+    const updatedRoles = Array.from(new Set([
+      ...(form.preferredRoles || []),
+      ...(evidenceAnalysis.preferred_roles || [])
+    ]));
+
+    setForm(f => ({
+      ...f,
+      skills: newSkills,
+      preferredRoles: updatedRoles,
+      bio: f.bio || evidenceAnalysis.summary || f.bio
+    }));
+
+    toast.success('Applied extracted skills and roles to your profile! Remember to save changes.');
+    setShowEvidencePanel(false);
+  }
+
 
   const filteredLibrary = useMemo(() => {
     const q = skillSearch.toLowerCase();
@@ -428,17 +522,152 @@ export default function ProfilePage() {
 
       {/* Skills & Proficiencies */}
       <Card>
-        <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="flex items-start justify-between gap-3 mb-3 flex-wrap">
           <div>
             <SectionHeader
               title="Skills & Proficiencies"
               subtitle="Rate your confidence honestly so teams can balance technical depth."
             />
           </div>
+          <Button
+            size="xs"
+            variant="secondary"
+            icon={<Upload size={13} className="text-purple-400" />}
+            onClick={() => setShowEvidencePanel(!showEvidencePanel)}
+            className="border border-border bg-surface text-ink hover:border-purple-400"
+          >
+            {showEvidencePanel ? 'Hide upload' : 'Upload Resume / Evidence'}
+          </Button>
         </div>
+
+        {/* Normal Resume / Evidence Upload Zone */}
+        {showEvidencePanel && (
+          <div className="mb-5 p-4 rounded-xl border border-dashed border-purple-500/30 bg-paper/80 space-y-4 animate-fadeIn">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h4 className="text-sm font-semibold text-ink flex items-center gap-1.5">
+                  <FileUp size={16} className="text-purple-400" /> Upload Resume or Portfolio
+                </h4>
+                <p className="text-xs text-ink-muted mt-0.5">
+                  Upload an image of your resume (PNG, JPG), PDF document, or paste text to auto-fill your profile.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-1 bg-surface p-1 rounded-lg border border-border shrink-0 self-start sm:self-auto text-xs">
+                <button
+                  type="button"
+                  onClick={() => setUploadMode('file')}
+                  className={`px-2.5 py-1 rounded-md transition-colors font-medium ${uploadMode === 'file' ? 'bg-purple-600 text-white shadow-sm' : 'text-ink-muted hover:text-ink'}`}
+                >
+                  Upload File
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setUploadMode('text')}
+                  className={`px-2.5 py-1 rounded-md transition-colors font-medium ${uploadMode === 'text' ? 'bg-purple-600 text-white shadow-sm' : 'text-ink-muted hover:text-ink'}`}
+                >
+                  Paste Text
+                </button>
+              </div>
+            </div>
+
+            {uploadMode === 'file' ? (
+              <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-border rounded-xl bg-surface hover:border-purple-400/50 transition-colors text-center cursor-pointer relative">
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,application/pdf,.txt,.md,.pdf,.png,.jpg,.jpeg"
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                  onChange={e => {
+                    const f = e.target.files?.[0];
+                    if (f) handleFileUpload(f);
+                  }}
+                />
+                <div className="p-3 rounded-full bg-purple-500/10 text-purple-400 mb-2">
+                  <Upload size={22} />
+                </div>
+                <p className="text-sm font-medium text-ink">
+                  {analyzingEvidence ? 'Reading and analyzing document...' : 'Click or drag & drop to upload'}
+                </p>
+                <p className="text-xs text-ink-muted mt-1">
+                  Supports PDF resumes, photos/screenshots (PNG, JPG), or text docs
+                </p>
+                {uploadedFileName && (
+                  <div className="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20 text-xs">
+                    <FileText size={12} /> {uploadedFileName}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <textarea
+                  className="input-base min-h-24 text-xs font-mono"
+                  placeholder="Paste resume text, LinkedIn profile summary, or project descriptions..."
+                  value={evidenceText}
+                  onChange={e => setEvidenceText(e.target.value)}
+                />
+                <div className="flex justify-end">
+                  <Button
+                    size="sm"
+                    loading={analyzingEvidence}
+                    onClick={handleAnalyzeEvidence}
+                    className="bg-purple-600 hover:bg-purple-500 text-white"
+                  >
+                    Extract skills
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Analysis Results Display */}
+            {evidenceAnalysis && (
+              <div className="pt-3 border-t border-border space-y-3">
+                <div className="p-3 rounded-lg bg-surface border border-border">
+                  <p className="text-xs text-ink font-medium leading-relaxed">{evidenceAnalysis.summary}</p>
+                </div>
+
+                <div className="space-y-2">
+                  <span className="text-xs font-semibold text-ink-muted uppercase tracking-wider">
+                    Extracted Skills ({evidenceAnalysis.extracted_skills?.length || 0}):
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1">
+                    {evidenceAnalysis.extracted_skills?.map((sk, idx) => (
+                      <div key={idx} className="p-2.5 rounded-lg bg-surface border border-border text-xs space-y-1">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-semibold text-ink">{sk.skill_name}</span>
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                            Level {sk.estimated_proficiency} · {sk.proficiency_label || PROFICIENCY_LEVELS.find(l => l.value === sk.estimated_proficiency)?.label || 'Developing'}
+                          </span>
+                        </div>
+
+                        {sk.evidence_snippet && (
+                          <p className="text-[11px] text-ink-muted italic line-clamp-2">
+                            "{sk.evidence_snippet}"
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex justify-end pt-2">
+                  <Button
+                    size="sm"
+                    icon={<Check size={14} />}
+                    onClick={handleApplyExtractedSkills}
+                    className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold"
+                  >
+                    Apply to Profile
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
 
         {/* Proficiency Scale Guide */}
         <div className="mb-4 p-3 bg-paper border border-border rounded-xl text-xs grid grid-cols-2 sm:grid-cols-4 gap-2">
+
           {PROFICIENCY_LEVELS.map(lvl => (
             <div key={lvl.value} className="space-y-0.5">
               <div className="font-semibold text-ink flex items-center gap-1.5">
@@ -731,6 +960,9 @@ function SkillRow({ skill, editMode, onProficiencyChange, onRemove }) {
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-sm font-semibold text-ink">{skill.name}</span>
           <Badge color={categoryColor(skill.category)} size="xs">{skill.category}</Badge>
+          <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-paper border border-border text-ink-secondary">
+            Level {skill.proficiency} · {prof?.label}
+          </span>
         </div>
         <p className="text-xs text-ink-muted mt-0.5 truncate">{prof?.description}</p>
       </div>

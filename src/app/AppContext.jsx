@@ -160,12 +160,17 @@ function loadState() {
       ? saved.currentUserId
       : 'user-me';
 
+    // Clear any events added during previous test sessions
+    const rawEvents = saved.events ?? defaultState.events;
+    const cleanEvents = rawEvents.filter(e => !e._isNew && !String(e.id).startsWith('ev-'));
+    const events = cleanEvents.length > 0 ? cleanEvents : defaultState.events;
+
     return {
       ...defaultState,
       currentRole: saved.currentRole ?? defaultState.currentRole,
       currentUserId,
       participants,
-      events: saved.events ?? defaultState.events,
+      events,
       teams: saved.teams ?? defaultState.teams,
       registrations: saved.registrations ?? defaultState.registrations,
       challengeHistory: saved.challengeHistory ?? {},
@@ -298,6 +303,29 @@ function reducer(state, action) {
       );
       return { ...state, events: updated };
     }
+    case 'DELETE_EVENT': {
+      const eventId = action.payload;
+      const filtered = state.events.filter(e => e.id !== eventId);
+      const nextOrgEventId = state.organizerEventId === eventId
+        ? (filtered[0]?.id || '')
+        : state.organizerEventId;
+      return {
+        ...state,
+        events: filtered,
+        organizerEventId: nextOrgEventId,
+        registrations: state.registrations.filter(r => r.eventId !== eventId),
+        teams: state.teams.filter(t => t.eventId !== eventId),
+      };
+    }
+    case 'CLEAR_CUSTOM_EVENTS': {
+      const defaultIds = new Set(defaultState.events.map(e => e.id));
+      const resetEvents = state.events.filter(e => defaultIds.has(e.id));
+      return {
+        ...state,
+        events: resetEvents.length ? resetEvents : defaultState.events,
+        organizerEventId: defaultState.events[0]?.id || 'ev1',
+      };
+    }
 
     // Registrations
     case 'REGISTER': {
@@ -356,6 +384,41 @@ function reducer(state, action) {
         return { ...t, members: [...t.members, { participantId: action.payload.participantId, role: action.payload.role || 'Member' }] };
       });
       return { ...state, teams: updated };
+    }
+
+    case 'JOIN_TEAM': {
+      const { teamId, participantId, role } = action.payload;
+      const targetTeam = state.teams.find(t => t.id === teamId);
+      if (!targetTeam) return state;
+
+      // Remove participant from any existing team in the same event
+      const updatedTeams = state.teams.map(t => {
+        if (t.eventId === targetTeam.eventId) {
+          const filtered = t.members.filter(m => m.participantId !== participantId);
+          if (t.id === teamId) {
+            return {
+              ...t,
+              members: [...filtered, { participantId, role: role || 'Contributor' }]
+            };
+          }
+          return { ...t, members: filtered };
+        }
+        return t;
+      });
+
+      return { ...state, teams: updatedTeams };
+    }
+
+    case 'LEAVE_TEAM': {
+      const { teamId, participantId } = action.payload;
+      const updatedTeams = state.teams.map(t => {
+        if (t.id !== teamId) return t;
+        return {
+          ...t,
+          members: t.members.filter(m => m.participantId !== participantId)
+        };
+      });
+      return { ...state, teams: updatedTeams };
     }
 
     case 'SET_ORGANIZER_EVENT':

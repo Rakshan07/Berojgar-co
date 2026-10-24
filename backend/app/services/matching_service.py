@@ -270,27 +270,73 @@ class MatchingService:
                         "proficiency": r.min_proficiency
                     })
 
-            # Match reasons
-            match_reasons = []
+            # ─── 5-Pillar Compatibility Engine (Exact Weights) ──────────────────────
+            # 1. Required Skill Coverage (35%)
+            req_skills = [r for r in event.requirements if r.required]
+            covered_req_count = len([r for r in req_skills if any(
+                check_skill_match(s["name"], r.skill_name) and s["proficiency"] >= r.min_proficiency
+                for m in current_team_members for s in m["skills"]
+            )])
+            score_skill_cov = round((covered_req_count / len(req_skills) * 100) if req_skills else 100.0, 1)
+
+            # 2. Complementary Skills & Role Balance (25%)
             has_backend = any(any("backend" in s["name"].lower() or "python" in s["name"].lower() for s in m["skills"]) for m in current_team_members)
             has_frontend = any(any("frontend" in s["name"].lower() or "react" in s["name"].lower() for s in m["skills"]) for m in current_team_members)
             has_design = any(any("ux" in s["name"].lower() or "design" in s["name"].lower() for s in m["skills"]) for m in current_team_members)
-
-            if has_backend and has_frontend:
-                match_reasons.append("Strong technical pairing with complementary frontend and backend execution.")
-            if has_design:
-                match_reasons.append("Dedicated product design presence ensures cohesive user experience.")
+            has_coord = any(any("project" in s["name"].lower() or "management" in s["name"].lower() or "lead" in s["name"].lower() for s in m["skills"]) for m in current_team_members)
             
-            advanced_count = len([m for m in current_team_members if any(s["proficiency"] >= 3 for s in m["skills"])])
-            if advanced_count >= 2:
-                match_reasons.append(f"{advanced_count} members bring advanced or independent-level proficiency to the team.")
+            distinct_disciplines = sum([has_backend, has_frontend, has_design, has_coord])
+            score_role_bal = min(100.0, round((distinct_disciplines / 3.0) * 100, 1))
 
-            if not match_reasons:
-                match_reasons.append("Members were selected to maximize skill coverage across the event requirements.")
+            # 3. Collaboration Preferences (15%)
+            # Consistency in working style & time zones
+            tzs = [m.get("timezone", "UTC") for m in current_team_members]
+            score_collab = 100.0 if len(set(tzs)) <= 2 else 75.0
 
-            # Calculate coverage score
-            total_reqs = len(event.requirements) or 1
-            cov_score = round((len(reqs_covered) / total_reqs) * 100, 1)
+            # 4. Availability & Commitment (15%)
+            avg_hours = sum(m.get("hours_per_week", 15) for m in current_team_members) / max(len(current_team_members), 1)
+            score_avail = min(100.0, round((avg_hours / 15.0) * 100, 1))
+
+            # 5. Shared Goals & Role Preferences (10%)
+            pref_role_matches = 0
+            for m in current_team_members:
+                inferred = infer_suggested_role(m["skills"], event).lower()
+                user_prefs = [r.lower() for r in m.get("preferred_roles", [])]
+                if any(p in inferred or inferred in p for p in user_prefs) or not user_prefs:
+                    pref_role_matches += 1
+            score_goals = round((pref_role_matches / max(len(current_team_members), 1)) * 100, 1)
+
+            # Weighted Composite Compatibility Score
+            # 35% Skill + 25% Balance + 15% Collab + 15% Avail + 10% Goals
+            cov_score = round(
+                (0.35 * score_skill_cov) +
+                (0.25 * score_role_bal) +
+                (0.15 * score_collab) +
+                (0.15 * score_avail) +
+                (0.10 * score_goals),
+                1
+            )
+
+            # Match reasons with exact pillars
+            match_reasons = [
+                f"Overall Compatibility: {cov_score}% (deterministic 5-pillar engine)",
+                f"Skill Coverage (35% wt): {score_skill_cov}% — {covered_req_count}/{len(req_skills) if req_skills else 1} core requirements satisfied.",
+                f"Role Balance & Cross-Functionality (25% wt): {score_role_bal}% across technical, design, and domain competencies.",
+                f"Collaboration Alignment (15% wt): {score_collab}% matching communication rhythm.",
+                f"Availability & Commitment (15% wt): {score_avail}% (avg {round(avg_hours, 1)} hrs/wk per member).",
+                f"Role Preference & Goals (10% wt): {score_goals}% participant preference satisfaction."
+            ]
+
+            member_contributions_breakdown = [
+                {
+                    "user_id": str(m["user_id"]),
+                    "name": m["name"],
+                    "suggested_role": infer_suggested_role(m["skills"], event),
+                    "covered_skills": [s["name"] for s in m["skills"] if s["proficiency"] >= 2],
+                    "hours_per_week": m.get("hours_per_week", 15)
+                }
+                for m in current_team_members
+            ]
 
             proposed_teams_data.append({
                 "team_name": f"Team {team_idx}",
@@ -300,9 +346,11 @@ class MatchingService:
                 "reqs_covered": reqs_covered,
                 "missing_caps": missing_caps,
                 "match_reasons": match_reasons,
+                "member_contributions": member_contributions_breakdown,
                 "team_size_gap": len(current_team_members) < event.min_team_size
             })
             team_idx += 1
+
 
         # Unassigned participants
         unassigned_data = [
@@ -338,12 +386,13 @@ class MatchingService:
                 requirements_covered=t_data["reqs_covered"],
                 partial_covered=[],
                 missing_capabilities=t_data["missing_caps"],
-                member_contributions=[],
+                member_contributions=t_data["member_contributions"],
                 coverage_notes=t_data["coverage_notes"],
                 match_reasons=t_data["match_reasons"],
                 unassigned_participants=unassigned_data
             )
             self.db.add(explanation)
+
 
         run.status = "completed"
         run.completed_at = datetime.now(timezone.utc)

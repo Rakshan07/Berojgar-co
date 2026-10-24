@@ -1,7 +1,12 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from pydantic import BaseModel
-from backend.app.schemas.ai_setup import AISuggestedRole, AISuggestedRequirement, AISuggestedQuestion
+from backend.app.schemas.ai_setup import (
+    AISuggestedRole,
+    AISuggestedRequirement,
+    AISuggestedQuestion,
+    ProfileEvidenceExtractionResponse
+)
 
 class AISetupOutput(BaseModel):
     suggested_roles: List[AISuggestedRole]
@@ -10,7 +15,7 @@ class AISetupOutput(BaseModel):
     explanation: str
 
 class BaseAIProvider(ABC):
-    """Abstract interface for AI Event Setup providers."""
+    """Abstract interface for AI Event Setup and Evidence Extraction providers."""
 
     @abstractmethod
     async def generate_event_setup(
@@ -23,3 +28,16 @@ class BaseAIProvider(ABC):
     ) -> AISetupOutput:
         """Generates draft roles, requirements, and assessment questions for an event."""
         pass
+
+    @abstractmethod
+    async def analyze_profile_evidence(
+        self,
+        content: Optional[str] = None,
+        source_type: str = "resume",
+        candidate_name: Optional[str] = None,
+        file_bytes: Optional[bytes] = None,
+        mime_type: Optional[str] = None
+    ) -> ProfileEvidenceExtractionResponse:
+        """Extracts structured skills, proficiencies, and evidence from resume, PDF, image, or text."""
+        pass
+

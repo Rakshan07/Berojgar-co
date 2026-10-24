@@ -1,14 +1,31 @@
-// ─── Organizer Dashboard ──────────────────────────────────────────────────
 import { Link } from 'react-router-dom';
-import { Calendar, Users, AlertCircle, Plus, ArrowRight, CheckCircle } from 'lucide-react';
+import { Calendar, Users, AlertCircle, Plus, ArrowRight, CheckCircle, Edit2, Trash2 } from 'lucide-react';
 import { useApp } from '../../app/AppContext';
 import { Card, SectionHeader, StatCard, EmptyState } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { BrandWordmark } from '../../components/ui/BrandMark';
+import { useToast } from '../../hooks/useToast';
 
 export default function OrganizerDashboard() {
   const { state, dispatch } = useApp();
+  const toast = useToast();
+
+  async function handleDeleteEvent(eventId, title) {
+    if (!window.confirm(`Are you sure you want to delete "${title}"?`)) return;
+    dispatch({ type: 'DELETE_EVENT', payload: eventId });
+    try {
+      const token = localStorage.getItem('teamweave_token');
+      await fetch(`http://localhost:8000/api/v1/events/${eventId}`, {
+        method: 'DELETE',
+        headers: {
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+          'X-User-Id': state?.currentUserId || 'asel',
+        },
+      });
+    } catch {}
+    toast.success('Event deleted');
+  }
 
   // In demo mode, the organizer owns default events + any newly created events
   const defaultOrgEventIds = ['ev1', 'ev3', 'ev4'];
@@ -127,9 +144,23 @@ export default function OrganizerDashboard() {
                       </span>
                     )}
                   </div>
-                  <Link to="/organizer/teams" onClick={() => dispatch({ type: 'SET_ORGANIZER_EVENT', payload: event.id })}>
-                    <Button variant="ghost" size="xs" className="gap-1">Manage <ArrowRight size={11} /></Button>
-                  </Link>
+                  <div className="flex items-center gap-1.5 shrink-0 flex-wrap">
+                    <Link to={`/organizer/create?edit=${event.id}`}>
+                      <Button variant="ghost" size="xs" icon={<Edit2 size={11} />}>Edit</Button>
+                    </Link>
+                    <Button
+                      variant="ghost"
+                      size="xs"
+                      className="text-rose-400 hover:text-rose-300 hover:bg-rose-950/30"
+                      icon={<Trash2 size={11} />}
+                      onClick={() => handleDeleteEvent(event.id, event.title)}
+                    >
+                      Delete
+                    </Button>
+                    <Link to="/organizer/teams" onClick={() => dispatch({ type: 'SET_ORGANIZER_EVENT', payload: event.id })}>
+                      <Button variant="ghost" size="xs" className="gap-1">Manage <ArrowRight size={11} /></Button>
+                    </Link>
+                  </div>
                 </div>
               );
             })}

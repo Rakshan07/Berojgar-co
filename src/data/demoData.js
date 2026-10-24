@@ -300,6 +300,56 @@ export const TEAMS = [
     proposedAt: '2026-10-19',
     publishedAt: null,
   },
+  {
+    id: 'tm3',
+    eventId: 'ev1',
+    name: 'GreenTransit Labs',
+    status: 'proposed',
+    members: [
+      { participantId: 'p2', role: 'Backend Lead' },
+      { participantId: 'p6', role: 'Visual Storyteller' },
+    ],
+    coverageNotes: [
+      'Marcus covers Backend Development (Advanced) and Python.',
+      'Leo covers Visual Storytelling and Media Branding.',
+      'Open spots: Frontend Engineer, UI/UX Designer.',
+    ],
+    matchReasons: [
+      'Urban mobility simulation engine backed by clear visual storytelling.',
+      'Needs frontend interface builder to ship complete live MVP.',
+    ],
+    missingRequirements: [
+      { skill: 'Frontend Development', required: true, proficiency: 2 },
+      { skill: 'UX Design', required: true, proficiency: 2 },
+    ],
+    proposedAt: '2026-10-20',
+    publishedAt: null,
+  },
+  {
+    id: 'tm4',
+    eventId: 'ev1',
+    name: 'UrbanEchoes',
+    status: 'proposed',
+    members: [
+      { participantId: 'p3', role: 'Product & UX Designer' },
+      { participantId: 'p5', role: 'Project Coordinator' },
+    ],
+    coverageNotes: [
+      'Yuna covers UX Design and interactive prototyping.',
+      'Fatima provides team coordination, scoping, and pitch preparation.',
+      'Open spots: Full-stack engineer, Data visualization.',
+    ],
+    matchReasons: [
+      'Citizen feedback and civic survey platform for neighborhood improvements.',
+      'High collaboration culture with strong user empathy.',
+    ],
+    missingRequirements: [
+      { skill: 'Frontend Development', required: true, proficiency: 2 },
+      { skill: 'Backend Development', required: true, proficiency: 2 },
+    ],
+    proposedAt: '2026-10-21',
+    publishedAt: null,
+  },
 ];
 
 // ─── Demo Registrations ───────────────────────────────────────────────────

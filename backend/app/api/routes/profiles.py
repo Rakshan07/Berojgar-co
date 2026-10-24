@@ -1,5 +1,5 @@
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile
 from sqlalchemy.orm import Session
 
 from backend.app.db.session import get_db
@@ -14,8 +14,15 @@ from backend.app.schemas.profile import (
 from backend.app.schemas.common import MessageResponse
 from backend.app.api.dependencies import get_current_user
 from backend.app.models.auth import User
+from backend.app.schemas.ai_setup import (
+    ProfileEvidenceExtractionRequest,
+    ProfileEvidenceExtractionResponse,
+    ApplyEvidenceRequest,
+)
+from backend.app.integrations.ai.factory import get_ai_provider
 
 router = APIRouter(prefix="/profiles", tags=["Profiles & Skills"])
+
 
 @router.get("/me", response_model=ProfileResponse)
 def get_my_profile(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -127,3 +134,89 @@ def remove_my_skill(
 def list_skill_catalog(category_id: Optional[str] = None, db: Session = Depends(get_db)):
     service = ProfileService(db)
     return service.list_skills(category_id)
+
+@router.post("/analyze-evidence", response_model=ProfileEvidenceExtractionResponse)
+async def analyze_profile_evidence(
+    req: ProfileEvidenceExtractionRequest,
+    current_user: User = Depends(get_current_user)
+):
+    provider = get_ai_provider()
+    candidate_name = req.candidate_name or current_user.full_name or current_user.username
+    return await provider.analyze_profile_evidence(
+        content=req.content,
+        source_type=req.source_type,
+        candidate_name=candidate_name
+    )
+
+@router.post("/upload-evidence", response_model=ProfileEvidenceExtractionResponse)
+async def upload_and_analyze_evidence(
+    file: UploadFile = File(...),
+    source_type: str = "resume",
+    current_user: User = Depends(get_current_user)
+):
+    provider = get_ai_provider()
+    candidate_name = current_user.full_name or current_user.username
+    file_bytes = await file.read()
+    mime_type = file.content_type or "application/octet-stream"
+
+    # Normalize extension-based mime type if needed
+    fn_lower = (file.filename or "").lower()
+    if fn_lower.endswith(".pdf"):
+        mime_type = "application/pdf"
+    elif fn_lower.endswith((".png", ".jpg", ".jpeg", ".webp")):
+        if fn_lower.endswith(".png"):
+            mime_type = "image/png"
+        elif fn_lower.endswith((".jpg", ".jpeg")):
+            mime_type = "image/jpeg"
+        elif fn_lower.endswith(".webp"):
+            mime_type = "image/webp"
+
+    content = None
+    if mime_type.startswith("text/") or fn_lower.endswith((".txt", ".md")):
+        try:
+            content = file_bytes.decode("utf-8")
+        except Exception:
+            pass
+
+    return await provider.analyze_profile_evidence(
+        content=content,
+        source_type=source_type,
+        candidate_name=candidate_name,
+        file_bytes=file_bytes,
+        mime_type=mime_type
+    )
+
+
+@router.post("/apply-evidence", response_model=ProfileResponse)
+def apply_extracted_evidence(
+    req: ApplyEvidenceRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    service = ProfileService(db)
+    
+    # 1. Update bio / roles / interests if provided
+    update_data = {}
+    if req.bio:
+        update_data["bio"] = req.bio
+    if req.preferred_roles:
+        update_data["preferred_roles"] = req.preferred_roles
+    if req.interests:
+        update_data["interests"] = req.interests
+    if update_data:
+        service.update_profile(current_user.id, ProfileUpdate(**update_data))
+
+    # 2. Add or update skills with evidence
+    for skill_ev in req.extracted_skills:
+        skill = service.ensure_skill(skill_ev.skill_name, skill_ev.category)
+        service.add_user_skill(
+            current_user.id,
+            UserSkillCreate(
+                skill_id=skill.id,
+                proficiency=skill_ev.estimated_proficiency,
+                is_self_declared=not skill_ev.is_verified
+            )
+        )
+
+    return get_my_profile(current_user=current_user, db=db)
+
