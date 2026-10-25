@@ -10,8 +10,8 @@
 .motion-landing .intro-card .label{font-size:22px;line-height:1.15;right:18px}.motion-landing .intro-card .label small{font-size:7px;letter-spacing:1px}.motion-landing .intro-card img,.motion-landing .hero-photo img,.motion-landing .event-card img{object-fit:contain;background:#1b1017}.motion-landing .event-card h3{line-height:1.2;font-size:20px;min-height:2.4em}
 @media(max-width:700px){.motion-landing .intro-card .label{font-size:19px}.motion-landing .intro-card .label small{font-size:6px}.motion-landing .event-card h3{font-size:16px}}
 
-/* The final floating panel is the live landing page, expanding to its full size. */
-.motion-landing #site.panel-reveal{position:fixed;inset:0;width:100%;height:100svh;overflow:hidden;z-index:101;transform-origin:top left;background:var(--wine);pointer-events:none;transition:none;will-change:transform,border-radius;isolation:isolate}
+/* Keep the live page above the fading intro until the existing transition completes. */
+.motion-landing #site.panel-reveal{position:relative;width:100%;height:100svh;overflow:hidden;z-index:101;transform-origin:top left;background:var(--wine);pointer-events:none;transition:none;will-change:transform,opacity,border-radius;isolation:isolate}
 .motion-landing #site.panel-reveal .hero-art{transform:none;transition:none}.motion-landing #site.panel-reveal .floating-tag{animation-play-state:paused}
 
 .motion-landing{line-height:normal}.motion-landing .filters button[aria-pressed="true"]{background:#351021;color:white;border-color:#351021}
@@ -82,3 +82,7 @@
 @media(max-width:700px) {
   .motion-landing .nav nav { background: #210B16; border-bottom-color: #5E2A3D; }
 }
+
+.motion-landing .intro-card { contain: layout paint style; transform-origin: center; }
+.motion-landing .intro-card img { image-rendering: auto; }
+.motion-landing .progress i { width: 100%; transform: scaleX(0); transform-origin: left center; will-change: transform; }
