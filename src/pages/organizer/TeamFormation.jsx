@@ -92,10 +92,10 @@ export default function TeamFormationPage() {
   return (
     <div className="space-y-7 animate-fadeIn">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-purple-500/20 pb-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-garnet/20 pb-6">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider font-semibold bg-purple-950/40 text-purple-300 border border-purple-500/30 shadow-sm shadow-purple-950/50 mb-3">
-            <Zap size={11} className="text-purple-400" /> Skill-Driven Teaming Studio
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider font-semibold bg-wine-surface text-pink border border-garnet/30 shadow-sm shadow-black/50 mb-3">
+            <Zap size={11} className="text-pink" /> Skill-Driven Teaming Studio
           </div>
           <h1 className="text-3xl sm:text-4xl font-heading font-black text-white tracking-tight">
             Team Formation <span className="text-gradient-purple">Studio</span>
@@ -106,7 +106,7 @@ export default function TeamFormationPage() {
         </div>
         <div className="flex items-center gap-3 flex-wrap">
           {generatedTeams.length > 0 && (
-            <Button variant="secondary" size="sm" onClick={handleSaveTeams} className="border border-purple-500/30 bg-[#120D22] text-white font-medium hover:bg-[#1A1230]">
+            <Button variant="secondary" size="sm" onClick={handleSaveTeams} className="border border-garnet/30 bg-[#13080E] text-white font-medium hover:bg-[#2C1020]">
               Save suggestions
             </Button>
           )}
@@ -115,7 +115,7 @@ export default function TeamFormationPage() {
             icon={loading ? <RefreshCw size={14} className="animate-spin" /> : <Zap size={14} />}
             loading={loading}
             onClick={handleGenerate}
-            className="border border-purple-400/40 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white font-semibold shadow-md shadow-purple-950/50"
+            className="border border-garnet/40 bg-gradient-to-r from-garnet to-garnet-hover hover:from-garnet hover:to-garnet-hover text-white font-semibold shadow-md shadow-black/50"
           >
             Generate suggestions
           </Button>
@@ -127,7 +127,7 @@ export default function TeamFormationPage() {
         <div className="flex items-center gap-3">
           <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider shrink-0">Selected Event:</label>
           <select
-            className="border border-white/10 rounded-xl px-3.5 py-1.5 bg-[#0C0D14] text-sm text-white focus:outline-none focus:border-teal/60 focus:ring-1 focus:ring-teal/30 transition-all font-medium"
+            className="border border-white/10 rounded-xl px-3.5 py-1.5 bg-[#13080E] text-sm text-white focus:outline-none focus:border-teal/60 focus:ring-1 focus:ring-teal/30 transition-all font-medium"
             value={selectedEventId}
             onChange={e => { setSelectedEventId(e.target.value); dispatch({ type: 'SET_GENERATED_TEAMS', payload: [] }); }}
           >
@@ -153,8 +153,8 @@ export default function TeamFormationPage() {
             cellSize={7}
             gap={3}
             glow
-            color="#0d9488"
-            doneColor="#10b981"
+            color="#B6264D"
+            doneColor="#D13D65"
           />
         </div>
       )}
@@ -254,13 +254,13 @@ export default function TeamFormationPage() {
                       size="sm"
                       icon={<CheckCircle size={14} />}
                       onClick={() => setConfirmPublish(team.id)}
-                      className="border border-purple-400/40 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white font-semibold shadow-md shadow-purple-950/50"
+                      className="border border-garnet/40 bg-gradient-to-r from-garnet to-garnet-hover hover:from-garnet hover:to-garnet-hover text-white font-semibold shadow-md shadow-black/50"
                     >
                       Publish Team
                     </Button>
                   ) : (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-950/40 text-purple-200 border border-purple-500/30 text-xs font-mono font-semibold uppercase tracking-wider">
-                      <CheckCircle size={13} className="text-purple-400" /> Published
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-wine-surface text-pink border border-garnet/30 text-xs font-mono font-semibold uppercase tracking-wider">
+                      <CheckCircle size={13} className="text-pink" /> Published
                     </span>
                   )}
                 </div>

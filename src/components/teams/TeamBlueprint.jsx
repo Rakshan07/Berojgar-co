@@ -49,7 +49,7 @@ export function TeamBlueprint({ team, participants, event, showReasons = true, c
             <h3 className="text-lg font-heading font-semibold text-ink">{team.name}</h3>
             <Badge color={status.color} dot>{status.label}</Badge>
             {team.compatibilityScore != null && (
-              <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20">
+              <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-garnet-light text-pink border border-garnet/20">
                 {team.compatibilityScore}% Match
               </span>
             )}
@@ -57,15 +57,15 @@ export function TeamBlueprint({ team, participants, event, showReasons = true, c
           </div>
           <p className="text-sm text-ink-secondary">{event?.title ?? 'Event'}</p>
           {team.pillars && (
-            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-purple-950/20 border border-purple-500/20 rounded-lg p-2.5">
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-wine border border-garnet/20 rounded-lg p-2.5">
               {team.pillars.map((p, i) => (
                 <div key={i} className="flex items-center justify-between gap-2">
                   <span className="text-slate-400 truncate">{p.name} ({p.weight}):</span>
                   <div className="flex items-center gap-1.5 shrink-0">
                     <div className="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-violet-500 to-purple-500 rounded-full" style={{ width: `${p.score}%` }} />
+                      <div className="h-full bg-gradient-to-r from-garnet to-garnet-hover rounded-full" style={{ width: `${p.score}%` }} />
                     </div>
-                    <span className="font-mono text-purple-300 font-semibold">{p.score}%</span>
+                    <span className="font-mono text-pink font-semibold">{p.score}%</span>
                   </div>
                 </div>
               ))}

@@ -454,8 +454,8 @@ export default function ProfilePage() {
               grid={3}
               cellSize={6}
               glow
-              color="#0d9488"
-              doneColor="#10b981"
+              color="#B6264D"
+              doneColor="#D13D65"
             />
           </div>
         )}
@@ -532,9 +532,9 @@ export default function ProfilePage() {
           <Button
             size="xs"
             variant="secondary"
-            icon={<Upload size={13} className="text-purple-400" />}
+            icon={<Upload size={13} className="text-pink" />}
             onClick={() => setShowEvidencePanel(!showEvidencePanel)}
-            className="border border-border bg-surface text-ink hover:border-purple-400"
+            className="border border-border bg-surface text-ink hover:border-garnet"
           >
             {showEvidencePanel ? 'Hide upload' : 'Upload Resume / Evidence'}
           </Button>
@@ -542,11 +542,11 @@ export default function ProfilePage() {
 
         {/* Normal Resume / Evidence Upload Zone */}
         {showEvidencePanel && (
-          <div className="mb-5 p-4 rounded-xl border border-dashed border-purple-500/30 bg-paper/80 space-y-4 animate-fadeIn">
+          <div className="mb-5 p-4 rounded-xl border border-dashed border-garnet/30 bg-paper/80 space-y-4 animate-fadeIn">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h4 className="text-sm font-semibold text-ink flex items-center gap-1.5">
-                  <FileUp size={16} className="text-purple-400" /> Upload Resume or Portfolio
+                  <FileUp size={16} className="text-pink" /> Upload Resume or Portfolio
                 </h4>
                 <p className="text-xs text-ink-muted mt-0.5">
                   Upload an image of your resume (PNG, JPG), PDF document, or paste text to auto-fill your profile.
@@ -557,14 +557,14 @@ export default function ProfilePage() {
                 <button
                   type="button"
                   onClick={() => setUploadMode('file')}
-                  className={`px-2.5 py-1 rounded-md transition-colors font-medium ${uploadMode === 'file' ? 'bg-purple-600 text-white shadow-sm' : 'text-ink-muted hover:text-ink'}`}
+                  className={`px-2.5 py-1 rounded-md transition-colors font-medium ${uploadMode === 'file' ? 'bg-garnet text-white shadow-sm' : 'text-ink-muted hover:text-ink'}`}
                 >
                   Upload File
                 </button>
                 <button
                   type="button"
                   onClick={() => setUploadMode('text')}
-                  className={`px-2.5 py-1 rounded-md transition-colors font-medium ${uploadMode === 'text' ? 'bg-purple-600 text-white shadow-sm' : 'text-ink-muted hover:text-ink'}`}
+                  className={`px-2.5 py-1 rounded-md transition-colors font-medium ${uploadMode === 'text' ? 'bg-garnet text-white shadow-sm' : 'text-ink-muted hover:text-ink'}`}
                 >
                   Paste Text
                 </button>
@@ -572,7 +572,7 @@ export default function ProfilePage() {
             </div>
 
             {uploadMode === 'file' ? (
-              <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-border rounded-xl bg-surface hover:border-purple-400/50 transition-colors text-center cursor-pointer relative">
+              <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-border rounded-xl bg-surface hover:border-garnet/50 transition-colors text-center cursor-pointer relative">
                 <input
                   type="file"
                   accept="image/png,image/jpeg,image/webp,application/pdf,.txt,.md,.pdf,.png,.jpg,.jpeg"
@@ -582,7 +582,7 @@ export default function ProfilePage() {
                     if (f) handleFileUpload(f);
                   }}
                 />
-                <div className="p-3 rounded-full bg-purple-500/10 text-purple-400 mb-2">
+                <div className="p-3 rounded-full bg-garnet-light text-pink mb-2">
                   <Upload size={22} />
                 </div>
                 <p className="text-sm font-medium text-ink">
@@ -592,7 +592,7 @@ export default function ProfilePage() {
                   Supports PDF resumes, photos/screenshots (PNG, JPG), or text docs
                 </p>
                 {uploadedFileName && (
-                  <div className="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20 text-xs">
+                  <div className="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-garnet-light text-pink border border-garnet/20 text-xs">
                     <FileText size={12} /> {uploadedFileName}
                   </div>
                 )}
@@ -610,7 +610,7 @@ export default function ProfilePage() {
                     size="sm"
                     loading={analyzingEvidence}
                     onClick={handleAnalyzeEvidence}
-                    className="bg-purple-600 hover:bg-purple-500 text-white"
+                    className="bg-garnet hover:bg-garnet-hover text-white"
                   >
                     Extract skills
                   </Button>
@@ -634,7 +634,7 @@ export default function ProfilePage() {
                       <div key={idx} className="p-2.5 rounded-lg bg-surface border border-border text-xs space-y-1">
                         <div className="flex items-center justify-between gap-2">
                           <span className="font-semibold text-ink">{sk.skill_name}</span>
-                          <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-garnet-light text-pink border border-garnet/20">
                             Level {sk.estimated_proficiency} · {sk.proficiency_label || PROFICIENCY_LEVELS.find(l => l.value === sk.estimated_proficiency)?.label || 'Developing'}
                           </span>
                         </div>
@@ -654,7 +654,7 @@ export default function ProfilePage() {
                     size="sm"
                     icon={<Check size={14} />}
                     onClick={handleApplyExtractedSkills}
-                    className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold"
+                    className="bg-garnet hover:bg-garnet-hover text-white font-semibold"
                   >
                     Apply to Profile
                   </Button>

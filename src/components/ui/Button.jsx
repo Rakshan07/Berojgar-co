@@ -1,10 +1,10 @@
 // ─── Reusable Button component ───────────────────────────────────────────
 const variants = {
-  primary:   'bg-[#a31c1b] text-[#F7FAF8] hover:bg-[#bf2625] hover:shadow-lg hover:shadow-[#a31c1b]/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] shadow-sm shadow-[#a31c1b]/30',
-  secondary: 'bg-[#171717] text-[#F7FAF8] border border-[#333D38] hover:bg-[#222624] hover:border-[#45524B] hover:shadow-md hover:shadow-black/60 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
-  ghost:     'bg-transparent text-[#C8D1CC] hover:bg-[#171717] hover:text-[#F7FAF8] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
-  danger:    'bg-[#a31c1b] text-white hover:bg-[#bf2625] hover:shadow-lg hover:shadow-[#a31c1b]/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
-  outline:   'bg-transparent text-[#E56E6D] border border-[#a31c1b] hover:bg-[#a31c1b]/20 hover:border-[#E56E6D] hover:shadow-sm hover:shadow-[#a31c1b]/30 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
+  primary:   'bg-[#B6264D] text-[#F7FAF8] hover:bg-[#D13D65] hover:shadow-lg hover:shadow-[#B6264D]/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] shadow-sm shadow-[#B6264D]/30',
+  secondary: 'bg-[#210B16] text-[#F7FAF8] border border-[#5E2A3D] hover:bg-[#32111F] hover:border-[#754356] hover:shadow-md hover:shadow-black/60 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
+  ghost:     'bg-transparent text-[#E0CAD3] hover:bg-[#210B16] hover:text-[#F7FAF8] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
+  danger:    'bg-[#B6264D] text-white hover:bg-[#D13D65] hover:shadow-lg hover:shadow-[#B6264D]/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
+  outline:   'bg-transparent text-[#F4A7BB] border border-[#B6264D] hover:bg-[#B6264D]/20 hover:border-[#F4A7BB] hover:shadow-sm hover:shadow-[#B6264D]/30 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
 };
 
 const sizes = {
@@ -32,7 +32,7 @@ export function Button({
         inline-flex items-center justify-center font-medium rounded-xl
         transition-all duration-200 cursor-pointer select-none
         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
-        focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a31c1b]
+        focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B6264D]
         ${variants[variant] ?? variants.primary}
         ${sizes[size] ?? sizes.md}
         ${className}

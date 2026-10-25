@@ -76,12 +76,12 @@ export function AppShell({ children }) {
             className={`
               flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-150
               ${active
-                ? 'bg-[#a31c1b]/20 text-[#F7FAF8] font-semibold border border-[#a31c1b]/50 shadow-sm shadow-black/60'
-                : 'text-[#C8D1CC] hover:text-[#F7FAF8] hover:bg-white/5'
+                ? 'bg-[#B6264D]/20 text-[#F7FAF8] font-semibold border border-[#B6264D]/50 shadow-sm shadow-black/60'
+                : 'text-[#E0CAD3] hover:text-[#F7FAF8] hover:bg-white/5'
               }
             `}
           >
-            <span className={active ? 'text-[#E56E6D]' : 'text-[#8F9E97]'}>{item.icon}</span>
+            <span className={active ? 'text-[#F4A7BB]' : 'text-[#BCA2AD]'}>{item.icon}</span>
             {item.label}
           </Link>
         );
@@ -90,17 +90,17 @@ export function AppShell({ children }) {
   );
 
   return (
-    <div className="relative min-h-screen flex flex-col text-[#F7FAF8] bg-[#06110C] overflow-x-hidden">
+    <div className="relative min-h-screen flex flex-col text-[#F7FAF8] bg-[#13080E] overflow-x-hidden">
       {/* ─── Ambient Atmospheric Background Lighting across all pages ─── */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1100px] h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(163,28,27,0.18),transparent_70%)]" />
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1100px] h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(182,38,77,0.18),transparent_70%)]" />
         <div className="absolute top-[30%] -right-40 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(23,23,23,0.85),transparent_65%)]" />
-        <div className="absolute bottom-0 left-[-10%] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(6,17,12,0.8),transparent_60%)]" />
+        <div className="absolute bottom-0 left-[-10%] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(89,15,43,0.55),transparent_60%)]" />
       </div>
 
       <div className="relative z-10 flex flex-col flex-1 min-h-screen">
         {/* Header - Glassmorphic floating nav with crisp border */}
-        <header className="sticky top-0 z-40 bg-[#171717]/92 backdrop-blur-2xl border-b border-[#333D38]/80 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
+        <header className="sticky top-0 z-40 bg-[#210B16]/92 backdrop-blur-2xl border-b border-[#5E2A3D]/80 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center gap-5">
             {/* Brand */}
             <Link to="/" className="shrink-0 hover:opacity-90 transition-opacity">
@@ -118,38 +118,38 @@ export function AppShell({ children }) {
               <div className="relative">
                 <button
                   onClick={() => setRoleMenuOpen(v => !v)}
-                  className="flex items-center gap-2.5 pl-1.5 pr-3 py-1 rounded-full border border-[#333D38] bg-[#171717]/95 hover:border-[#a31c1b] hover:bg-[#222624] text-xs text-[#F7FAF8] transition-all shadow-sm cursor-pointer focus-visible:outline-[#a31c1b] group"
+                  className="flex items-center gap-2.5 pl-1.5 pr-3 py-1 rounded-full border border-[#5E2A3D] bg-[#210B16]/95 hover:border-[#B6264D] hover:bg-[#32111F] text-xs text-[#F7FAF8] transition-all shadow-sm cursor-pointer focus-visible:outline-[#B6264D] group"
                   aria-expanded={roleMenuOpen}
                 >
                   <Avatar
                     initials={user?.initials}
                     size="sm"
                     index={0}
-                    className="w-7 h-7 text-[11px] ring-1 ring-[#333D38] group-hover:ring-[#a31c1b] transition-all"
+                    className="w-7 h-7 text-[11px] ring-1 ring-[#5E2A3D] group-hover:ring-[#B6264D] transition-all"
                   />
                   <div className="flex flex-col text-left leading-tight hidden sm:flex">
-                    <span className="font-semibold text-xs text-[#F7FAF8] max-w-[110px] truncate group-hover:text-[#E56E6D] transition-colors">
+                    <span className="font-semibold text-xs text-[#F7FAF8] max-w-[110px] truncate group-hover:text-[#F4A7BB] transition-colors">
                       {user?.name || 'Account'}
                     </span>
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#8F9E97] flex items-center gap-1">
-                      <span className={`w-1.5 h-1.5 rounded-full ${isOrganizer ? 'bg-[#a31c1b]' : 'bg-[#10B981]'}`} />
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#BCA2AD] flex items-center gap-1">
+                      <span className={`w-1.5 h-1.5 rounded-full ${isOrganizer ? 'bg-[#B6264D]' : 'bg-[#D13D65]'}`} />
                       {isOrganizer ? 'Host' : 'Participant'}
                     </span>
                   </div>
-                  <ChevronDown size={13} className={`text-[#8F9E97] transition-transform ${roleMenuOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown size={13} className={`text-[#BCA2AD] transition-transform ${roleMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {roleMenuOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-64 bg-[#171717] border border-[#333D38] rounded-2xl shadow-2xl z-50 p-2 animate-fadeIn backdrop-blur-2xl">
-                    <div className="px-3 py-2.5 border-b border-[#333D38]/60 mb-1.5">
+                  <div className="absolute right-0 top-full mt-2 w-64 bg-[#210B16] border border-[#5E2A3D] rounded-2xl shadow-2xl z-50 p-2 animate-fadeIn backdrop-blur-2xl">
+                    <div className="px-3 py-2.5 border-b border-[#5E2A3D]/60 mb-1.5">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-[10px] font-mono text-[#E56E6D] uppercase tracking-wider font-semibold">Account Profile</span>
-                        <span className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-full font-semibold ${isOrganizer ? 'bg-[#a31c1b]/20 text-[#E56E6D] border border-[#a31c1b]/50' : 'bg-[#10B981]/20 text-[#10B981] border border-[#10B981]/40'}`}>
+                        <span className="text-[10px] font-mono text-[#F4A7BB] uppercase tracking-wider font-semibold">Account Profile</span>
+                        <span className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-full font-semibold ${isOrganizer ? 'bg-[#B6264D]/20 text-[#F4A7BB] border border-[#B6264D]/50' : 'bg-[#D13D65]/20 text-[#F4A7BB] border border-[#D13D65]/40'}`}>
                           {isOrganizer ? 'Organizer Account' : 'Participant Account'}
                         </span>
                       </div>
                       <p className="text-sm font-semibold text-[#F7FAF8] truncate">{user?.name || 'Active User'}</p>
-                      <p className="text-[11px] text-[#8F9E97] truncate">{user?.email || 'user@example.com'}</p>
+                      <p className="text-[11px] text-[#BCA2AD] truncate">{user?.email || 'user@example.com'}</p>
                     </div>
 
                     <Link
@@ -157,7 +157,7 @@ export function AppShell({ children }) {
                       onClick={() => setRoleMenuOpen(false)}
                       className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#F7FAF8] hover:bg-white/5 transition-colors"
                     >
-                      <User size={14} className="text-[#E56E6D]" />
+                      <User size={14} className="text-[#F4A7BB]" />
                       <span>My Profile</span>
                     </Link>
 
@@ -168,7 +168,7 @@ export function AppShell({ children }) {
                           onClick={() => setRoleMenuOpen(false)}
                           className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#F7FAF8] hover:bg-white/5 transition-colors"
                         >
-                          <LayoutDashboard size={14} className="text-[#E56E6D]" />
+                          <LayoutDashboard size={14} className="text-[#F4A7BB]" />
                           <span>Organizer Workspace</span>
                         </Link>
                         <Link
@@ -176,7 +176,7 @@ export function AppShell({ children }) {
                           onClick={() => setRoleMenuOpen(false)}
                           className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#F7FAF8] hover:bg-white/5 transition-colors"
                         >
-                          <Plus size={14} className="text-[#E56E6D]" />
+                          <Plus size={14} className="text-[#F4A7BB]" />
                           <span>Create New Event</span>
                         </Link>
                       </>
@@ -187,39 +187,39 @@ export function AppShell({ children }) {
                           onClick={() => setRoleMenuOpen(false)}
                           className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#F7FAF8] hover:bg-white/5 transition-colors"
                         >
-                          <LayoutDashboard size={14} className="text-[#E56E6D]" />
+                          <LayoutDashboard size={14} className="text-[#F4A7BB]" />
                           <span>Participant Dashboard</span>
                         </Link>
                         <Link
                           to="/organizer/auth"
                           onClick={() => setRoleMenuOpen(false)}
-                          className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#E56E6D] bg-[#222624] hover:bg-[#2A302C] border border-[#333D38] transition-colors"
+                          className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#F4A7BB] bg-[#32111F] hover:bg-[#3A1527] border border-[#5E2A3D] transition-colors"
                         >
-                          <Sparkles size={14} className="text-[#a31c1b]" />
+                          <Sparkles size={14} className="text-[#B6264D]" />
                           <span>Host an Event / Organizer Portal</span>
                         </Link>
                       </>
                     )}
 
-                    <div className="border-t border-[#333D38]/50 my-1.5" />
+                    <div className="border-t border-[#5E2A3D]/50 my-1.5" />
 
                     <button
                       onClick={() => openAuth('signin')}
-                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#C8D1CC] hover:bg-white/5 hover:text-[#F7FAF8] transition-colors cursor-pointer"
+                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#E0CAD3] hover:bg-white/5 hover:text-[#F7FAF8] transition-colors cursor-pointer"
                     >
-                      <LogIn size={14} className="text-[#E56E6D]" />
+                      <LogIn size={14} className="text-[#F4A7BB]" />
                       <span>Switch account / Sign in</span>
                     </button>
 
                     <button
                       onClick={() => openAuth('signup')}
-                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#C8D1CC] hover:bg-white/5 hover:text-[#F7FAF8] transition-colors cursor-pointer"
+                      className="w-full text-left px-3 py-2 text-sm rounded-xl flex items-center gap-2 text-[#E0CAD3] hover:bg-white/5 hover:text-[#F7FAF8] transition-colors cursor-pointer"
                     >
-                      <UserPlus size={14} className="text-[#E56E6D]" />
+                      <UserPlus size={14} className="text-[#F4A7BB]" />
                       <span>Create new account</span>
                     </button>
 
-                    <div className="border-t border-[#333D38]/50 my-1.5" />
+                    <div className="border-t border-[#5E2A3D]/50 my-1.5" />
 
                     <button
                       onClick={handleSignOut}
@@ -234,7 +234,7 @@ export function AppShell({ children }) {
 
               {/* Mobile toggle */}
               <button
-                className="md:hidden text-[#9EAAA4] hover:text-[#F7FAF8] p-1 rounded-lg hover:bg-white/5"
+                className="md:hidden text-[#BCA2AD] hover:text-[#F7FAF8] p-1 rounded-lg hover:bg-white/5"
                 onClick={() => setMobileOpen(v => !v)}
                 aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               >
@@ -249,7 +249,7 @@ export function AppShell({ children }) {
           <div className="md:hidden fixed inset-0 z-50 pt-16" onClick={() => setMobileOpen(false)}>
             <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
             <nav
-              className="relative bg-[#171717] border-r border-[#333D38] h-full w-64 shadow-modal p-4 flex flex-col gap-1 animate-slideInRight overflow-y-auto"
+              className="relative bg-[#210B16] border-r border-[#5E2A3D] h-full w-64 shadow-modal p-4 flex flex-col gap-1 animate-slideInRight overflow-y-auto"
               onClick={e => e.stopPropagation()}
               aria-label="Mobile navigation"
             >
@@ -264,7 +264,7 @@ export function AppShell({ children }) {
         </main>
 
         {/* Footer */}
-        <footer className="border-t border-[#333D38]/40 bg-[#171717]/60 backdrop-blur-md py-6 px-6 text-center text-xs text-[#9EAAA4]">
+        <footer className="border-t border-[#5E2A3D]/40 bg-[#210B16]/60 backdrop-blur-md py-6 px-6 text-center text-xs text-[#BCA2AD]">
           TeamWeave — Professional Skill-Based Teaming Architecture
         </footer>
       </div>

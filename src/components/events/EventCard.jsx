@@ -15,11 +15,11 @@ export function EventCard({ event, registered = false }) {
   return (
     <Link
       to={`/events/${event.id}`}
-      className="group block h-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#a31c1b] focus-visible:rounded-2xl"
+      className="group block h-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#B6264D] focus-visible:rounded-2xl"
     >
-      <div className="relative h-full flex flex-col justify-between p-5 rounded-2xl bg-[#171717]/95 hover:bg-[#1e1e1e] border border-[#333D38] hover:border-[#a31c1b]/70 transition-all duration-300 shadow-[0_4px_24px_rgba(0,0,0,0.7)] hover:shadow-[0_0_25px_rgba(163,28,27,0.25)] hover:-translate-y-1 backdrop-blur-md overflow-hidden">
+      <div className="relative h-full flex flex-col justify-between p-5 rounded-2xl bg-[#210B16]/95 hover:bg-[#2C1020] border border-[#5E2A3D] hover:border-[#B6264D]/70 transition-all duration-300 shadow-[0_4px_24px_rgba(0,0,0,0.7)] hover:shadow-[0_0_25px_rgba(182,38,77,0.25)] hover:-translate-y-1 backdrop-blur-md overflow-hidden">
         {/* Subtle Ambient Hover Glow */}
-        <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-[#a31c1b]/20 via-[#a31c1b]/5 to-transparent rounded-bl-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-[#B6264D]/20 via-[#B6264D]/5 to-transparent rounded-bl-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
         <div className="flex flex-col gap-3.5 h-full justify-between relative z-10">
           {/* Category & status header */}
@@ -30,7 +30,7 @@ export function EventCard({ event, registered = false }) {
               {isClosed ? (
                 <Badge color="ink">Closed</Badge>
               ) : (
-                <span className="text-[11px] font-mono text-[#E56E6D] font-bold flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="text-[11px] font-mono text-[#F4A7BB] font-bold flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   View <ArrowUpRight size={12} />
                 </span>
               )}
@@ -38,41 +38,41 @@ export function EventCard({ event, registered = false }) {
           </div>
 
           {/* Title */}
-          <h3 className="font-heading font-bold text-white group-hover:text-[#E56E6D] transition-colors leading-snug text-base line-clamp-2">
+          <h3 className="font-heading font-bold text-white group-hover:text-[#F4A7BB] transition-colors leading-snug text-base line-clamp-2">
             {event.title}
           </h3>
 
           {/* Description */}
-          <p className="text-xs sm:text-sm text-[#C8D1CC] leading-relaxed line-clamp-2">
+          <p className="text-xs sm:text-sm text-[#E0CAD3] leading-relaxed line-clamp-2">
             {event.description}
           </p>
 
           {/* Metadata chips */}
-          <div className="flex flex-wrap gap-2 text-xs text-[#C8D1CC] pt-1">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/[0.04] border border-[#333D38]/60 font-mono text-[11px]">
-              <Calendar size={12} className="text-[#E56E6D] shrink-0" />
+          <div className="flex flex-wrap gap-2 text-xs text-[#E0CAD3] pt-1">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/[0.04] border border-[#5E2A3D]/60 font-mono text-[11px]">
+              <Calendar size={12} className="text-[#F4A7BB] shrink-0" />
               <span>{formatDate(event.dates.start)}</span>
             </span>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/[0.04] border border-[#333D38]/60 font-mono text-[11px]">
-              <MapPin size={12} className="text-[#E56E6D] shrink-0" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/[0.04] border border-[#5E2A3D]/60 font-mono text-[11px]">
+              <MapPin size={12} className="text-[#F4A7BB] shrink-0" />
               <span>{MODE_LABEL[event.mode] ?? event.mode}</span>
             </span>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/[0.04] border border-[#333D38]/60 font-mono text-[11px]">
-              <Users size={12} className="text-[#C8D1CC] shrink-0" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/[0.04] border border-[#5E2A3D]/60 font-mono text-[11px]">
+              <Users size={12} className="text-[#E0CAD3] shrink-0" />
               <span>{event.teamSize.min}–{event.teamSize.max}/team</span>
             </span>
           </div>
 
           {/* Capacity Progress */}
-          <div className="pt-2 border-t border-[#333D38]/60">
-            <div className="flex justify-between items-center text-xs text-[#9EAAA4] mb-1.5">
-              <span className="font-mono text-[11px] text-[#C8D1CC]">{event.registeredCount} / {event.maxParticipants} spots</span>
-              <span className="font-mono text-[11px] text-[#E56E6D] font-semibold">{pct}%</span>
+          <div className="pt-2 border-t border-[#5E2A3D]/60">
+            <div className="flex justify-between items-center text-xs text-[#BCA2AD] mb-1.5">
+              <span className="font-mono text-[11px] text-[#E0CAD3]">{event.registeredCount} / {event.maxParticipants} spots</span>
+              <span className="font-mono text-[11px] text-[#F4A7BB] font-semibold">{pct}%</span>
             </div>
-            <div className="h-1.5 bg-[#06110C] rounded-full overflow-hidden">
+            <div className="h-1.5 bg-[#13080E] rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
-                  isClosed ? 'bg-slate-600' : pct > 80 ? 'bg-amber-400' : 'bg-gradient-to-r from-[#a31c1b] to-[#bf2625]'
+                  isClosed ? 'bg-slate-600' : pct > 80 ? 'bg-amber-400' : 'bg-gradient-to-r from-[#B6264D] to-[#D13D65]'
                 }`}
                 style={{ width: `${pct}%` }}
               />

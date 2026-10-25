@@ -1,6 +1,6 @@
 // ─── Dedicated Organizer Sign In & Sign Up Page ──────────────────────────────
 // Purpose-built for Hackathon, Sprint, and Tournament Organizers.
-// Uses Obsidian (#171717), Forest Night (#06110C), and Crimson Ruby (#a31c1b).
+// Uses Obsidian (#210B16), Forest Night (#13080E), and Crimson Ruby (#B6264D).
 
 import { useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
@@ -155,7 +155,7 @@ export default function OrganizerAuthPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-[#06110C] text-[#F7FAF8] flex flex-col justify-between overflow-hidden">
+    <div className="relative min-h-screen bg-[#13080E] text-[#F7FAF8] flex flex-col justify-between overflow-hidden">
       {/* Ambient background */}
       <TubesBackground className="absolute inset-0 pointer-events-none" />
 
@@ -167,13 +167,13 @@ export default function OrganizerAuthPage() {
         <div className="flex items-center gap-3">
           <Link
             to="/login"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-[#C8D1CC] hover:text-[#F7FAF8] px-3.5 py-1.5 rounded-xl border border-[#333D38] bg-[#171717]/80 hover:bg-[#222624] transition-all shadow-sm focus-visible:outline-[#a31c1b]"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-[#E0CAD3] hover:text-[#F7FAF8] px-3.5 py-1.5 rounded-xl border border-[#5E2A3D] bg-[#210B16]/80 hover:bg-[#32111F] transition-all shadow-sm focus-visible:outline-[#B6264D]"
           >
             <span>Participant Sign In</span>
           </Link>
           <Link
             to="/"
-            className="inline-flex items-center gap-1 text-xs font-medium text-[#C8D1CC] hover:text-[#F7FAF8] px-3 py-1.5 rounded-xl hover:bg-white/5 transition-colors"
+            className="inline-flex items-center gap-1 text-xs font-medium text-[#E0CAD3] hover:text-[#F7FAF8] px-3 py-1.5 rounded-xl hover:bg-white/5 transition-colors"
           >
             <ArrowLeft size={13} />
             <span className="hidden sm:inline">Home</span>
@@ -183,18 +183,18 @@ export default function OrganizerAuthPage() {
 
       {/* Main Container */}
       <main className="relative z-20 max-w-lg w-full mx-auto px-5 my-auto py-8">
-        <div className="bg-[#171717]/95 border border-[#333D38] rounded-3xl p-6 sm:p-8 shadow-[0_20px_70px_rgba(0,0,0,0.9),0_0_35px_rgba(163,28,27,0.25)] backdrop-blur-2xl space-y-6">
+        <div className="bg-[#210B16]/95 border border-[#5E2A3D] rounded-3xl p-6 sm:p-8 shadow-[0_20px_70px_rgba(0,0,0,0.9),0_0_35px_rgba(182,38,77,0.25)] backdrop-blur-2xl space-y-6">
           
           {/* Header Banner */}
           <div className="text-center space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider font-semibold bg-[#a31c1b]/20 text-[#E56E6D] border border-[#a31c1b]/40 shadow-sm">
-              <Sparkles size={12} className="text-[#a31c1b]" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider font-semibold bg-[#B6264D]/20 text-[#F4A7BB] border border-[#B6264D]/40 shadow-sm">
+              <Sparkles size={12} className="text-[#B6264D]" />
               <span>Organizer Portal</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-heading font-bold text-[#F7FAF8] tracking-tight">
               {tab === 'signin' ? 'Sign in to Organizer Portal' : 'Create an Organizer Account'}
             </h1>
-            <p className="text-xs sm:text-sm text-[#C8D1CC]">
+            <p className="text-xs sm:text-sm text-[#E0CAD3]">
               {tab === 'signin'
                 ? 'Manage your events, configure skill blueprint matrices, and auto-form balanced teams.'
                 : 'Host hackathons, research sprints, or tournaments with explainable AI team formation.'}
@@ -202,14 +202,14 @@ export default function OrganizerAuthPage() {
           </div>
 
           {/* Mode Switcher */}
-          <div className="grid grid-cols-2 p-1 bg-[#06110C] border border-[#333D38] rounded-xl">
+          <div className="grid grid-cols-2 p-1 bg-[#13080E] border border-[#5E2A3D] rounded-xl">
             <button
               type="button"
               onClick={() => setTab('signin')}
               className={`py-2 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                 tab === 'signin'
-                  ? 'bg-[#a31c1b] text-white shadow-md shadow-[#a31c1b]/30'
-                  : 'text-[#9EAAA4] hover:text-[#F7FAF8]'
+                  ? 'bg-[#B6264D] text-white shadow-md shadow-[#B6264D]/30'
+                  : 'text-[#BCA2AD] hover:text-[#F7FAF8]'
               }`}
             >
               Organizer Sign In
@@ -219,8 +219,8 @@ export default function OrganizerAuthPage() {
               onClick={() => setTab('signup')}
               className={`py-2 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                 tab === 'signup'
-                  ? 'bg-[#a31c1b] text-white shadow-md shadow-[#a31c1b]/30'
-                  : 'text-[#9EAAA4] hover:text-[#F7FAF8]'
+                  ? 'bg-[#B6264D] text-white shadow-md shadow-[#B6264D]/30'
+                  : 'text-[#BCA2AD] hover:text-[#F7FAF8]'
               }`}
             >
               Create Organizer Account
@@ -232,7 +232,7 @@ export default function OrganizerAuthPage() {
             <div className="space-y-5">
               {/* Demo 1-Click Organizer Sign In */}
               <div className="space-y-2">
-                <label className="text-[11px] font-mono uppercase tracking-wider text-[#E56E6D] font-semibold block">
+                <label className="text-[11px] font-mono uppercase tracking-wider text-[#F4A7BB] font-semibold block">
                   Quick Demo Organizer Access
                 </label>
                 <div className="space-y-2">
@@ -241,59 +241,59 @@ export default function OrganizerAuthPage() {
                       key={org.id}
                       type="button"
                       onClick={() => handleDemoOrganizerLogin(org)}
-                      className="w-full flex items-center justify-between p-3 rounded-xl border border-[#333D38] bg-[#06110C]/80 hover:bg-[#1f1f1f] hover:border-[#a31c1b]/60 transition-all text-left cursor-pointer group"
+                      className="w-full flex items-center justify-between p-3 rounded-xl border border-[#5E2A3D] bg-[#13080E]/80 hover:bg-[#2C1020] hover:border-[#B6264D]/60 transition-all text-left cursor-pointer group"
                     >
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-[#F7FAF8] group-hover:text-[#E56E6D] transition-colors">
+                          <span className="text-xs font-bold text-[#F7FAF8] group-hover:text-[#F4A7BB] transition-colors">
                             {org.name}
                           </span>
-                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#a31c1b]/20 text-[#E56E6D] border border-[#a31c1b]/30">
+                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#B6264D]/20 text-[#F4A7BB] border border-[#B6264D]/30">
                             {org.role}
                           </span>
                         </div>
-                        <p className="text-[11px] text-[#9EAAA4] mt-0.5">{org.organization}</p>
+                        <p className="text-[11px] text-[#BCA2AD] mt-0.5">{org.organization}</p>
                       </div>
-                      <ArrowRight size={14} className="text-[#9EAAA4] group-hover:text-[#E56E6D] group-hover:translate-x-0.5 transition-all" />
+                      <ArrowRight size={14} className="text-[#BCA2AD] group-hover:text-[#F4A7BB] group-hover:translate-x-0.5 transition-all" />
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 text-xs text-[#9EAAA4]">
-                <div className="h-px flex-1 bg-[#333D38]/60" />
+              <div className="flex items-center gap-3 text-xs text-[#BCA2AD]">
+                <div className="h-px flex-1 bg-[#5E2A3D]/60" />
                 <span>or enter credentials</span>
-                <div className="h-px flex-1 bg-[#333D38]/60" />
+                <div className="h-px flex-1 bg-[#5E2A3D]/60" />
               </div>
 
               {/* Email & Password Form */}
               <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-[#C8D1CC]">Organizer Email</label>
+                  <label className="text-xs font-medium text-[#E0CAD3]">Organizer Email</label>
                   <div className="relative">
-                    <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9EAAA4]" />
+                    <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#BCA2AD]" />
                     <input
                       type="email"
                       required
                       placeholder="organizer@university.edu or name@company.com"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#333D38] bg-[#06110C] text-sm text-[#F7FAF8] placeholder:text-[#9EAAA4]/70 focus:outline-none focus:border-[#a31c1b] focus:ring-2 focus:ring-[#a31c1b]/25 transition-all"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#5E2A3D] bg-[#13080E] text-sm text-[#F7FAF8] placeholder:text-[#BCA2AD]/70 focus:outline-none focus:border-[#B6264D] focus:ring-2 focus:ring-[#B6264D]/25 transition-all"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-[#C8D1CC]">Password</label>
+                  <label className="text-xs font-medium text-[#E0CAD3]">Password</label>
                   <div className="relative">
-                    <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9EAAA4]" />
+                    <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#BCA2AD]" />
                     <input
                       type="password"
                       required
                       placeholder="••••••••"
                       value={password}
                       onChange={e => setPassword(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#333D38] bg-[#06110C] text-sm text-[#F7FAF8] placeholder:text-[#9EAAA4]/70 focus:outline-none focus:border-[#a31c1b] focus:ring-2 focus:ring-[#a31c1b]/25 transition-all"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#5E2A3D] bg-[#13080E] text-sm text-[#F7FAF8] placeholder:text-[#BCA2AD]/70 focus:outline-none focus:border-[#B6264D] focus:ring-2 focus:ring-[#B6264D]/25 transition-all"
                     />
                   </div>
                 </div>
@@ -301,7 +301,7 @@ export default function OrganizerAuthPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full mt-2 py-3 px-4 rounded-xl font-semibold text-sm text-white bg-[#a31c1b] hover:bg-[#bf2625] shadow-lg shadow-[#a31c1b]/30 hover:shadow-[#bf2625]/40 transition-all flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-[#a31c1b]"
+                  className="w-full mt-2 py-3 px-4 rounded-xl font-semibold text-sm text-white bg-[#B6264D] hover:bg-[#D13D65] shadow-lg shadow-[#B6264D]/30 hover:shadow-[#D13D65]/40 transition-all flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-[#B6264D]"
                 >
                   <span>{loading ? 'Signing in...' : 'Sign In to Organizer Dashboard'}</span>
                   <ArrowRight size={15} />
@@ -312,54 +312,54 @@ export default function OrganizerAuthPage() {
             /* ─── Create Organizer Account ─── */
             <form onSubmit={handleSignUp} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#C8D1CC]">Organization / University / Club Name</label>
+                <label className="text-xs font-medium text-[#E0CAD3]">Organization / University / Club Name</label>
                 <div className="relative">
-                  <Building size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9EAAA4]" />
+                  <Building size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#BCA2AD]" />
                   <input
                     type="text"
                     required
                     placeholder="e.g. Stanford AI Club, DevHack Collective, FinTech Labs"
                     value={organization}
                     onChange={e => setOrganization(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#333D38] bg-[#06110C] text-sm text-[#F7FAF8] placeholder:text-[#9EAAA4]/70 focus:outline-none focus:border-[#a31c1b] focus:ring-2 focus:ring-[#a31c1b]/25 transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#5E2A3D] bg-[#13080E] text-sm text-[#F7FAF8] placeholder:text-[#BCA2AD]/70 focus:outline-none focus:border-[#B6264D] focus:ring-2 focus:ring-[#B6264D]/25 transition-all"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#C8D1CC]">Lead Organizer Full Name</label>
+                <label className="text-xs font-medium text-[#E0CAD3]">Lead Organizer Full Name</label>
                 <div className="relative">
-                  <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9EAAA4]" />
+                  <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#BCA2AD]" />
                   <input
                     type="text"
                     required
                     placeholder="e.g. Alex Morgan"
                     value={name}
                     onChange={e => setName(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#333D38] bg-[#06110C] text-sm text-[#F7FAF8] placeholder:text-[#9EAAA4]/70 focus:outline-none focus:border-[#a31c1b] focus:ring-2 focus:ring-[#a31c1b]/25 transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#5E2A3D] bg-[#13080E] text-sm text-[#F7FAF8] placeholder:text-[#BCA2AD]/70 focus:outline-none focus:border-[#B6264D] focus:ring-2 focus:ring-[#B6264D]/25 transition-all"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#C8D1CC]">Work Email</label>
+                <label className="text-xs font-medium text-[#E0CAD3]">Work Email</label>
                 <div className="relative">
-                  <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9EAAA4]" />
+                  <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#BCA2AD]" />
                   <input
                     type="email"
                     required
                     placeholder="organizer@organization.org"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#333D38] bg-[#06110C] text-sm text-[#F7FAF8] placeholder:text-[#9EAAA4]/70 focus:outline-none focus:border-[#a31c1b] focus:ring-2 focus:ring-[#a31c1b]/25 transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#5E2A3D] bg-[#13080E] text-sm text-[#F7FAF8] placeholder:text-[#BCA2AD]/70 focus:outline-none focus:border-[#B6264D] focus:ring-2 focus:ring-[#B6264D]/25 transition-all"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#C8D1CC]">Password</label>
+                <label className="text-xs font-medium text-[#E0CAD3]">Password</label>
                 <div className="relative">
-                  <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9EAAA4]" />
+                  <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#BCA2AD]" />
                   <input
                     type="password"
                     required
@@ -367,17 +367,17 @@ export default function OrganizerAuthPage() {
                     placeholder="Minimum 6 characters"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#333D38] bg-[#06110C] text-sm text-[#F7FAF8] placeholder:text-[#9EAAA4]/70 focus:outline-none focus:border-[#a31c1b] focus:ring-2 focus:ring-[#a31c1b]/25 transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#5E2A3D] bg-[#13080E] text-sm text-[#F7FAF8] placeholder:text-[#BCA2AD]/70 focus:outline-none focus:border-[#B6264D] focus:ring-2 focus:ring-[#B6264D]/25 transition-all"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#C8D1CC]">Primary Event Format</label>
+                <label className="text-xs font-medium text-[#E0CAD3]">Primary Event Format</label>
                 <select
                   value={primaryEventType}
                   onChange={e => setPrimaryEventType(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#333D38] bg-[#06110C] text-sm text-[#F7FAF8] focus:outline-none focus:border-[#a31c1b] focus:ring-2 focus:ring-[#a31c1b]/25 transition-all cursor-pointer"
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#5E2A3D] bg-[#13080E] text-sm text-[#F7FAF8] focus:outline-none focus:border-[#B6264D] focus:ring-2 focus:ring-[#B6264D]/25 transition-all cursor-pointer"
                 >
                   <option value="Hackathon">Hackathon (Software & Hardware)</option>
                   <option value="Research Sprint">Research Sprint (AI / ML / Data)</option>
@@ -386,8 +386,8 @@ export default function OrganizerAuthPage() {
                 </select>
               </div>
 
-              <div className="rounded-xl border border-[#333D38] bg-[#06110C]/60 p-3 space-y-1.5 text-xs text-[#9EAAA4]">
-                <div className="flex items-center gap-2 text-[#E56E6D] font-semibold">
+              <div className="rounded-xl border border-[#5E2A3D] bg-[#13080E]/60 p-3 space-y-1.5 text-xs text-[#BCA2AD]">
+                <div className="flex items-center gap-2 text-[#F4A7BB] font-semibold">
                   <CheckCircle2 size={13} />
                   <span>Organizer Workspace Perks</span>
                 </div>
@@ -397,7 +397,7 @@ export default function OrganizerAuthPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full mt-2 py-3 px-4 rounded-xl font-semibold text-sm text-white bg-[#a31c1b] hover:bg-[#bf2625] shadow-lg shadow-[#a31c1b]/30 hover:shadow-[#bf2625]/40 transition-all flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-[#a31c1b]"
+                className="w-full mt-2 py-3 px-4 rounded-xl font-semibold text-sm text-white bg-[#B6264D] hover:bg-[#D13D65] shadow-lg shadow-[#B6264D]/30 hover:shadow-[#D13D65]/40 transition-all flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-[#B6264D]"
               >
                 <span>{loading ? 'Creating Account...' : 'Create Organizer Account & Launch'}</span>
                 <ArrowRight size={15} />
@@ -409,9 +409,9 @@ export default function OrganizerAuthPage() {
           <div className="text-center pt-2">
             <Link
               to="/login"
-              className="text-xs text-[#9EAAA4] hover:text-[#F7FAF8] transition-colors"
+              className="text-xs text-[#BCA2AD] hover:text-[#F7FAF8] transition-colors"
             >
-              Are you a participant joining an event? <span className="text-[#E56E6D] underline">Go to Participant Sign In</span>
+              Are you a participant joining an event? <span className="text-[#F4A7BB] underline">Go to Participant Sign In</span>
             </Link>
           </div>
 
@@ -419,7 +419,7 @@ export default function OrganizerAuthPage() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-20 py-4 text-center text-xs text-[#8F9E97]">
+      <footer className="relative z-20 py-4 text-center text-xs text-[#BCA2AD]">
         TeamWeave — Professional Skill-Based Teaming Architecture
       </footer>
     </div>

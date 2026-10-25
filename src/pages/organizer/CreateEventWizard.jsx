@@ -550,7 +550,7 @@ export default function CreateEventPage() {
 function WizField({ label, children, error, className = '' }) {
   return (
     <div className={`space-y-1.5 ${className}`}>
-      <label className="text-xs font-semibold text-[#C8D1CC] uppercase tracking-wider block">{label}</label>
+      <label className="text-xs font-semibold text-[#E0CAD3] uppercase tracking-wider block">{label}</label>
       {children}
       {error && <p className="text-xs text-rose-400 font-medium mt-1 animate-fadeIn">{error}</p>}
     </div>

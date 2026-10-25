@@ -5,7 +5,7 @@
 import { useMemo } from 'react';
 import { CheckCircle2, AlertCircle, Users } from 'lucide-react';
 
-const AVATAR_COLORS = ['#a31c1b', '#bf2625', '#333D38', '#45524B', '#E56E6D'];
+const AVATAR_COLORS = ['#B6264D', '#D13D65', '#5E2A3D', '#754356', '#F4A7BB'];
 
 function polarToCart(cx, cy, r, angleDeg) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
@@ -104,7 +104,7 @@ export function LivingWeaveViz({ team, participants, requirements, className = '
   return (
     <div className={`flex flex-col items-center ${className}`}>
       {/* Desktop & Tablet SVG Constellation */}
-      <div className="w-full relative overflow-hidden rounded-2xl bg-[#070912] border border-cyan-500/25 p-2 shadow-[0_0_30px_rgba(0,240,255,0.06)]">
+      <div className="w-full relative overflow-hidden rounded-2xl bg-[#13080E] border border-[#5E2A3D] p-2 shadow-[0_0_30px_rgba(182,38,77,0.12)]">
         <svg
           viewBox={`0 0 ${width} ${height}`}
           width="100%"
@@ -115,9 +115,9 @@ export function LivingWeaveViz({ team, participants, requirements, className = '
           <defs>
             {/* Center ambient glow */}
             <radialGradient id="weaveCenterGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.25" />
-              <stop offset="60%" stopColor="#8B5CF6" stopOpacity="0.05" />
-              <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0" />
+              <stop offset="0%" stopColor="#B6264D" stopOpacity="0.25" />
+              <stop offset="60%" stopColor="#B6264D" stopOpacity="0.05" />
+              <stop offset="100%" stopColor="#B6264D" stopOpacity="0" />
             </radialGradient>
 
             {/* Subtle Node Drop Shadow */}
@@ -130,8 +130,8 @@ export function LivingWeaveViz({ team, participants, requirements, className = '
           <circle cx={cx} cy={cy} r={skillR * 1.9} fill="url(#weaveCenterGlow)" />
 
           {/* Concentric Orbit Guide Rings */}
-          <circle cx={cx} cy={cy} r={skillR} fill="none" stroke="rgba(139,92,246,0.2)" strokeDasharray="3 4" />
-          <circle cx={cx} cy={cy} r={memberR} fill="none" stroke="rgba(168,85,247,0.15)" strokeDasharray="4 6" />
+          <circle cx={cx} cy={cy} r={skillR} fill="none" stroke="rgba(182,38,77,0.2)" strokeDasharray="3 4" />
+          <circle cx={cx} cy={cy} r={memberR} fill="none" stroke="rgba(244,167,187,0.15)" strokeDasharray="4 6" />
 
           {/* Connection Lines */}
           {connections.map((c, i) => (
@@ -148,13 +148,13 @@ export function LivingWeaveViz({ team, participants, requirements, className = '
 
           {/* Center Hub */}
           <g transform={`translate(${cx},${cy})`}>
-            <circle r={25} fill="#120D22" stroke="#8B5CF6" strokeWidth="2" filter="url(#nodeShadow)" />
+            <circle r={25} fill="#13080E" stroke="#B6264D" strokeWidth="2" filter="url(#nodeShadow)" />
             <text
               textAnchor="middle"
               dy="0.35em"
               fontSize="9.5"
               fontFamily="'Space Grotesk', sans-serif"
-              fill="#DDD6FE"
+              fill="#F4A7BB"
               fontWeight="800"
               letterSpacing="0.08em"
             >
@@ -176,8 +176,8 @@ export function LivingWeaveViz({ team, participants, requirements, className = '
                   width={pillW}
                   height={pillH}
                   rx={pillH / 2}
-                  fill={covered ? 'rgba(139, 92, 246, 0.2)' : 'rgba(244, 63, 94, 0.15)'}
-                  stroke={covered ? '#a31c1b' : '#F43F5E'}
+                  fill={covered ? 'rgba(182, 38, 77, 0.2)' : 'rgba(209, 61, 101, 0.15)'}
+                  stroke={covered ? '#B6264D' : '#D13D65'}
                   strokeWidth={req.required ? '1.8' : '1.3'}
                   strokeDasharray={!covered ? '4 2.5' : undefined}
                 />
@@ -186,7 +186,7 @@ export function LivingWeaveViz({ team, participants, requirements, className = '
                   cx={-pillW / 2 + 10}
                   cy={0}
                   r={3.5}
-                  fill={covered ? '#a31c1b' : '#F43F5E'}
+                  fill={covered ? '#B6264D' : '#D13D65'}
                 />
                 {/* Skill Name */}
                 <text
@@ -195,7 +195,7 @@ export function LivingWeaveViz({ team, participants, requirements, className = '
                   dy="0.35em"
                   fontSize="9.5"
                   fontFamily="'DM Mono', monospace"
-                  fill={covered ? '#E56E6D' : '#FDA4AF'}
+                  fill="#F4A7BB"
                   fontWeight="700"
                 >
                   {label}
@@ -208,7 +208,7 @@ export function LivingWeaveViz({ team, participants, requirements, className = '
           {memberPositions.map(({ x, y, member, color }, i) => (
             <g key={member.id} transform={`translate(${x},${y})`} filter="url(#nodeShadow)">
               {/* Outer halo ring */}
-              <circle r={25} fill="#171717" stroke={color} strokeWidth="2.2" />
+              <circle r={25} fill="#210B16" stroke={color} strokeWidth="2.2" />
 
               {/* Initials */}
               <text
@@ -231,14 +231,14 @@ export function LivingWeaveViz({ team, participants, requirements, className = '
                   height="16"
                   rx="8"
                   fill="rgba(44, 16, 28, 0.9)"
-                  stroke="#333D38"
+                  stroke="#5E2A3D"
                 />
                 <text
                   textAnchor="middle"
                   dy="0.3em"
                   fontSize="8.5"
                   fontFamily="'Inter', sans-serif"
-                  fill="#C8D1CC"
+                  fill="#E0CAD3"
                   fontWeight="500"
                 >
                   {member.name.split(' ')[0]}
@@ -249,23 +249,23 @@ export function LivingWeaveViz({ team, participants, requirements, className = '
         </svg>
 
         {/* Clean SVG Footer Legend */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 px-3 text-xs border-t border-[#333D38]/60 bg-[#171717]/95">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 px-3 text-xs border-t border-[#5E2A3D]/60 bg-[#210B16]/95">
           <div className="flex items-center gap-4 flex-wrap">
-            <span className="flex items-center gap-1.5 text-[#C8D1CC]">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#a31c1b] shadow-[0_0_8px_rgba(163,28,27,0.8)]" />
+            <span className="flex items-center gap-1.5 text-[#E0CAD3]">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#B6264D] shadow-[0_0_8px_rgba(182,38,77,0.8)]" />
               <span className="font-mono text-[11px] uppercase tracking-wide">Covered Capability</span>
             </span>
-            <span className="flex items-center gap-1.5 text-[#C8D1CC]">
+            <span className="flex items-center gap-1.5 text-[#E0CAD3]">
               <span className="w-2.5 h-2.5 rounded-full border border-dashed border-rose-400 bg-rose-500/30" />
               <span className="font-mono text-[11px] uppercase tracking-wide">Uncovered Gap</span>
             </span>
-            <span className="flex items-center gap-1.5 text-[#C8D1CC]">
-              <Users size={12} className="text-[#E56E6D]" />
+            <span className="flex items-center gap-1.5 text-[#E0CAD3]">
+              <Users size={12} className="text-[#F4A7BB]" />
               <span className="font-mono text-[11px] uppercase tracking-wide">Outer Orbit: Member Nodes</span>
             </span>
           </div>
 
-          <span className="text-[11px] font-mono text-[#E56E6D] font-bold">
+          <span className="text-[11px] font-mono text-[#F4A7BB] font-bold">
             {coveredReqIds.size} of {reqSkills.length} matched
           </span>
         </div>

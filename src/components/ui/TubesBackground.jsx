@@ -4,24 +4,24 @@ import { Play, Pause } from 'lucide-react';
 
 export const WINE_GARNET_PALETTES = [
   {
-    name: 'Ruby & Emerald Obsidian',
-    tubes: ['#a31c1b', '#bf2625', '#06110C'],
-    lights: ['#a31c1b', '#E56E6D', '#171717', '#F7FAF8'],
+    name: 'Ruby Garnet',
+    tubes: ['#B6264D', '#D13D65', '#13080E'],
+    lights: ['#B6264D', '#F4A7BB', '#210B16', '#F7FAF8'],
   },
   {
-    name: 'Deep Crimson & Dark Forest',
-    tubes: ['#590f0e', '#a31c1b', '#1f382a'],
-    lights: ['#a31c1b', '#E56E6D', '#06110C', '#FFFFFF'],
+    name: 'Deep Crimson',
+    tubes: ['#590F2B', '#B6264D', '#2C1020'],
+    lights: ['#B6264D', '#F4A7BB', '#13080E', '#FFFFFF'],
   },
   {
-    name: 'Charcoal & Garnet',
-    tubes: ['#171717', '#871615', '#a31c1b'],
-    lights: ['#a31c1b', '#bf2625', '#C8D1CC', '#F7FAF8'],
+    name: 'Wine & Garnet',
+    tubes: ['#210B16', '#87163D', '#B6264D'],
+    lights: ['#B6264D', '#D13D65', '#E0CAD3', '#F7FAF8'],
   },
   {
     name: 'Obsidian Blaze',
-    tubes: ['#06110C', '#a31c1b', '#bf2625'],
-    lights: ['#a31c1b', '#E56E6D', '#171717', '#FFCCD8'],
+    tubes: ['#13080E', '#B6264D', '#D13D65'],
+    lights: ['#B6264D', '#F4A7BB', '#210B16', '#FFCCD8'],
   },
 ];
 
@@ -41,6 +41,7 @@ function checkWebGLSupport() {
 export function TubesBackground({ children, className = '' }) {
   const canvasRef = useRef(null);
   const tubesInstance = useRef(null);
+  const pointerTarget = useRef({ clientX: 0, clientY: 0, active: false });
   const [paletteIndex, setPaletteIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [hasWebGL, setHasWebGL] = useState(true);
@@ -66,18 +67,46 @@ export function TubesBackground({ children, className = '' }) {
     try {
       const currentPalette = WINE_GARNET_PALETTES[paletteIndex];
       const instance = new TubesCursor(canvasRef.current, {
+        sleepRadiusX: 0,
+        sleepRadiusY: 0,
         tubes: {
           colors: currentPalette.tubes,
-          radius: 4,
           count: 14,
-          subdivision: 24,
-          length: 40,
-        },
-        lights: {
-          colors: currentPalette.lights,
-          intensity: 220,
+          minRadius: 0.012,
+          maxRadius: 0.045,
+          minTubularSegments: 48,
+          maxTubularSegments: 128,
+          material: {
+            metalness: 1,
+            roughness: 0.25,
+          },
+          lights: {
+            colors: currentPalette.lights,
+            intensity: 220,
+          },
         },
       });
+
+      instance.three.onBeforeRender = (frame) => {
+        const canvas = canvasRef.current;
+        const pointer = pointerTarget.current;
+        if (!canvas) return;
+
+        if (pointer.active) {
+          const bounds = canvas.getBoundingClientRect();
+          const normalizedX = (pointer.clientX - bounds.left) / bounds.width - 0.5;
+          const normalizedY = 0.5 - (pointer.clientY - bounds.top) / bounds.height;
+          instance.tubes.target.set(
+            normalizedX * instance.three.size.wWidth,
+            normalizedY * instance.three.size.wHeight,
+            0
+          );
+        } else {
+          instance.tubes.target.set(0, 0, 0);
+        }
+
+        instance.tubes.update(frame);
+      };
 
       tubesInstance.current = instance;
       setInitialized(true);
@@ -111,13 +140,35 @@ export function TubesBackground({ children, className = '' }) {
     if (!tubesInstance.current || !initialized) return;
     try {
       const palette = WINE_GARNET_PALETTES[paletteIndex];
-      if (tubesInstance.current.setColors) {
-        tubesInstance.current.setColors(palette.tubes, palette.lights);
-      }
+      tubesInstance.current.tubes?.setColors(palette.tubes);
+      tubesInstance.current.tubes?.setLightsColors(palette.lights);
     } catch (err) {
       console.warn('Failed to update tube colors:', err);
     }
   }, [paletteIndex, initialized]);
+
+  useEffect(() => {
+    const handlePointerMove = (event) => {
+      pointerTarget.current = {
+        clientX: event.clientX,
+        clientY: event.clientY,
+        active: true,
+      };
+    };
+    const handlePointerLeave = () => {
+      pointerTarget.current.active = false;
+    };
+
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    window.addEventListener('blur', handlePointerLeave);
+    document.documentElement.addEventListener('pointerleave', handlePointerLeave);
+
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('blur', handlePointerLeave);
+      document.documentElement.removeEventListener('pointerleave', handlePointerLeave);
+    };
+  }, []);
 
   const togglePlayback = useCallback(() => {
     if (!tubesInstance.current) return;
@@ -138,15 +189,15 @@ export function TubesBackground({ children, className = '' }) {
     <div
       className={
         children
-          ? `relative w-full min-h-screen overflow-hidden bg-[#06110C] ${className}`
-          : `absolute inset-0 pointer-events-none z-0 overflow-hidden ${className}`
+          ? `relative w-full min-h-screen overflow-hidden bg-[#13080E] ${className}`
+          : `absolute inset-0 z-0 overflow-hidden ${className}`
       }
       style={{ isolation: 'isolate' }}
     >
       {hasWebGL && !reducedMotion ? (
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 w-full h-full block pointer-events-none z-0"
+          className="absolute inset-0 w-full h-full block pointer-events-auto z-0"
           style={{ width: '100%', height: '100%' }}
         />
       ) : null}
@@ -156,13 +207,13 @@ export function TubesBackground({ children, className = '' }) {
           <div
             className="absolute -top-[20%] left-1/2 -translate-x-1/2 w-[900px] h-[700px] rounded-full opacity-60 blur-[120px]"
             style={{
-              background: 'radial-gradient(circle, #a31c1b 0%, #590f0e 40%, #06110C 70%, transparent 100%)',
+              background: 'radial-gradient(circle, #B6264D 0%, #590F2B 40%, #13080E 70%, transparent 100%)',
             }}
           />
           <div
             className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full opacity-40 blur-[100px]"
             style={{
-              background: 'radial-gradient(circle, #E56E6D 0%, #a31c1b 35%, transparent 70%)',
+              background: 'radial-gradient(circle, #F4A7BB 0%, #B6264D 35%, transparent 70%)',
             }}
           />
         </div>
@@ -173,7 +224,7 @@ export function TubesBackground({ children, className = '' }) {
         className="absolute inset-0 pointer-events-none z-10"
         style={{
           background:
-            'radial-gradient(ellipse at center, rgba(6,17,12,0.3) 0%, rgba(6,17,12,0.7) 70%, rgba(6,17,12,0.95) 100%)',
+            'radial-gradient(ellipse at center, rgba(19,8,14,0.3) 0%, rgba(19,8,14,0.7) 70%, rgba(19,8,14,0.95) 100%)',
         }}
       />
 
@@ -184,10 +235,10 @@ export function TubesBackground({ children, className = '' }) {
       )}
 
       {hasWebGL && !reducedMotion && children && (
-        <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 bg-[#171717]/85 backdrop-blur-md border border-[#333D38] p-1.5 rounded-full shadow-lg">
+        <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 bg-[#210B16]/85 backdrop-blur-md border border-[#5E2A3D] p-1.5 rounded-full shadow-lg">
           <button
             onClick={togglePlayback}
-            className="p-1.5 rounded-full text-[#C8D1CC] hover:text-[#F7FAF8] hover:bg-white/10 transition-colors pointer-events-auto cursor-pointer"
+            className="p-1.5 rounded-full text-[#E0CAD3] hover:text-[#F7FAF8] hover:bg-white/10 transition-colors pointer-events-auto cursor-pointer"
             title={isPlaying ? 'Pause interactive background' : 'Play interactive background'}
             aria-label={isPlaying ? 'Pause background animation' : 'Play background animation'}
           >

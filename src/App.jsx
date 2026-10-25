@@ -5,7 +5,7 @@ import { AppShell } from './components/layout/AppShell';
 import { ToastContainer } from './components/ui/ToastContainer';
 
 // Public
-import LandingPage from './pages/public/LandingPage';
+import LandingPage from './pages/public/MotionLandingPage';
 import LoginPage from './pages/public/LoginPage';
 import OrganizerAuthPage from './pages/public/OrganizerAuthPage';
 
