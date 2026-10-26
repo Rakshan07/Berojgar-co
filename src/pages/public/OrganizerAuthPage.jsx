@@ -8,26 +8,8 @@ import { ArrowLeft, ArrowRight, Mail, Lock, Building, User, Sparkles, CheckCircl
 import { BrandWordmark } from '../../components/ui/BrandMark';
 import { useApp } from '../../app/AppContext';
 import { useToast } from '../../hooks/useToast';
+import { request } from '../../workspace/api';
 import { TubesBackground } from '../../components/ui/TubesBackground';
-
-const DEMO_ORGANIZERS = [
-  {
-    id: 'org1',
-    name: 'Sarah Lin',
-    organization: 'City Innovation Lab & Tech Guild',
-    role: 'Lead Organizer',
-    email: 'sarah.lin@teamweave.demo',
-    eventCount: 5,
-  },
-  {
-    id: 'org2',
-    name: 'Marcus Vance',
-    organization: 'National Debate Federation',
-    role: 'Tournament Director',
-    email: 'marcus.vance@debate.org',
-    eventCount: 3,
-  },
-];
 
 export default function OrganizerAuthPage() {
   const [searchParams] = useSearchParams();
@@ -43,115 +25,31 @@ export default function OrganizerAuthPage() {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [organization, setOrganization] = useState('');
-  const [primaryEventType, setPrimaryEventType] = useState('Hackathon');
   const [loading, setLoading] = useState(false);
 
-  function handleDemoOrganizerLogin(organizer) {
-    dispatch({
-      type: 'LOGIN',
-      payload: { userId: organizer.id, role: 'organizer' },
-    });
-    toast.success(`Welcome back, ${organizer.name}! Organizer dashboard ready.`);
-    navigate('/organizer');
+  async function signIn() {
+    const data = await request('/auth/login', { method: 'POST', body: JSON.stringify({email_or_username: email.trim(), password}) });
+    if (!data.access_token) throw new Error('The server did not return a session.');
+    localStorage.setItem('teamweave_token', data.access_token);
+    const role = data.roles.includes('organizer') ? 'organizer' : 'participant';
+    dispatch({type:'LOGIN',payload:{userId:data.user_id,role}});
+    const account = await request('/auth/me');
+    navigate(account.onboarding_complete ? (role === 'organizer' ? '/organizer' : '/dashboard') : '/complete-profile');
   }
-
   async function handleSignIn(e) {
-    e.preventDefault();
-    if (!email.trim() || !password.trim()) {
-      toast.error('Please enter your organizer email and password.');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      // Attempt backend auth API
-      const res = await fetch('http://127.0.0.1:8000/api/v1/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email_or_username: email.trim(), password }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem('teamweave_token', data.access_token);
-        localStorage.setItem('teamweave_user_id', data.user_id);
-      }
-    } catch {
-      // Non-blocking fallback for local demo state
-    } finally {
-      setLoading(false);
-    }
-
-    dispatch({
-      type: 'LOGIN',
-      payload: {
-        userId: 'org1',
-        role: 'organizer',
-        email: email.trim(),
-      },
-    });
-    toast.success('Signed in as Organizer.');
-    navigate('/organizer');
+    e.preventDefault(); if (loading) return; setLoading(true);
+    try { await signIn(); toast.success('Signed in successfully.'); }
+    catch(error) { toast.error(error.message); } finally { setLoading(false); }
   }
-
   async function handleSignUp(e) {
-    e.preventDefault();
-    if (!name.trim()) {
-      toast.error('Please enter your full name.');
-      return;
-    }
-    if (!organization.trim()) {
-      toast.error('Please provide your organization or company name.');
-      return;
-    }
-    if (!email.trim() || !email.includes('@')) {
-      toast.error('Please provide a valid work email.');
-      return;
-    }
-    if (!password || password.length < 6) {
-      toast.error('Password must be at least 6 characters.');
-      return;
-    }
+    e.preventDefault(); if (loading) return;
 
     setLoading(true);
-    const newOrgId = `org-${Date.now()}`;
-
     try {
-      // Sync to backend auth register API
-      const res = await fetch('http://127.0.0.1:8000/api/v1/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: email.trim(),
-          username: email.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '_') + '_' + Math.floor(Math.random() * 1000),
-          full_name: name.trim(),
-          password: password,
-          role: 'organizer',
-        }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem('teamweave_user_id', data.id);
-      }
-    } catch {
-      // Non-blocking fallback
-    } finally {
-      setLoading(false);
-    }
-
-    dispatch({
-      type: 'LOGIN',
-      payload: {
-        userId: newOrgId,
-        role: 'organizer',
-        name: name.trim(),
-        email: email.trim(),
-        organization: organization.trim(),
-        primaryEventType,
-      },
-    });
-
-    toast.success(`Organizer account created! Welcome, ${name.split(' ')[0]}.`);
-    navigate('/organizer');
+      await request('/auth/register', {method:'POST',body:JSON.stringify({email:email.trim(),full_name:name.trim(),password,role:'organizer', organization: organization.trim()})});
+      toast.success('Account created.');
+      await signIn();
+    } catch(error) { toast.error(error.message); } finally { setLoading(false); }
   }
 
   return (
@@ -184,7 +82,7 @@ export default function OrganizerAuthPage() {
       {/* Main Container */}
       <main className="relative z-20 max-w-lg w-full mx-auto px-5 my-auto py-8">
         <div className="bg-[#210B16]/95 border border-[#5E2A3D] rounded-3xl p-6 sm:p-8 shadow-[0_20px_70px_rgba(0,0,0,0.9),0_0_35px_rgba(182,38,77,0.25)] backdrop-blur-2xl space-y-6">
-          
+
           {/* Header Banner */}
           <div className="text-center space-y-2">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider font-semibold bg-[#B6264D]/20 text-[#F4A7BB] border border-[#B6264D]/40 shadow-sm">
@@ -230,42 +128,6 @@ export default function OrganizerAuthPage() {
           {tab === 'signin' ? (
             /* ─── Organizer Sign In ─── */
             <div className="space-y-5">
-              {/* Demo 1-Click Organizer Sign In */}
-              <div className="space-y-2">
-                <label className="text-[11px] font-mono uppercase tracking-wider text-[#F4A7BB] font-semibold block">
-                  Quick Demo Organizer Access
-                </label>
-                <div className="space-y-2">
-                  {DEMO_ORGANIZERS.map(org => (
-                    <button
-                      key={org.id}
-                      type="button"
-                      onClick={() => handleDemoOrganizerLogin(org)}
-                      className="w-full flex items-center justify-between p-3 rounded-xl border border-[#5E2A3D] bg-[#13080E]/80 hover:bg-[#2C1020] hover:border-[#B6264D]/60 transition-all text-left cursor-pointer group"
-                    >
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-[#F7FAF8] group-hover:text-[#F4A7BB] transition-colors">
-                            {org.name}
-                          </span>
-                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#B6264D]/20 text-[#F4A7BB] border border-[#B6264D]/30">
-                            {org.role}
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-[#BCA2AD] mt-0.5">{org.organization}</p>
-                      </div>
-                      <ArrowRight size={14} className="text-[#BCA2AD] group-hover:text-[#F4A7BB] group-hover:translate-x-0.5 transition-all" />
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 text-xs text-[#BCA2AD]">
-                <div className="h-px flex-1 bg-[#5E2A3D]/60" />
-                <span>or enter credentials</span>
-                <div className="h-px flex-1 bg-[#5E2A3D]/60" />
-              </div>
-
               {/* Email & Password Form */}
               <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-1.5">
@@ -275,7 +137,6 @@ export default function OrganizerAuthPage() {
                     <input
                       type="email"
                       required
-                      placeholder="organizer@university.edu or name@company.com"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#5E2A3D] bg-[#13080E] text-sm text-[#F7FAF8] placeholder:text-[#BCA2AD]/70 focus:outline-none focus:border-[#B6264D] focus:ring-2 focus:ring-[#B6264D]/25 transition-all"
@@ -285,6 +146,7 @@ export default function OrganizerAuthPage() {
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-[#E0CAD3]">Password</label>
+                  <Link to="/forgot-password" className="ml-4 text-xs text-[#F4A7BB] hover:underline">Forgot password?</Link>
                   <div className="relative">
                     <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#BCA2AD]" />
                     <input
@@ -300,6 +162,7 @@ export default function OrganizerAuthPage() {
 
                 <button
                   type="submit"
+                aria-busy={loading}
                   disabled={loading}
                   className="w-full mt-2 py-3 px-4 rounded-xl font-semibold text-sm text-white bg-[#B6264D] hover:bg-[#D13D65] shadow-lg shadow-[#B6264D]/30 hover:shadow-[#D13D65]/40 transition-all flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-[#B6264D]"
                 >
@@ -348,7 +211,6 @@ export default function OrganizerAuthPage() {
                   <input
                     type="email"
                     required
-                    placeholder="organizer@organization.org"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#5E2A3D] bg-[#13080E] text-sm text-[#F7FAF8] placeholder:text-[#BCA2AD]/70 focus:outline-none focus:border-[#B6264D] focus:ring-2 focus:ring-[#B6264D]/25 transition-all"
@@ -363,8 +225,8 @@ export default function OrganizerAuthPage() {
                   <input
                     type="password"
                     required
-                    minLength={6}
-                    placeholder="Minimum 6 characters"
+                    minLength={8}
+                    placeholder="Minimum 8 characters"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#5E2A3D] bg-[#13080E] text-sm text-[#F7FAF8] placeholder:text-[#BCA2AD]/70 focus:outline-none focus:border-[#B6264D] focus:ring-2 focus:ring-[#B6264D]/25 transition-all"
@@ -372,19 +234,7 @@ export default function OrganizerAuthPage() {
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#E0CAD3]">Primary Event Format</label>
-                <select
-                  value={primaryEventType}
-                  onChange={e => setPrimaryEventType(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#5E2A3D] bg-[#13080E] text-sm text-[#F7FAF8] focus:outline-none focus:border-[#B6264D] focus:ring-2 focus:ring-[#B6264D]/25 transition-all cursor-pointer"
-                >
-                  <option value="Hackathon">Hackathon (Software & Hardware)</option>
-                  <option value="Research Sprint">Research Sprint (AI / ML / Data)</option>
-                  <option value="Debate Championship">Debate Tournament / Model UN</option>
-                  <option value="Creative Jam">Creative / Design Jam</option>
-                </select>
-              </div>
+
 
               <div className="rounded-xl border border-[#5E2A3D] bg-[#13080E]/60 p-3 space-y-1.5 text-xs text-[#BCA2AD]">
                 <div className="flex items-center gap-2 text-[#F4A7BB] font-semibold">
@@ -396,6 +246,7 @@ export default function OrganizerAuthPage() {
 
               <button
                 type="submit"
+                aria-busy={loading}
                 disabled={loading}
                 className="w-full mt-2 py-3 px-4 rounded-xl font-semibold text-sm text-white bg-[#B6264D] hover:bg-[#D13D65] shadow-lg shadow-[#B6264D]/30 hover:shadow-[#D13D65]/40 transition-all flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-[#B6264D]"
               >

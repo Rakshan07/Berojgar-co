@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Optional, Union
 import jwt
 from argon2 import PasswordHasher
-from argon2.exceptions import VerifyMismatchError, VerificationError
+from argon2.exceptions import VerifyMismatchError, VerificationError, InvalidHashError
 from backend.app.core.config import settings
 
 # Argon2id password hasher instance
@@ -24,7 +24,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verifies a plaintext password against an Argon2id hash."""
     try:
         return ph.verify(hashed_password, plain_password)
-    except (VerifyMismatchError, VerificationError):
+    except (VerifyMismatchError, VerificationError, InvalidHashError):
         return False
 
 def create_access_token(

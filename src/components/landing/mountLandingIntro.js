@@ -16,8 +16,8 @@ const playbackSpeed=1.2;
 const duration=8500/playbackSpeed;
 const cards=events.map(item=>{const el=document.createElement('div');el.className='intro-card';el.innerHTML=`<img src="/teamweave-motion/assets/${item.id}.jpg" alt="" decoding="async"><span class="label"><small>DIFFERENT SKILLS. SHARED AMBITION.</small>${item.name}</span>`;scene.append(el);return el;});
 const destinations=[[-.36,-.18,-130,-12],[.34,-.22,-200,12],[-.26,.2,-70,-9],[.37,.19,-90,9],[.02,-.12,100,-4],[.02,.26,-300,7],[-.48,.02,-390,-16],[.49,.03,-420,16],[-.17,-.32,-380,-7],[.18,-.32,-400,8],[-.15,.37,-410,-11],[.24,.36,-430,11]];
-const progress=getElement('progress'),marquee=root.querySelector('.intro-marquee'),copy=root.querySelector('.intro-copy');
-const title=getElement('introTitle'),eyebrow=getElement('introEyebrow'),phaseLabel=getElement('introPhase'),count=getElement('introCount');
+const marquee=root.querySelector('.intro-marquee'),copy=root.querySelector('.intro-copy');
+const title=getElement('introTitle'),eyebrow=getElement('introEyebrow');
 let currentPhase=-1;
 const clamp=x=>Math.max(0,Math.min(1,x));const ease=x=>{x=clamp(x);return x*x*x*(x*(x*6-15)+10)};const mix=(a,b,p)=>a+(b-a)*p;
 function paint(ms){
@@ -34,15 +34,12 @@ function paint(ms){
   card.style.transform=`translate3d(${x}px,${y}px,${z}px) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${1-exit*.35})`;
   card.style.opacity=String(arrival*(1-exit));card.style.zIndex=String(Math.round(z+500));
  });
- progress.style.transform=`scaleX(${clamp(ms/8500)})`;
  marquee.style.transform=`translate3d(${-ms*.017}px,0,0)`;
  const phase=ms<3400?0:ms<6700?1:2;
  if(phase!==currentPhase){
   currentPhase=phase;
   title.textContent=['Find your people.','Different strengths. One team.','Make something remarkable.'][phase];
   eyebrow.textContent=['A WORLD OF POSSIBILITIES','CONNECTED BY WHAT YOU CAN CREATE','YOUR NEXT CHAPTER STARTS HERE'][phase];
-  phaseLabel.textContent=['01 — FIND YOUR SPARK','02 — FIND YOUR CONNECTION','03 — MAKE YOUR MARK'][phase];
-  count.textContent=`0${phase+1} / 03`;
  }
  copy.style.transform=`translate3d(0,${-exit*height*.15}px,0)`;
  const panel=endingPose(ms,width,height);

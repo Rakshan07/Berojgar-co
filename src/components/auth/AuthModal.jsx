@@ -228,7 +228,7 @@ export function AuthModal({ isOpen, onClose, initialTab = 'signin', onAuthSucces
                 <div>
                   <div className="flex justify-between items-center mb-1">
                     <label className="text-xs font-medium text-[#E0CAD3]">Password</label>
-                    <span className="text-[11px] text-[#F4A7BB] hover:underline cursor-pointer">Forgot?</span>
+                    <a href="/forgot-password" className="text-[11px] text-[#F4A7BB] hover:underline">Forgot password?</a>
                   </div>
                   <div className="relative">
                     <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#BCA2AD]" />

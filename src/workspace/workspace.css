@@ -1,0 +1,254 @@
+
+#tw-workspace-review{--tw-bg:#13080e;--tw-panel:#210b16;--tw-card:#2c1020;--tw-border:#5e2a3d;--tw-text:#f7faf8;--tw-muted:#bca2ad;--tw-accent:#b6264d;--tw-soft:#f4a7bb;--tw-radius:10px;color:var(--tw-text);font:13px/1.55 "Inter","Segoe UI",sans-serif;isolation:isolate}
+#tw-workspace-review *{box-sizing:border-box}
+#tw-workspace-review h1,#tw-workspace-review h2,#tw-workspace-review h3,#tw-workspace-review p{margin:0}
+#tw-workspace-review button,#tw-workspace-review input,#tw-workspace-review select,#tw-workspace-review textarea{font:inherit}
+#tw-workspace-review button{color:inherit}
+#tw-workspace-review button:disabled{opacity:.45;cursor:not-allowed}
+#tw-workspace-review [hidden]{display:none!important}
+#tw-workspace-review .tw-reviewbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:13px 18px;background:#ead9df;color:#4e2636;border-radius:10px 10px 0 0}
+#tw-workspace-review .tw-reviewbar>span{font-size:11px;letter-spacing:.2px}
+#tw-workspace-review .tw-switch{display:flex;padding:3px;gap:3px;border:1px solid #ae8797;border-radius:6px}
+#tw-workspace-review .tw-switch button{background:none;border:0;color:#683d4f;padding:6px 12px;font-size:12px;border-radius:4px}
+#tw-workspace-review .tw-switch button[aria-pressed="true"]{background:#45182b;color:#fff1f6}
+#tw-workspace-review .tw-reviewbar small{font-size:11px}
+#tw-workspace-review .tw-app{display:grid;grid-template-columns:180px minmax(0,1fr);background:var(--tw-bg);border:1px solid #46202f;border-top:0;min-height:740px;border-radius:0 0 10px 10px;overflow:hidden}
+#tw-workspace-review .tw-sidebar{background:#1b0a13;border-right:1px solid #44202f;padding:23px 14px;display:flex;flex-direction:column}
+#tw-workspace-review .tw-brand{font-size:19px;letter-spacing:-.7px;display:flex;align-items:center;gap:6px;padding:0 6px}
+#tw-workspace-review .tw-brand b{font-size:31px;font-weight:400;color:var(--tw-soft);line-height:1}
+#tw-workspace-review .tw-brand>span{color:var(--tw-soft)}
+#tw-workspace-review .tw-navlabel{font-size:10px;letter-spacing:1.1px;color:#b48a9b;margin:33px 11px 12px}
+#tw-workspace-review .tw-nav{display:grid;gap:5px}
+#tw-workspace-review .tw-nav a{border:1px solid transparent;display:flex;gap:10px;align-items:center;text-align:left;background:none;border-radius:6px;padding:11px 10px;color:#c3a2b1;font-size:12px;min-height:42px}
+#tw-workspace-review .tw-nav a.active{background:#401728;color:#ffd7e4;border-color:#723148}
+#tw-workspace-review .tw-nav a:hover{background:#30111f}
+#tw-workspace-review .tw-nav svg{width:17px;height:17px;flex-shrink:0}
+#tw-workspace-review .tw-sideend{margin-top:auto;padding:30px 10px 0}
+#tw-workspace-review .tw-sidequote{font-family:Georgia,serif;font-size:20px;line-height:1.2;color:#e7bacb;padding-bottom:25px}
+#tw-workspace-review .tw-sidequote em{color:#ad6f87;font-style:normal}
+#tw-workspace-review .tw-sideidentity{display:flex;align-items:center;gap:9px;padding-top:18px;border-top:1px solid #4c2234;font-size:11px;color:#c6a6b4}
+#tw-workspace-review .tw-sideidentity>i,#tw-workspace-review .tw-sideidentity>svg{width:29px;height:29px;padding:6px;background:#361525;border-radius:50%;flex-shrink:0}
+#tw-workspace-review .tw-sideidentity small{display:block;color:#a98294;font-size:10px}
+#tw-workspace-review .tw-main{min-width:0}
+#tw-workspace-review .tw-topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px solid #41202f;padding:17px 25px;min-height:63px}
+#tw-workspace-review .tw-breadcrumb{font-size:11px;color:#ae879b;display:flex;align-items:center;gap:10px}
+#tw-workspace-review .tw-breadcrumb strong{font-weight:400;color:#ead2dc}
+#tw-workspace-review .tw-topmeta{display:flex;align-items:center;gap:8px;color:#c4a4b4;font-size:11px}
+#tw-workspace-review .tw-topmeta svg{width:14px;height:14px;color:#df9cb4}
+#tw-workspace-review .tw-content{padding:25px}
+#tw-workspace-review .tw-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:24px}
+#tw-workspace-review .tw-eyebrow{font-size:10px;letter-spacing:1.5px;color:#ce8ca3;margin-bottom:7px;text-transform:uppercase}
+#tw-workspace-review h1{font-size:28px;letter-spacing:-.9px;font-weight:500;line-height:1.2}
+#tw-workspace-review .tw-heading p:not(.tw-eyebrow){font-size:12px;color:var(--tw-muted);margin-top:9px;max-width:480px}
+#tw-workspace-review .tw-button{display:inline-flex;justify-content:center;align-items:center;gap:9px;background:var(--tw-accent);border:1px solid #c93d64;border-radius:6px;color:#fff5f7;padding:10px 14px;font-size:12px;font-weight:500;white-space:nowrap;min-height:40px}
+#tw-workspace-review .tw-button:hover:not(:disabled){background:#d13d65}
+#tw-workspace-review .tw-button.secondary{background:#331220;border-color:#673046;color:#f0c3d2}
+#tw-workspace-review .tw-button svg{width:16px;height:16px}
+#tw-workspace-review .tw-textbutton{display:inline-flex;align-items:center;gap:7px;background:none;border:0;padding:0;color:#e5a7bd;font-size:11px;min-height:28px}
+#tw-workspace-review .tw-textbutton svg{width:14px;height:14px}
+#tw-workspace-review .tw-metrics{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #4d2537;border-radius:var(--tw-radius);background:#210d18;margin-bottom:23px;overflow:hidden}
+#tw-workspace-review .tw-metric{padding:17px 18px;border-right:1px solid #4d2537}
+#tw-workspace-review .tw-metric:last-child{border:0}
+#tw-workspace-review .tw-metric>div{display:flex;align-items:center;gap:8px;color:#bf98aa;font-size:11px}
+#tw-workspace-review .tw-metric svg{width:15px;height:15px}
+#tw-workspace-review .tw-metric strong{display:block;font-size:26px;font-weight:400;line-height:1.3;margin-top:8px;letter-spacing:-1px}
+#tw-workspace-review .tw-metric small{font-size:10px;color:#ad8397}
+#tw-workspace-review .tw-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(195px,1fr);gap:18px;align-items:start}
+#tw-workspace-review .tw-stack{display:grid;gap:18px;min-width:0}
+#tw-workspace-review .tw-panel{border:1px solid #512438;border-radius:var(--tw-radius);background:var(--tw-panel);overflow:hidden}
+#tw-workspace-review .tw-panelhead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 19px}
+#tw-workspace-review h2{font-size:15px;font-weight:500;line-height:1.35;letter-spacing:-.2px}
+#tw-workspace-review .tw-panelhead p{font-size:11px;color:#b48c9f;margin-top:5px}
+#tw-workspace-review .tw-badge{display:inline-flex;align-items:center;gap:5px;border:1px solid #724057;border-radius:4px;padding:3px 7px;font-size:10px;color:#e5b6c8;white-space:nowrap;background:#351321}
+#tw-workspace-review .tw-badge svg{width:12px;height:12px}
+#tw-workspace-review .tw-empty{text-align:center;display:flex;flex-direction:column;align-items:center;padding:24px 22px 29px;gap:11px}
+#tw-workspace-review .tw-empty-symbol{width:48px;height:48px;border:1px solid #75354e;border-radius:13px;background:#371526;display:grid;place-items:center;color:#e19cb5;margin:2px 0 4px}
+#tw-workspace-review .tw-empty-symbol svg{width:23px;height:23px}
+#tw-workspace-review h3{font-size:14px;font-weight:500;line-height:1.4}
+#tw-workspace-review .tw-empty p{font-size:11px;color:#bea0ae;line-height:1.7;max-width:330px}
+#tw-workspace-review .tw-empty .tw-button{margin-top:5px}
+#tw-workspace-review .tw-rowtabs{display:flex;gap:20px;padding:0 19px;border-bottom:1px solid #4d2638}
+#tw-workspace-review .tw-rowtabs button{background:none;border:0;border-bottom:2px solid transparent;color:#b38a9e;font-size:11px;padding:10px 0;margin-bottom:-1px}
+#tw-workspace-review .tw-rowtabs button.active{color:#f3bed0;border-bottom-color:#d25b7d}
+#tw-workspace-review .tw-xp{padding:19px;background:#30101f;position:relative}
+#tw-workspace-review .tw-xptop{display:flex;align-items:center;justify-content:space-between;gap:10px}
+#tw-workspace-review .tw-xptop>svg{width:19px;height:19px;color:#e8adbf}
+#tw-workspace-review .tw-xpvalue{font-size:39px;letter-spacing:-1.3px;line-height:1.2;margin:19px 0 5px}
+#tw-workspace-review .tw-xpvalue small{font-size:12px;letter-spacing:0;color:#d9a3b6;margin-left:5px}
+#tw-workspace-review .tw-xp p{font-size:11px;color:#bc97a8;line-height:1.7}
+#tw-workspace-review .tw-xp hr{border:0;border-top:1px solid #633045;margin:17px 0}
+#tw-workspace-review .tw-xp h3{font-size:12px;color:#f2cfdb;margin-bottom:6px}
+#tw-workspace-review .tw-xp .tw-textbutton{margin-top:12px}
+#tw-workspace-review .tw-smallstep{display:flex;align-items:flex-start;gap:10px;padding:0 17px 19px;font-size:11px;color:#b997a8}
+#tw-workspace-review .tw-smallstep>span{width:22px;height:22px;flex-shrink:0;border:1px solid #75405a;display:grid;place-items:center;border-radius:50%;font-size:10px;color:#e6b0c4}
+#tw-workspace-review .tw-smallstep strong{display:block;color:#e7c8d5;font-weight:500;margin-bottom:3px;font-size:11px}
+#tw-workspace-review .tw-categories{display:flex;flex-wrap:wrap;gap:7px;padding:0 19px 18px}
+#tw-workspace-review .tw-chip{display:inline-flex;align-items:center;gap:6px;background:#30101f;border:1px solid #663148;padding:6px 9px;border-radius:5px;font-size:10px;color:#d6adbe}
+#tw-workspace-review .tw-chip.active{background:#60233b;border-color:#c76685;color:#ffdeea}
+#tw-workspace-review .tw-chip svg{width:13px;height:13px}
+#tw-workspace-review .tw-subtle{font-size:11px;color:#b58d9f;line-height:1.7}
+#tw-workspace-review .tw-bottomline{margin-top:25px;font-size:10px;color:#ac8195;display:flex;justify-content:space-between;gap:15px;border-top:1px solid #42202e;padding-top:15px}
+#tw-workspace-review .tw-content .tw-alert{border:1px solid #8c4260;background:#3c1728;color:#f0c2d4;border-radius:6px;padding:12px 15px;font-size:12px;margin-bottom:17px}
+#tw-workspace-review .tw-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+#tw-workspace-review .tw-search{display:flex;align-items:center;gap:10px;flex:1;background:#26101b;border:1px solid #673248;border-radius:6px;padding:9px 12px;min-width:180px}
+#tw-workspace-review .tw-search svg{width:16px;height:16px;color:#c18da4}
+#tw-workspace-review .tw-search input{width:100%;min-width:0;background:none;border:0;padding:2px;color:#f6e4ed;font-size:12px}
+#tw-workspace-review input::placeholder,#tw-workspace-review textarea::placeholder{color:#ac869a;opacity:1}
+#tw-workspace-review .tw-select{padding:10px;border:1px solid #673248;border-radius:6px;background:#26101b;color:#e9c8d7;font-size:12px;color-scheme:dark;max-width:100%}
+#tw-workspace-review .tw-award-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:19px 0}
+#tw-workspace-review .tw-award{display:flex;align-items:flex-start;gap:13px;padding:19px;border:1px solid #53273a;border-radius:8px;background:#26101c}
+#tw-workspace-review .tw-award svg{width:21px;height:21px;flex-shrink:0;color:#dda0b7}
+#tw-workspace-review .tw-award p{font-size:11px;line-height:1.7;color:#bb96a7;margin-top:7px}
+#tw-workspace-review .tw-experience-head{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:23px 25px;border:1px solid #74334d;background:#351122;border-radius:var(--tw-radius)}
+#tw-workspace-review .tw-experience-head h2{font-size:18px}
+#tw-workspace-review .tw-experience-head p{font-size:12px;color:#cba1b4;margin-top:8px;max-width:370px}
+#tw-workspace-review .tw-experience-head strong{font-size:40px;font-weight:400;white-space:nowrap}
+#tw-workspace-review .tw-experience-head strong small{font-size:12px;color:#e1acbf;letter-spacing:0}
+#tw-workspace-review .tw-table{width:100%;border-collapse:collapse;font-size:11px;text-align:left}
+#tw-workspace-review .tw-table th{font-weight:400;color:#b88cA2;font-size:10px;padding:12px 16px;border-top:1px solid #4b2336;border-bottom:1px solid #4b2336}
+#tw-workspace-review .tw-table td{padding:18px 16px;color:#d5acbf;border-bottom:1px solid #4b2336}
+#tw-workspace-review .tw-table-empty{text-align:center!important;padding:30px 18px!important;color:#b594a4!important}
+#tw-workspace-review .tw-org-banner{display:flex;justify-content:space-between;align-items:center;gap:24px;background:#381326;border:1px solid #733047;border-radius:var(--tw-radius);padding:24px;margin-bottom:21px}
+#tw-workspace-review .tw-org-banner h2{font-size:24px;letter-spacing:-.7px}
+#tw-workspace-review .tw-org-banner p{font-size:12px;color:#c7a2b3;margin-top:10px;max-width:350px}
+#tw-workspace-review .tw-org-banner .tw-button{margin-top:17px}
+#tw-workspace-review .tw-event-symbol{flex-shrink:0;width:132px;transform:rotate(-5deg);background:#542139;border:1px solid #9b516c;border-radius:8px;padding:14px;box-shadow:7px 7px 0 #250b18;color:#dda5bb}
+#tw-workspace-review .tw-event-symbol>span{font-size:9px;letter-spacing:1px}
+#tw-workspace-review .tw-event-symbol strong{display:block;font-family:Georgia,serif;font-weight:400;font-size:21px;line-height:1.2;color:#f3d6e2;margin:10px 0}
+#tw-workspace-review .tw-event-symbol>div{display:flex;gap:6px;padding-top:9px;border-top:1px solid #90506a}
+#tw-workspace-review .tw-event-symbol svg{width:20px;height:20px}
+#tw-workspace-review .tw-checklist{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:20px}
+#tw-workspace-review .tw-checklist>div{padding:16px 0;border-top:1px solid #54273b}
+#tw-workspace-review .tw-checklist svg{width:19px;height:19px;color:#d493ae;margin-bottom:8px}
+#tw-workspace-review .tw-checklist h3{font-size:12px}
+#tw-workspace-review .tw-checklist p{font-size:11px;color:#b490a2;margin-top:6px}
+#tw-workspace-review .tw-formlayout{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:18px;align-items:start}
+#tw-workspace-review .tw-formpanel{padding:22px}
+#tw-workspace-review .tw-formpanel h2{font-size:19px;margin-bottom:7px}
+#tw-workspace-review .tw-field{display:flex;flex-direction:column;gap:8px;margin:19px 0;font-size:11px;color:#e5c4d2}
+#tw-workspace-review .tw-field input,#tw-workspace-review .tw-field select,#tw-workspace-review .tw-field textarea{background:#180b13;border:1px solid #6b344c;border-radius:5px;color:#f3dce6;padding:10px 12px;min-width:0;width:100%;font-size:12px;color-scheme:dark}
+#tw-workspace-review .tw-field textarea{resize:vertical;min-height:120px}
+#tw-workspace-review .tw-field small{font-size:10px;color:#b992a5}
+#tw-workspace-review .tw-fieldpair{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+#tw-workspace-review .tw-fieldpair .tw-field{margin-top:10px;margin-bottom:10px}
+#tw-workspace-review .tw-formactions{display:flex;align-items:center;justify-content:space-between;gap:15px;border-top:1px solid #54283d;padding-top:19px;margin-top:20px}
+#tw-workspace-review .tw-wizardsteps{display:flex;align-items:center;gap:5px;padding-bottom:20px;margin-bottom:21px;border-bottom:1px solid #4b2435}
+#tw-workspace-review .tw-wizardsteps>div{display:flex;align-items:center;gap:7px;flex:1;font-size:10px;color:#ad8197}
+#tw-workspace-review .tw-wizardsteps b{width:23px;height:23px;border-radius:50%;border:1px solid #75415a;display:grid;place-items:center;font-weight:400}
+#tw-workspace-review .tw-wizardsteps>div.current{color:#f7ccdd}
+#tw-workspace-review .tw-wizardsteps>div.current b{background:#a92850;border-color:#c25175;color:white}
+#tw-workspace-review .tw-formaside{padding:19px;border-left:1px solid #55273d}
+#tw-workspace-review .tw-formaside h3{font-size:12px}
+#tw-workspace-review .tw-formaside p{font-size:11px;color:#b38c9f;line-height:1.8;margin-top:8px}
+#tw-workspace-review .tw-formaside svg{width:23px;height:23px;color:#e1a0b9;margin-bottom:13px}
+#tw-workspace-review .tw-formaside ul{padding-left:15px;font-size:11px;color:#c7a3b5;line-height:1.8}
+#tw-workspace-review .tw-checks{display:flex;flex-wrap:wrap;gap:10px}
+#tw-workspace-review .tw-check{display:flex;gap:8px;align-items:center;border:1px solid #633046;background:#2c1020;border-radius:5px;padding:9px 11px;font-size:11px;color:#dbb1c3}
+#tw-workspace-review .tw-check input{accent-color:#c43c67;width:15px;height:15px}
+#tw-workspace-review .tw-config-row{display:flex;align-items:flex-start;gap:11px;padding:14px 0;border-bottom:1px solid #482034}
+#tw-workspace-review .tw-config-row>svg{width:17px;height:17px;flex-shrink:0;color:#e1a2ba;margin-top:2px}
+#tw-workspace-review .tw-config-row h3{font-size:12px}
+#tw-workspace-review .tw-config-row p{font-size:11px;color:#b690a3;margin-top:4px}
+#tw-workspace-review .tw-note{font-size:11px;color:#d9b0c3;background:#351425;border:1px solid #78405a;border-radius:6px;padding:13px 15px;margin:18px 0}
+#tw-workspace-review .tw-summary-line{display:flex;justify-content:space-between;gap:15px;font-size:11px;padding:12px 0;border-bottom:1px solid #512538}
+#tw-workspace-review .tw-summary-line>span{color:#b88cA2}
+#tw-workspace-review .tw-summary-line strong{font-weight:400;color:#f0cddd;text-align:right}
+#tw-workspace-review .tw-brieftext{font-size:12px;line-height:1.8;color:#c7a8b6;white-space:pre-wrap;margin:15px 0}
+#tw-workspace-review .tw-draftrow{padding:17px 19px;border-top:1px solid #52263b;display:flex;align-items:center;justify-content:space-between;gap:14px}
+#tw-workspace-review .tw-draftrow p{font-size:11px;color:#b78fa2;margin-top:5px}
+#tw-workspace-review .tw-draftrow h3{font-size:13px}
+#tw-workspace-review .tw-workflow{display:flex;align-items:flex-start;gap:13px;padding:18px 20px;border-top:1px solid #4d2438}
+#tw-workspace-review .tw-workflow>span{font-family:Georgia,serif;font-size:22px;color:#b97794}
+#tw-workspace-review .tw-workflow h3{font-size:12px}
+#tw-workspace-review .tw-workflow p{font-size:11px;color:#b995a7;margin-top:5px}
+#tw-workspace-review .tw-toast{padding:12px 16px;border:1px solid #ad5c7e;background:#3d1529;color:#ffe0ed;border-radius:6px;margin-bottom:17px;font-size:12px}
+#tw-workspace-review .tw-back{margin-bottom:14px}
+#tw-workspace-review .tw-result-empty{display:flex;align-items:center;gap:14px;padding:18px;background:#2f1021;border:1px solid #643045;border-radius:7px;margin-bottom:20px}
+#tw-workspace-review .tw-result-empty svg{width:24px;height:24px;color:#d49ab1;flex-shrink:0}
+#tw-workspace-review .tw-result-empty p{font-size:11px;color:#bf95a9;margin-top:4px}
+#tw-workspace-review .tw-compact .tw-content{padding:19px}
+#tw-workspace-review .tw-compact .tw-empty{padding:18px}
+@media(max-width:850px){#tw-workspace-review .tw-app{grid-template-columns:157px minmax(0,1fr)}#tw-workspace-review .tw-sidebar{padding:20px 10px}#tw-workspace-review .tw-brand{font-size:17px}#tw-workspace-review .tw-nav a{font-size:11px;padding:10px 8px;gap:8px}#tw-workspace-review .tw-content{padding:22px 18px}#tw-workspace-review .tw-topbar{padding:16px 18px}#tw-workspace-review .tw-grid{grid-template-columns:1fr}#tw-workspace-review .tw-grid>.tw-stack:last-child{grid-template-columns:1fr 1fr}#tw-workspace-review .tw-formlayout{grid-template-columns:minmax(0,1fr)}#tw-workspace-review .tw-formaside{display:none}#tw-workspace-review .tw-heading{align-items:flex-start}#tw-workspace-review h1{font-size:26px}}
+@media(max-width:580px){#tw-workspace-review .tw-reviewbar{gap:8px;padding:12px}#tw-workspace-review .tw-reviewbar>span{display:none}#tw-workspace-review .tw-app{display:block;min-height:0}#tw-workspace-review .tw-sidebar{border-right:0;border-bottom:1px solid #562338;padding:17px 15px 12px}#tw-workspace-review .tw-brand{font-size:19px}#tw-workspace-review .tw-navlabel,#tw-workspace-review .tw-sideend{display:none}#tw-workspace-review .tw-nav{display:flex;flex-wrap:wrap;gap:3px;margin-top:14px}#tw-workspace-review .tw-nav a{padding:8px;min-height:39px;gap:5px;flex:0 1 auto}#tw-workspace-review .tw-nav svg{width:14px;height:14px}#tw-workspace-review .tw-topbar{padding:12px 17px;min-height:45px}#tw-workspace-review .tw-content{padding:22px 16px}#tw-workspace-review .tw-heading{flex-wrap:wrap;gap:14px}#tw-workspace-review h1{font-size:25px}#tw-workspace-review .tw-grid>.tw-stack:last-child{grid-template-columns:1fr}#tw-workspace-review .tw-metric{padding:13px 10px}#tw-workspace-review .tw-metric>div{gap:5px;font-size:10px}#tw-workspace-review .tw-metric>div svg{display:none}#tw-workspace-review .tw-metric small{font-size:9px}#tw-workspace-review .tw-metric strong{font-size:24px}#tw-workspace-review .tw-panelhead{padding:16px;flex-wrap:wrap}#tw-workspace-review .tw-reviewbar small{font-size:10px}#tw-workspace-review .tw-award-grid{grid-template-columns:1fr}#tw-workspace-review .tw-experience-head{flex-wrap:wrap;padding:20px}#tw-workspace-review .tw-org-banner{padding:20px}#tw-workspace-review .tw-event-symbol{display:none}#tw-workspace-review .tw-org-banner h2{font-size:23px}#tw-workspace-review .tw-checklist{grid-template-columns:1fr;gap:0}#tw-workspace-review .tw-formpanel{padding:18px}#tw-workspace-review .tw-fieldpair{grid-template-columns:1fr;gap:0}#tw-workspace-review .tw-wizardsteps{flex-wrap:wrap;gap:10px}#tw-workspace-review .tw-wizardsteps>div{flex-basis:40%}#tw-workspace-review .tw-field input,#tw-workspace-review .tw-field textarea,#tw-workspace-review .tw-field select{font-size:16px}#tw-workspace-review .tw-formactions{flex-wrap:wrap}#tw-workspace-review .tw-topmeta{font-size:10px}#tw-workspace-review .tw-table th,#tw-workspace-review .tw-table td{padding:12px 9px}#tw-workspace-review .tw-draftrow{align-items:flex-start;flex-wrap:wrap}#tw-workspace-review .tw-button{white-space:normal}#tw-workspace-review .tw-experience-head strong{font-size:35px}#tw-workspace-review .tw-bottomline{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){#tw-workspace-review *{scroll-behavior:auto;transition:none;animation:none}}
+
+#tw-workspace-review .tw-profile-basics,#tw-workspace-review .tw-profile-growth,#tw-workspace-review .tw-profile-contribution,#tw-workspace-review .tw-profile-history{margin-bottom:20px}
+#tw-workspace-review .tw-profile-identity{display:flex;align-items:center;gap:14px;padding:5px 22px 22px;border-bottom:1px solid #512438}
+#tw-workspace-review .tw-profile-identity>.tw-badge{margin-left:auto}
+#tw-workspace-review .tw-profile-avatar{width:52px;height:52px;display:grid;place-items:center;flex-shrink:0;background:#48182d;border:1px solid #89425d;border-radius:14px;color:#f3b7cc;font-size:23px}
+#tw-workspace-review .tw-profile-avatar svg{width:25px;height:25px}
+#tw-workspace-review .tw-profile-identity h2{font-size:19px}
+#tw-workspace-review .tw-profile-identity p{color:#bca2ad;font-size:12px;margin-top:5px}
+#tw-workspace-review .tw-profile-details{display:grid;grid-template-columns:1fr 1fr;gap:20px 25px;padding:22px;margin:0}
+#tw-workspace-review .tw-profile-detail{min-width:0}
+#tw-workspace-review .tw-profile-detail dt{font-size:11px;color:#b68c9f}
+#tw-workspace-review .tw-profile-detail dd{font-size:13px;color:#ebd0dc;margin:5px 0 0;overflow-wrap:anywhere;white-space:pre-wrap}
+#tw-workspace-review .tw-profile-skills{padding:0 22px 22px}
+#tw-workspace-review .tw-profile-skills h3{font-size:12px}
+#tw-workspace-review .tw-profile-skills>p{font-size:11px;color:#b996a7;margin-top:7px}
+#tw-workspace-review .tw-profile-skills .tw-categories{padding:10px 0 0}
+#tw-workspace-review .tw-profile-growth{padding:23px;background:#30101f}
+#tw-workspace-review .tw-profile-growth-top{display:flex;justify-content:space-between;gap:25px;align-items:center}
+#tw-workspace-review .tw-profile-growth-top h2{font-size:18px}
+#tw-workspace-review .tw-profile-growth-top p:not(.tw-eyebrow){font-size:12px;color:#c19aac;max-width:370px;margin-top:8px}
+#tw-workspace-review .tw-profile-balance{flex-shrink:0;text-align:right}
+#tw-workspace-review .tw-profile-balance strong{font-size:37px;font-weight:400;letter-spacing:-1px;white-space:nowrap}
+#tw-workspace-review .tw-profile-balance small{font-size:13px;color:#eab1c5;letter-spacing:0}
+#tw-workspace-review .tw-profile-balance>span{display:block;font-size:11px;color:#c599ad}
+#tw-workspace-review .tw-level-labels{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:25px;font-size:11px;color:#d8acbf}
+#tw-workspace-review .tw-level-labels strong{font-size:13px;font-weight:500;color:#f7d6e4}
+#tw-workspace-review .tw-level-labels strong span{font-size:10px;color:#bb8ca1;margin-left:7px;font-weight:400}
+#tw-workspace-review .tw-level-track{height:6px;border-radius:4px;background:#623148;margin:12px 0}
+#tw-workspace-review .tw-level-milestones{display:flex;justify-content:space-between;gap:15px;margin:15px 0;color:#b98ba1;font-size:11px}
+#tw-workspace-review .tw-level-milestones span{display:flex;align-items:center;gap:7px}
+#tw-workspace-review .tw-level-milestones svg{width:13px;height:13px}
+#tw-workspace-review .tw-level-milestones .current{color:#ffd2e3}
+#tw-workspace-review .tw-profile-growth>.tw-subtle{font-size:10px}
+#tw-workspace-review .tw-profile-contribution>.tw-metrics{margin:0 19px 16px}
+#tw-workspace-review .tw-profile-contribution>.tw-subtle{padding:0 19px 19px}
+#tw-workspace-review .tw-profile-history-action{padding:18px;text-align:center}
+#tw-workspace-review .tw-profile-history .tw-table-empty{line-height:1.9}
+#tw-workspace-review .tw-profile-history .tw-table-empty strong{font-weight:500;color:#eac4d5}
+#tw-workspace-review .tw-profile-xp-rules{margin:20px 0}
+#tw-workspace-review .tw-profile-xp-rules summary{font-size:12px;color:#e2a8c0;min-height:32px}
+@media(max-width:580px){#tw-workspace-review .tw-profile-details{grid-template-columns:1fr;padding:19px;gap:17px}#tw-workspace-review .tw-profile-identity{padding:4px 18px 19px;flex-wrap:wrap}#tw-workspace-review .tw-profile-growth{padding:19px}#tw-workspace-review .tw-profile-growth-top{align-items:flex-start;flex-wrap:wrap;gap:12px}#tw-workspace-review .tw-profile-balance{text-align:left}#tw-workspace-review .tw-profile-growth-top h2{font-size:17px}#tw-workspace-review .tw-profile-history th{font-size:9px}#tw-workspace-review .tw-level-labels{flex-wrap:wrap;gap:8px}}
+
+
+#tw-workspace-review{min-height:100vh;font-size:14px}
+#tw-workspace-review a{text-decoration:none;color:inherit}
+#tw-workspace-review button,#tw-workspace-review a{cursor:pointer}
+#tw-workspace-review :focus-visible{outline:2px solid #f4a7bb;outline-offset:4px}
+#tw-workspace-review .tw-app{min-height:100vh;border:0;border-radius:0;grid-template-columns:220px minmax(0,1fr)}
+#tw-workspace-review .tw-sidebar{position:sticky;top:0;height:100vh}
+#tw-workspace-review .tw-content{max-width:1320px;margin:auto;padding:36px}
+#tw-workspace-review .tw-heading h1{font-size:clamp(25px,3vw,36px)}
+#tw-workspace-review .tw-nav a{font-size:13px}
+#tw-workspace-review .tw-button{font-size:13px}
+#tw-workspace-review .tw-notice{padding:14px 18px;background:#321220;border:1px solid #70354b;border-radius:8px;color:#e6bccb;margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#tw-workspace-review .tw-notice p{flex:1;min-width:180px}
+#tw-workspace-review .tw-event-list{padding:0 18px 18px;display:grid;gap:12px}
+#tw-workspace-review .tw-event-card{padding:20px;border:1px solid #683047;background:#29101e;border-radius:8px}
+#tw-workspace-review .tw-event-card h3{font-size:19px;margin:12px 0 8px}
+#tw-workspace-review .tw-event-card p{color:#bca2ad;white-space:pre-wrap;overflow-wrap:anywhere}
+#tw-workspace-review .tw-event-card footer{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-top:18px;flex-wrap:wrap}
+#tw-workspace-review .tw-table-wrap{overflow-x:auto}
+#tw-workspace-review .tw-details{padding:0 20px 20px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+#tw-workspace-review .tw-details dt{color:#bca2ad;font-size:12px;margin-bottom:5px}
+#tw-workspace-review .tw-details dd{margin:0;overflow-wrap:anywhere}
+#tw-workspace-review .tw-field{display:grid;gap:8px;margin-bottom:20px}
+#tw-workspace-review input,#tw-workspace-review select,#tw-workspace-review textarea{color:#f7faf8;background:#180b13;border:1px solid #713249;border-radius:6px;padding:11px;max-width:100%;width:100%}
+#tw-workspace-review textarea{min-height:130px;resize:vertical}
+#tw-workspace-review .tw-mobile-menu{display:none}
+#tw-workspace-review .tw-panel+.tw-panel{margin-top:20px}
+#tw-workspace-review .tw-levels{display:flex;gap:12px;flex-wrap:wrap;padding:20px}
+#tw-workspace-review .tw-levels span{padding:10px 15px;border:1px solid #683047;border-radius:7px;color:#cda7b8}
+@media(max-width:850px){#tw-workspace-review .tw-app{grid-template-columns:180px minmax(0,1fr)}#tw-workspace-review .tw-content{padding:24px 20px}}
+@media(max-width:580px){#tw-workspace-review .tw-app{display:block}#tw-workspace-review .tw-sidebar{position:static;height:auto}#tw-workspace-review .tw-content{padding:22px 16px}#tw-workspace-review .tw-mobile-menu{display:inline-flex;float:right}#tw-workspace-review .tw-nav:not(.is-open){display:none}#tw-workspace-review .tw-details{grid-template-columns:1fr}#tw-workspace-review .tw-sidebar .tw-brand{display:inline-flex}}
+@media(prefers-reduced-motion:reduce){#tw-workspace-review *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+#tw-workspace-review.tw-onboarding{padding:28px 24px 64px;background:#13080e;min-height:100vh}
+#tw-workspace-review.tw-onboarding>header{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px}
+#tw-workspace-review .tw-onboarding-main{max-width:760px;margin:60px auto 0}
+#tw-workspace-review .tw-onboarding-main h1{font-size:clamp(28px,4vw,38px)}
+#tw-workspace-review .tw-onboarding-intro{color:#bca2ad;margin:14px 0 28px;max-width:580px}
+#tw-workspace-review .tw-onboarding-main h2{display:flex;align-items:center;gap:10px}
+@media(max-width:580px){#tw-workspace-review.tw-onboarding{padding:20px 16px 40px}#tw-workspace-review .tw-onboarding-main{margin-top:32px}#tw-workspace-review.tw-onboarding>header{flex-wrap:wrap}}

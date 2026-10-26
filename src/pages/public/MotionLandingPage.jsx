@@ -23,7 +23,6 @@ export default function MotionLandingPage(){
   <div className="intro-marquee" aria-hidden="true">Different skills. Extraordinary together. Different skills.</div>
   <div className="intro-scene" id="introScene" aria-hidden="true"></div>
   <div className="intro-copy"><span id="introEyebrow">A WORLD OF POSSIBILITIES</span><h1 id="introTitle">Find your people.</h1></div>
-  <div className="intro-bottom"><span id="introPhase">01 — FIND YOUR SPARK</span><span className="progress"><i id="progress"></i></span><span id="introCount">01 / 03</span></div>
 </div>
 <div id="site">
 <header className="nav"><a className="brand" href="#home" aria-label="TeamWeave home"><span className="mark">✳</span> TeamWeave</a><nav id="navigation" className={menuOpen ? "open" : ""} aria-label="Main navigation"><a href="#events">Explore worlds</a><a href="#how">How it works</a><a href="#organizers">For organizers</a></nav><div className="nav-right"><button className="login" data-action="login">Log in</button><button className="button small" data-action="signup">Get started <span>↗</span></button><button className="menu" id="menu" aria-label={menuOpen ? "Close navigation" : "Open navigation"} aria-expanded={menuOpen}>{menuOpen ? "×" : "☰"}</button></div></header>
