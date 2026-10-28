@@ -1,3 +1,4 @@
+import re
 import hashlib
 import secrets
 from datetime import datetime, timedelta, timezone
@@ -66,3 +67,7 @@ def generate_session_token() -> str:
 def hash_session_token(token: str) -> str:
     """Hashes a session token using SHA-256 for secure database storage."""
     return hashlib.sha256(token.encode("utf-8")).hexdigest()
+
+PASSWORD_GUIDE = 'Use at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special character.'
+def valid_new_password(value: str) -> bool:
+    return bool(8 <= len(value) <= 128 and re.search(r'[A-Z]', value) and re.search(r'[a-z]', value) and re.search(r'[0-9]', value) and re.search(r'[^A-Za-z0-9\s]', value))

@@ -301,7 +301,7 @@ export default function EventDetailPage() {
               <Link to="/my-team">
                 <button
                   type="button"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-red-700 hover:bg-red-800 rounded-full shadow-sm transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-ink bg-red-700 hover:bg-red-800 rounded-full shadow-sm transition-all cursor-pointer"
                 >
                   View my team <ArrowRight size={14} />
                 </button>
@@ -604,7 +604,7 @@ export default function EventDetailPage() {
                   </Button>
                   <Button
                     size="sm"
-                    className="gap-1.5 bg-teal hover:bg-teal-600 text-white font-semibold"
+                    className="gap-1.5 bg-teal hover:bg-teal-600 text-ink font-semibold"
                     onClick={handleRunCompatibility}
                   >
                     Calculate Compatibility & View Teams <Sparkles size={14} />
@@ -687,7 +687,7 @@ export default function EventDetailPage() {
                             ) : (
                               <Button
                                 size="sm"
-                                className={isRedundant ? "bg-slate-700 hover:bg-slate-600 text-white font-medium" : "bg-red-700 hover:bg-red-800 text-white font-semibold"}
+                                className={isRedundant ? "bg-slate-700 hover:bg-slate-600 text-ink font-medium" : "bg-red-700 hover:bg-red-800 text-ink font-semibold"}
                                 onClick={() => handleJoinTeam(team.id, proposedRole)}
                               >
                                 {isRedundant ? "Join anyway" : "Join this team"}

@@ -97,7 +97,7 @@ export default function TeamFormationPage() {
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider font-semibold bg-wine-surface text-pink border border-garnet/30 shadow-sm shadow-black/50 mb-3">
             <Zap size={11} className="text-pink" /> Skill-Driven Teaming Studio
           </div>
-          <h1 className="text-3xl sm:text-4xl font-heading font-black text-white tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-heading font-black text-ink tracking-tight">
             Team Formation <span className="text-gradient-purple">Studio</span>
           </h1>
           <p className="text-sm text-slate-300 mt-1 max-w-xl">
@@ -106,7 +106,7 @@ export default function TeamFormationPage() {
         </div>
         <div className="flex items-center gap-3 flex-wrap">
           {generatedTeams.length > 0 && (
-            <Button variant="secondary" size="sm" onClick={handleSaveTeams} className="border border-garnet/30 bg-[#13080E] text-white font-medium hover:bg-[#2C1020]">
+            <Button variant="secondary" size="sm" onClick={handleSaveTeams} className="border border-garnet/30 bg-[var(--sf-bg)] text-ink font-medium hover:bg-[var(--sf-surface)]">
               Save suggestions
             </Button>
           )}
@@ -115,7 +115,7 @@ export default function TeamFormationPage() {
             icon={loading ? <RefreshCw size={14} className="animate-spin" /> : <Zap size={14} />}
             loading={loading}
             onClick={handleGenerate}
-            className="border border-garnet/40 bg-gradient-to-r from-garnet to-garnet-hover hover:from-garnet hover:to-garnet-hover text-white font-semibold shadow-md shadow-black/50"
+            className="border border-garnet/40 bg-gradient-to-r from-garnet to-garnet-hover hover:from-garnet hover:to-garnet-hover text-ink font-semibold shadow-md shadow-black/50"
           >
             Generate suggestions
           </Button>
@@ -127,7 +127,7 @@ export default function TeamFormationPage() {
         <div className="flex items-center gap-3">
           <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider shrink-0">Selected Event:</label>
           <select
-            className="border border-white/10 rounded-xl px-3.5 py-1.5 bg-[#13080E] text-sm text-white focus:outline-none focus:border-teal/60 focus:ring-1 focus:ring-teal/30 transition-all font-medium"
+            className="border border-white/10 rounded-xl px-3.5 py-1.5 bg-[var(--sf-bg)] text-sm text-ink focus:outline-none focus:border-teal/60 focus:ring-1 focus:ring-teal/30 transition-all font-medium"
             value={selectedEventId}
             onChange={e => { setSelectedEventId(e.target.value); dispatch({ type: 'SET_GENERATED_TEAMS', payload: [] }); }}
           >
@@ -153,8 +153,8 @@ export default function TeamFormationPage() {
             cellSize={7}
             gap={3}
             glow
-            color="#B6264D"
-            doneColor="#D13D65"
+            color="#C5ADE5"
+            doneColor="#B69BD8"
           />
         </div>
       )}
@@ -244,7 +244,7 @@ export default function TeamFormationPage() {
               {/* Team header with actions */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/5">
                 <div className="flex items-center gap-2.5 flex-wrap">
-                  <h3 className="font-heading font-bold text-white text-lg sm:text-xl tracking-tight">{team.name}</h3>
+                  <h3 className="font-heading font-bold text-ink text-lg sm:text-xl tracking-tight">{team.name}</h3>
                   <Badge color={team.status === 'published' ? 'teal' : 'cobalt'}>{team.status}</Badge>
                   {team._isGenerated && <Badge color="ink" size="xs">Unsaved Draft</Badge>}
                 </div>
@@ -254,7 +254,7 @@ export default function TeamFormationPage() {
                       size="sm"
                       icon={<CheckCircle size={14} />}
                       onClick={() => setConfirmPublish(team.id)}
-                      className="border border-garnet/40 bg-gradient-to-r from-garnet to-garnet-hover hover:from-garnet hover:to-garnet-hover text-white font-semibold shadow-md shadow-black/50"
+                      className="border border-garnet/40 bg-gradient-to-r from-garnet to-garnet-hover hover:from-garnet hover:to-garnet-hover text-ink font-semibold shadow-md shadow-black/50"
                     >
                       Publish Team
                     </Button>

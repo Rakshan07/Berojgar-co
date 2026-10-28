@@ -2,8 +2,16 @@ import { useEffect, useState } from 'react';
 export const API_BASE = (import.meta.env.VITE_API_BASE_URL || '/api/v1').replace(/\/$/, '');
 export async function request(path, options = {}) {
   const token = localStorage.getItem('teamweave_token');
+  const controller = new AbortController();
+  let timedOut = false;
+  const timeout = setTimeout(() => { timedOut = true; controller.abort(); }, 20000);
+  const cancel = () => controller.abort();
+  options.signal?.addEventListener('abort', cancel, { once: true });
+  if (options.signal?.aborted) cancel();
+  try {
   const response = await fetch(`${API_BASE}${path}`, {
     ...options,
+    signal: controller.signal,
     headers: { ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...(token ? { Authorization: `Bearer ${token}` } : {}), ...options.headers },
   });
   if (!response.ok) {
@@ -12,6 +20,13 @@ export async function request(path, options = {}) {
     throw new Error(typeof detail === 'string' && response.status < 500 ? detail : message);
   }
   return response.status === 204 ? null : response.json();
+  } catch (error) {
+    if (timedOut) throw new Error('The server is taking too long. Please try again.');
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+    options.signal?.removeEventListener('abort', cancel);
+  }
 }
 export function useResource(path, enabled = true) {
   const [result, setResult] = useState(null);

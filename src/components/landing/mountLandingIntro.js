@@ -72,10 +72,10 @@ function finish(focus){
  cancelAnimationFrame(frame);clearTimeout(handoffTimer);playing=false;finished=true;
  paint(duration);intro.classList.add('done');site.classList.add('ready');site.inert=false;unlockScroll();
  handoffTimer=setTimeout(resetEnding,850);
- if(focus)getElement('replay').focus({preventScroll:true});
+ if(focus)root.querySelector('.hero-actions button')?.focus({preventScroll:true});
 }
 function start(){if(disposed)return;clearTimeout(handoffTimer);resetEnding();if(reduced.matches){intro.classList.add('done');site.classList.add('ready');site.inert=false;unlockScroll();finished=true;return;}cancelAnimationFrame(frame);window.scrollTo({top:0,behavior:'instant'});elapsed=0;last=0;currentPhase=-1;finished=false;playing=true;intro.style.opacity='';intro.classList.remove('done');site.classList.remove('ready');site.inert=true;lockScroll();paint(0);frame=requestAnimationFrame(tick);}
-listen(getElement('replay'),'click',start);
+
 listen(reduced,'change',()=>{if(reduced.matches)finish(false);});
 
  const hero=getElement('heroArt');

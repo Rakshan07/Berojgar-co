@@ -2,13 +2,13 @@ import { AlertTriangle, X } from 'lucide-react';
 
 // ─── Badge / Tag component ────────────────────────────────────────────────
 const colorMap = {
-  teal:   'bg-[#210B16] text-[#F4A7BB] border-[#5E2A3D]',
-  cobalt: 'bg-[#210B16] text-[#E0CAD3] border-[#5E2A3D]',
-  coral:  'bg-[#B6264D]/20 text-[#F4A7BB] border-[#B6264D]/40',
+  teal:   'bg-[var(--sf-panel)] text-[var(--sf-accent-text)] border-[var(--sf-border)]',
+  cobalt: 'bg-[var(--sf-panel)] text-[var(--sf-secondary)] border-[var(--sf-border)]',
+  coral:  'bg-[#C5ADE5]/20 text-[var(--sf-accent-text)] border-[#C5ADE5]/40',
   gold:   'bg-amber-950/40 text-amber-200 border-amber-500/30',
-  violet: 'bg-[#210B16] text-[#F7FAF8] border-[#5E2A3D]',
-  ink:    'bg-[#13080E] text-[#E0CAD3] border-[#5E2A3D]',
-  red:    'bg-[#B6264D]/30 text-rose-200 border-[#B6264D]',
+  violet: 'bg-[var(--sf-panel)] text-[var(--sf-text)] border-[var(--sf-border)]',
+  ink:    'bg-[var(--sf-bg)] text-[var(--sf-secondary)] border-[var(--sf-border)]',
+  red:    'bg-[#C5ADE5]/30 text-rose-200 border-[#C5ADE5]',
 };
 
 export function Badge({ children, color = 'ink', size = 'sm', dot = false, className = '' }) {

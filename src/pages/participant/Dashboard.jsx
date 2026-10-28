@@ -33,7 +33,7 @@ export default function ParticipantDashboard() {
           <Avatar initials={user.initials || 'YOU'} size="lg" index={0} />
           <div>
             <h1 className="text-2xl font-heading font-bold text-ink">
-              {user.name?.trim() ? `Welcome back, ${user.name.trim().split(' ')[0]}` : 'Welcome to TeamWeave!'}
+              {user.name?.trim() ? `Welcome back, ${user.name.trim().split(' ')[0]}` : 'Welcome to Skillfy!'}
             </h1>
             <p className="text-sm text-ink-secondary">
               {user.tagline || 'Build your profile so teams and matching engines understand your unique strengths.'}

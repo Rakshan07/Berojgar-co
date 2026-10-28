@@ -58,21 +58,21 @@ export default function EventDiscoveryPage() {
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* ─── Page Header with ambient badge ─── */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#5E2A3D]/60 pb-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[var(--sf-border)]/60 pb-6">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider font-semibold bg-[#210B16] text-[#F4A7BB] border border-[#5E2A3D] shadow-sm shadow-[#13080E]/50 mb-3">
-            <Sparkles size={11} className="text-[#F4A7BB]" /> Skill-Matched Opportunities
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider font-semibold bg-[var(--sf-panel)] text-[var(--sf-accent-text)] border border-[var(--sf-border)] shadow-sm shadow-[var(--sf-bg)]/50 mb-3">
+            <Sparkles size={11} className="text-[var(--sf-accent-text)]" /> Skill-Matched Opportunities
           </div>
-          <h1 className="text-3xl sm:text-4xl font-heading font-black text-white tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-heading font-black text-ink tracking-tight">
             Discover <span className="text-gradient-purple">Events</span>
           </h1>
-          <p className="text-sm text-[#E0CAD3] mt-1 max-w-xl">
+          <p className="text-sm text-[var(--sf-secondary)] mt-1 max-w-xl">
             Browse hackathons, debates, research sprints, and creative jams with live team requirement blueprints.
           </p>
         </div>
-        <div className="flex items-center gap-2 text-xs font-mono text-[#E0CAD3] bg-[#210B16]/95 border border-[#5E2A3D] px-3.5 py-2 rounded-xl backdrop-blur-md self-start md:self-auto shadow-sm">
-          <span className="w-2 h-2 rounded-full bg-[#B6264D] shadow-[0_0_8px_rgba(182,38,77,0.8)]" />
-          <span className="font-bold text-[#F4A7BB]">{filtered.length}</span>
+        <div className="flex items-center gap-2 text-xs font-mono text-[var(--sf-secondary)] bg-[var(--sf-panel)]/95 border border-[var(--sf-border)] px-3.5 py-2 rounded-xl backdrop-blur-md self-start md:self-auto shadow-sm">
+          <span className="w-2 h-2 rounded-full bg-[#C5ADE5] shadow-[0_0_8px_rgba(182,38,77,0.8)]" />
+          <span className="font-bold text-[var(--sf-accent-text)]">{filtered.length}</span>
           <span>of {state.events.length} events active</span>
         </div>
       </div>
@@ -82,9 +82,9 @@ export default function EventDiscoveryPage() {
         <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center">
           {/* Search bar */}
           <div className="relative flex-1">
-            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#F4A7BB]" />
+            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--sf-accent-text)]" />
             <input
-              className="w-full pl-10 pr-9 py-2.5 border border-[#5E2A3D] rounded-xl bg-[#210B16]/90 backdrop-blur-md text-sm text-[#F7FAF8] placeholder:text-[#BCA2AD] focus:outline-none focus:border-[#B6264D] focus:ring-2 focus:ring-[#B6264D]/25 transition-all shadow-sm"
+              className="w-full pl-10 pr-9 py-2.5 border border-[var(--sf-border)] rounded-xl bg-[var(--sf-panel)]/90 backdrop-blur-md text-sm text-[var(--sf-text)] placeholder:text-[var(--sf-muted)] focus:outline-none focus:border-[#C5ADE5] focus:ring-2 focus:ring-[#C5ADE5]/25 transition-all shadow-sm"
               placeholder="Search by event title, tags, or skill requirements..."
               value={query}
               onChange={e => setQuery(e.target.value)}
@@ -92,7 +92,7 @@ export default function EventDiscoveryPage() {
             {query && (
               <button
                 onClick={() => setQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#BCA2AD] hover:text-[#F7FAF8] p-0.5 rounded-full hover:bg-white/10"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--sf-muted)] hover:text-[var(--sf-text)] p-0.5 rounded-full hover:bg-white/10"
                 aria-label="Clear search"
               >
                 <X size={14} />
@@ -101,15 +101,15 @@ export default function EventDiscoveryPage() {
           </div>
 
           {/* Mode Segmented Controls */}
-          <div className="flex items-center p-1 bg-[#210B16]/95 border border-[#5E2A3D] rounded-xl backdrop-blur-md">
+          <div className="flex items-center p-1 bg-[var(--sf-panel)]/95 border border-[var(--sf-border)] rounded-xl backdrop-blur-md">
             {MODES.map(m => (
               <button
                 key={m.id}
                 onClick={() => setSelectedMode(m.id)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
                   selectedMode === m.id
-                    ? 'bg-[#B6264D]/30 text-[#F7FAF8] border border-[#B6264D]/60 shadow-sm font-bold'
-                    : 'text-[#BCA2AD] hover:text-[#F7FAF8] hover:bg-white/5 border border-transparent'
+                    ? 'bg-[#C5ADE5]/30 text-[var(--sf-text)] border border-[#C5ADE5]/60 shadow-sm font-bold'
+                    : 'text-[var(--sf-muted)] hover:text-[var(--sf-text)] hover:bg-white/5 border border-transparent'
                 }`}
               >
                 {m.label}
@@ -122,8 +122,8 @@ export default function EventDiscoveryPage() {
             onClick={() => setShowOpen(v => !v)}
             className={`px-3.5 py-2 rounded-xl border text-xs font-mono uppercase tracking-wider transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ${
               showOpen
-                ? 'bg-[#B6264D] text-[#F7FAF8] border-[#B6264D] font-semibold shadow-md shadow-[#B6264D]/30'
-                : 'bg-[#210B16] border-[#5E2A3D] text-[#E0CAD3] hover:text-[#F7FAF8] hover:border-[#B6264D] backdrop-blur-md'
+                ? 'bg-[#C5ADE5] text-[var(--sf-text)] border-[#C5ADE5] font-semibold shadow-md shadow-[#C5ADE5]/30'
+                : 'bg-[var(--sf-panel)] border-[var(--sf-border)] text-[var(--sf-secondary)] hover:text-[var(--sf-text)] hover:border-[#C5ADE5] backdrop-blur-md'
             }`}
           >
             {showOpen && <Check size={13} className="stroke-[3]" />}
@@ -143,12 +143,12 @@ export default function EventDiscoveryPage() {
             onClick={() => setSelectedCat('all')}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-mono uppercase tracking-wider border transition-all shrink-0 flex items-center gap-1.5 cursor-pointer ${
               selectedCat === 'all'
-                ? 'bg-[#B6264D] text-[#F7FAF8] border-[#B6264D] font-semibold shadow-md shadow-[#B6264D]/30'
-                : 'bg-[#210B16]/90 border-[#5E2A3D] text-[#E0CAD3] hover:text-[#F7FAF8] hover:border-[#B6264D]'
+                ? 'bg-[#C5ADE5] text-[var(--sf-text)] border-[#C5ADE5] font-semibold shadow-md shadow-[#C5ADE5]/30'
+                : 'bg-[var(--sf-panel)]/90 border-[var(--sf-border)] text-[var(--sf-secondary)] hover:text-[var(--sf-text)] hover:border-[#C5ADE5]'
             }`}
           >
             <span>All Categories</span>
-            <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${selectedCat === 'all' ? 'bg-[#13080E] text-[#F7FAF8] font-bold' : 'bg-white/10 text-[#E0CAD3]'}`}>
+            <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${selectedCat === 'all' ? 'bg-[var(--sf-bg)] text-[var(--sf-text)] font-bold' : 'bg-white/10 text-[var(--sf-secondary)]'}`}>
               {categoryCounts.all}
             </span>
           </button>
@@ -162,13 +162,13 @@ export default function EventDiscoveryPage() {
                 onClick={() => setSelectedCat(active ? 'all' : cat.id)}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-mono uppercase tracking-wider border transition-all shrink-0 flex items-center gap-1.5 cursor-pointer ${
                   active
-                    ? 'bg-[#B6264D] text-[#F7FAF8] border-[#B6264D] font-semibold shadow-sm shadow-[#B6264D]/30'
-                    : 'bg-[#210B16]/90 border-[#5E2A3D] text-[#E0CAD3] hover:text-[#F7FAF8] hover:border-[#B6264D]'
+                    ? 'bg-[#C5ADE5] text-[var(--sf-text)] border-[#C5ADE5] font-semibold shadow-sm shadow-[#C5ADE5]/30'
+                    : 'bg-[var(--sf-panel)]/90 border-[var(--sf-border)] text-[var(--sf-secondary)] hover:text-[var(--sf-text)] hover:border-[#C5ADE5]'
                 }`}
               >
                 <span>{cat.label}</span>
                 {count > 0 && (
-                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${active ? 'bg-[#13080E] text-[#F7FAF8] font-bold' : 'bg-white/10 text-[#E0CAD3]'}`}>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${active ? 'bg-[var(--sf-bg)] text-[var(--sf-text)] font-bold' : 'bg-white/10 text-[var(--sf-secondary)]'}`}>
                     {count}
                   </span>
                 )}

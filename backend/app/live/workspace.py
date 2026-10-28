@@ -42,13 +42,7 @@ class VerificationRequest(BaseModel):
     applicant_notes: str=Field(default='',max_length=4000)
 @router.post('/organizer/verification',status_code=201)
 def apply(body:VerificationRequest,user=Depends(current_user),db=Depends(get_db)):
-    require(one(db,"SELECT 1 FROM hackloop.organization_members WHERE organization_id=:oid AND user_id=:uid AND role='owner'",oid=body.organization_id,uid=user['id']),403,'Organization owner required')
-    execute(db,'SELECT id FROM hackloop.organizations WHERE id=:oid FOR UPDATE',oid=body.organization_id)
-    require(not one(db,"SELECT 1 FROM hackloop.organizer_verification_requests WHERE organization_id=:oid AND status IN ('pending','approved')",oid=body.organization_id),409,'A pending or approved request already exists')
-    result=one(db,'''INSERT INTO hackloop.organizer_verification_requests(organization_id,applicant_id,evidence_storage_key,applicant_notes)
-      VALUES(:oid,:uid,:evidence,:notes) RETURNING id,status''',oid=body.organization_id,uid=user['id'],evidence=body.evidence_storage_key,notes=body.applicant_notes)
-    db.commit()
-    return result
+    require(False,422,'Submit your details and documents through organizer account setup')
 
 class Decision(BaseModel):
     status:Literal['approved','rejected','revoked']
@@ -58,6 +52,8 @@ def decide(rid:UUID,body:Decision,user=Depends(current_user),db=Depends(get_db))
     require('admin' in user['roles'],403,'Administrator permission required')
     r=require(one(db,'SELECT * FROM hackloop.organizer_verification_requests WHERE id=:id FOR UPDATE',id=rid))
     require(r['applicant_id']!=user['id'],403,'You cannot review your own application')
+    if body.status=='approved':
+        require(one(db,'SELECT 1 FROM hackloop.organizer_application_details WHERE request_id=:id',id=rid),422,'Complete details and documents are required before approval')
     require((r['status']=='pending' and body.status in ('approved','rejected')) or (r['status']=='approved' and body.status=='revoked'),409,'Invalid review transition')
     execute(db,'UPDATE hackloop.organizer_verification_requests SET status=:status,reviewed_by=:uid,reviewed_at=now(),review_notes=:notes WHERE id=:id',status=body.status,uid=user['id'],notes=body.review_notes,id=rid)
     execute(db,"INSERT INTO hackloop.audit_logs(actor_user_id,action,entity_type,entity_id) VALUES(:uid,:action,'organizer_verification',:id)",uid=user['id'],action='verification_'+body.status,id=str(rid))

@@ -30,7 +30,7 @@ class OpenAICompatibleProvider(BaseAIProvider):
                 event_title, category, description, constraints, known_skills
             )
 
-        prompt = f"""You are the TeamWeave Event Architect.
+        prompt = f"""You are the Skillfy Event Architect.
 Design realistic role, skill requirement, and assessment recommendations for the following event:
 Title: {event_title}
 Category: {category}

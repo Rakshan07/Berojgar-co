@@ -221,7 +221,7 @@ const smoother = t => {
 
 const LightRays = ({
   raysOrigin = 'top-center',
-  raysColor = '#ffffff',
+  raysColor = '#FFFFFF',
   raysSpeed = 1,
   lightSpread = 0.5,
   rayLength = 3,

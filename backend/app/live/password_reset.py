@@ -1,3 +1,4 @@
+from backend.app.core.security import valid_new_password, PASSWORD_GUIDE
 """Single-use, expiring password reset links backed by hashed random tokens."""
 import hashlib
 import logging
@@ -57,6 +58,7 @@ def forgot(body:ResetRequest,request:Request,db=Depends(get_db)):
 
 @router.post('/reset-password')
 def reset(body:ResetPassword,db=Depends(get_db)):
+    require(valid_new_password(body.password),422,PASSWORD_GUIDE)
     message='This reset link is invalid or expired. Please request a new one.'
     token=one(db,"SELECT user_id FROM hackloop.auth_tokens WHERE token_hash=:hash AND purpose='password_reset'",hash=token_hash(body.token))
     require(token,400,message)

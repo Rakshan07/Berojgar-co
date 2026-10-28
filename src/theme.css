@@ -1,0 +1,73 @@
+/* Skillfy's shared, accessible light and dark palettes. */
+:root {
+ --sf-bg:#faf7fc;--sf-panel:#ffffff;--sf-surface:#f2eaf8;--sf-elevated:#e9ddf3;
+ --sf-text:#2c2335;--sf-secondary:#55495f;--sf-muted:#6b5b77;--sf-border:#d6c7e2;
+ --sf-border-strong:#aa8cc3;--sf-accent-text:#785099;--sf-apricot-text:#9b4821;
+ --color-ink:var(--sf-text);--color-ink-secondary:var(--sf-secondary);--color-ink-muted:var(--sf-muted);
+ --color-paper:var(--sf-panel);--color-surface:var(--sf-surface);--color-surface-card:var(--sf-elevated);
+ --color-border:var(--sf-border);--color-wine:var(--sf-bg);--color-wine-dark:var(--sf-bg);
+ --color-pink:var(--sf-accent-text);--color-purple-dark:var(--sf-accent-text);
+ color-scheme:light;
+}
+:root[data-theme='dark'] {
+ --sf-bg:#17121e;--sf-panel:#241b2e;--sf-surface:#2e223b;--sf-elevated:#3d2d4d;
+ --sf-text:#f8f1ff;--sf-secondary:#ded1e9;--sf-muted:#c2afd1;--sf-border:#584267;
+ --sf-border-strong:#9477ac;--sf-accent-text:#d6b6f3;--sf-apricot-text:#ffc099;
+ color-scheme:dark;
+}
+html,body,#root {background:var(--sf-bg);color:var(--sf-text)}
+.skillfy-wordmark {display:inline-flex;align-items:center;gap:9px;font-weight:750;letter-spacing:-.6px;color:var(--sf-text);line-height:1.2;white-space:nowrap;flex-shrink:0}
+.skillfy-brand-accent {color:var(--sf-accent-text)}
+.skillfy-logo {flex-shrink:0;border-radius:8px;background:white}
+.skillfy-theme-toggle {position:fixed;bottom:18px;right:18px;z-index:10000;display:flex;align-items:center;gap:9px;background:var(--sf-panel);color:var(--sf-text);border:1px solid var(--sf-border-strong);border-radius:30px;padding:11px 16px;font-size:12px;font-weight:650;box-shadow:0 4px 20px #20152f25;cursor:pointer}
+.card-luxury,.cyber-card {background:var(--sf-panel)}
+input,textarea,select {color:var(--sf-text);background:var(--sf-panel)}
+/* Keep input icons separate from values, even with global form padding. */
+input.pl-11,input.pl-12,input.pl-10 {padding-left:2.85rem}
+input.pr-11,input.pr-12,input.pr-10 {padding-right:2.85rem}
+button,a,input,select,textarea {touch-action:manipulation}
+.motion-landing .brand,.motion-landing h1,.motion-landing h2,.motion-landing h3 {color:var(--sf-text)}
+.motion-landing .button,.motion-landing .filters button.active {color:#302039}
+.motion-landing .hero .eyebrow,.motion-landing .description {color:var(--sf-secondary)}
+.motion-landing .hero h1 em {color:var(--sf-apricot-text)}
+.motion-landing .hero-photo figcaption,.motion-landing .hero-photo figcaption strong,.motion-landing .intro-card .label,.motion-landing .intro-card .label small,.motion-landing .picture>span {color:white;text-shadow:0 2px 5px #000b}
+.motion-landing .intro-card .label {background:linear-gradient(transparent,rgba(13,8,20,.9));padding:30px 14px 14px;left:0;right:0;bottom:0;line-height:1.3}
+.motion-landing .intro-copy {z-index:900;max-width:90%;padding:16px 22px;border-radius:18px;background:var(--sf-panel);box-shadow:0 8px 32px #20152f18;color:var(--sf-text)}
+.motion-landing .intro-copy h1 {color:var(--sf-text);font-size:clamp(26px,4vw,55px);line-height:1.15;letter-spacing:-1px;overflow-wrap:break-word}
+.motion-landing .intro-copy>span {color:var(--sf-accent-text)}
+.motion-landing .intro-nav {z-index:1000}
+.motion-landing .floating-tag {background:var(--sf-panel);color:var(--sf-text)}
+.motion-landing .tag-two {background:#ffe4d1;color:#493126}
+[data-theme='dark'] .motion-landing .hero,[data-theme='dark'] .motion-landing .intro {background:radial-gradient(ellipse at 80% 35%,#53356860,transparent 60%),radial-gradient(ellipse at 30% 80%,#b66e3820,transparent 60%),var(--sf-bg)}
+[data-theme='dark'] .motion-landing .organizers {background:var(--sf-surface)}
+[data-theme='dark'] .motion-landing .giant-mark {opacity:.2}
+html #tw-workspace-review .tw-nav a,html #tw-workspace-review .tw-sidequote,html #tw-workspace-review .tw-sideidentity,html #tw-workspace-review .tw-topmeta,html #tw-workspace-review .tw-breadcrumb strong,html #tw-workspace-review .tw-empty p,html #tw-workspace-review .tw-xp h3 {color:var(--sf-secondary)}
+html #tw-workspace-review .tw-sidebar {background:var(--sf-surface)}
+html #tw-workspace-review .tw-nav a.active {background:var(--sf-elevated);color:var(--sf-text);border-color:var(--sf-border-strong)}
+html #tw-workspace-review .tw-button {color:#302039;white-space:normal}
+html #tw-workspace-review .tw-button.secondary {color:var(--sf-text);background:var(--sf-panel)}
+html #tw-workspace-review .tw-rowtabs button.active {color:var(--sf-accent-text)}
+html #tw-workspace-review .tw-profile-growth {background:var(--sf-surface)}
+html #tw-workspace-review .tw-bottomline {padding-bottom:75px}
+[data-theme='dark'] .bg-white {background-color:var(--sf-panel)}
+/* Google retains its official white button and colored mark. */
+button:has(svg path[fill='#EA4335']) {background:white!important;color:#1f1f1f!important}
+@media(max-width:700px) {
+ .skillfy-theme-toggle {bottom:12px;right:12px;padding:10px}
+ .skillfy-theme-toggle span {display:none}
+ .motion-landing .intro-copy {width:88%;padding:14px;bottom:12%;}
+ .motion-landing .nav {gap:10px;padding-inline:4%}
+ .motion-landing .nav-right {gap:12px}
+ .motion-landing .brand .skillfy-wordmark {font-size:20px!important}
+ .motion-landing .hero-actions {flex-wrap:wrap}
+}
+
+.motion-landing .intro-card img,.motion-landing .hero-photo img,.motion-landing .event-card img {object-fit:cover}
+
+button[class*="bg-[#C5ADE5]"],a[class*="bg-[#C5ADE5]"],button.bg-garnet,button.bg-teal {color:#302039}
+.auth-interactive-card {box-shadow:0 15px 50px #34204018!important}
+
+.skillfy-tubes-canvas {filter:invert(1) hue-rotate(180deg);opacity:.4}
+[data-theme="dark"] .skillfy-tubes-canvas {filter:none;opacity:.65}
+
+.skillfy-auth-footer {padding:20px 24px 70px}

@@ -211,7 +211,7 @@ export default function ProfilePage() {
     const updatedData = { ...form, initials, isNew: false };
     dispatch({ type: 'UPDATE_PROFILE', payload: { id: user.id, data: updatedData } });
     setEditMode(false);
-    toast.success('Your profile is saved and active across TeamWeave!');
+    toast.success('Your profile is saved and active across Skillfy!');
   }
 
   function applyTemplate(tpl) {
@@ -325,7 +325,7 @@ export default function ProfilePage() {
               Build your true collaborator profile
             </h2>
             <p className="text-xs sm:text-sm text-ink-secondary leading-relaxed">
-              TeamWeave doesn't rely on generic match percentages or random assignment. Organizers and formation engines match teammates by reading your specific skills, proficiency depth, and working style.
+              Skillfy doesn't rely on generic match percentages or random assignment. Organizers and formation engines match teammates by reading your specific skills, proficiency depth, and working style.
             </p>
           </div>
 
@@ -454,8 +454,8 @@ export default function ProfilePage() {
               grid={3}
               cellSize={6}
               glow
-              color="#B6264D"
-              doneColor="#D13D65"
+              color="#C5ADE5"
+              doneColor="#B69BD8"
             />
           </div>
         )}
@@ -557,14 +557,14 @@ export default function ProfilePage() {
                 <button
                   type="button"
                   onClick={() => setUploadMode('file')}
-                  className={`px-2.5 py-1 rounded-md transition-colors font-medium ${uploadMode === 'file' ? 'bg-garnet text-white shadow-sm' : 'text-ink-muted hover:text-ink'}`}
+                  className={`px-2.5 py-1 rounded-md transition-colors font-medium ${uploadMode === 'file' ? 'bg-garnet text-ink shadow-sm' : 'text-ink-muted hover:text-ink'}`}
                 >
                   Upload File
                 </button>
                 <button
                   type="button"
                   onClick={() => setUploadMode('text')}
-                  className={`px-2.5 py-1 rounded-md transition-colors font-medium ${uploadMode === 'text' ? 'bg-garnet text-white shadow-sm' : 'text-ink-muted hover:text-ink'}`}
+                  className={`px-2.5 py-1 rounded-md transition-colors font-medium ${uploadMode === 'text' ? 'bg-garnet text-ink shadow-sm' : 'text-ink-muted hover:text-ink'}`}
                 >
                   Paste Text
                 </button>
@@ -610,7 +610,7 @@ export default function ProfilePage() {
                     size="sm"
                     loading={analyzingEvidence}
                     onClick={handleAnalyzeEvidence}
-                    className="bg-garnet hover:bg-garnet-hover text-white"
+                    className="bg-garnet hover:bg-garnet-hover text-ink"
                   >
                     Extract skills
                   </Button>
@@ -654,7 +654,7 @@ export default function ProfilePage() {
                     size="sm"
                     icon={<Check size={14} />}
                     onClick={handleApplyExtractedSkills}
-                    className="bg-garnet hover:bg-garnet-hover text-white font-semibold"
+                    className="bg-garnet hover:bg-garnet-hover text-ink font-semibold"
                   >
                     Apply to Profile
                   </Button>

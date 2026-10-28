@@ -5,23 +5,23 @@ import { Play, Pause } from 'lucide-react';
 export const WINE_GARNET_PALETTES = [
   {
     name: 'Ruby Garnet',
-    tubes: ['#B6264D', '#D13D65', '#13080E'],
-    lights: ['#B6264D', '#F4A7BB', '#210B16', '#F7FAF8'],
+    tubes: ['#C5ADE5', '#B69BD8', '#FAF7FC'],
+    lights: ['#C5ADE5', '#87569D', '#FFFFFF', '#2C2335'],
   },
   {
     name: 'Deep Crimson',
-    tubes: ['#590F2B', '#B6264D', '#2C1020'],
-    lights: ['#B6264D', '#F4A7BB', '#13080E', '#FFFFFF'],
+    tubes: ['#F2EAF8', '#C5ADE5', '#F2EAF8'],
+    lights: ['#C5ADE5', '#87569D', '#FAF7FC', '#FFFFFF'],
   },
   {
     name: 'Wine & Garnet',
-    tubes: ['#210B16', '#87163D', '#B6264D'],
-    lights: ['#B6264D', '#D13D65', '#E0CAD3', '#F7FAF8'],
+    tubes: ['#FFFFFF', '#D6C7E2', '#C5ADE5'],
+    lights: ['#C5ADE5', '#B69BD8', '#55495F', '#2C2335'],
   },
   {
     name: 'Obsidian Blaze',
-    tubes: ['#13080E', '#B6264D', '#D13D65'],
-    lights: ['#B6264D', '#F4A7BB', '#210B16', '#FFCCD8'],
+    tubes: ['#FAF7FC', '#C5ADE5', '#B69BD8'],
+    lights: ['#C5ADE5', '#87569D', '#FFFFFF', '#FFCCD8'],
   },
 ];
 
@@ -189,7 +189,7 @@ export function TubesBackground({ children, className = '' }) {
     <div
       className={
         children
-          ? `relative w-full min-h-screen overflow-hidden bg-[#13080E] ${className}`
+          ? `relative w-full min-h-screen overflow-hidden bg-[var(--sf-bg)] ${className}`
           : `absolute inset-0 z-0 overflow-hidden ${className}`
       }
       style={{ isolation: 'isolate' }}
@@ -197,7 +197,7 @@ export function TubesBackground({ children, className = '' }) {
       {hasWebGL && !reducedMotion ? (
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 w-full h-full block pointer-events-auto z-0"
+          className="skillfy-tubes-canvas absolute inset-0 w-full h-full block pointer-events-auto z-0"
           style={{ width: '100%', height: '100%' }}
         />
       ) : null}
@@ -207,13 +207,13 @@ export function TubesBackground({ children, className = '' }) {
           <div
             className="absolute -top-[20%] left-1/2 -translate-x-1/2 w-[900px] h-[700px] rounded-full opacity-60 blur-[120px]"
             style={{
-              background: 'radial-gradient(circle, #B6264D 0%, #590F2B 40%, #13080E 70%, transparent 100%)',
+              background: 'radial-gradient(circle, #C5ADE5 0%, var(--sf-surface) 40%, var(--sf-bg) 70%, transparent 100%)',
             }}
           />
           <div
             className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full opacity-40 blur-[100px]"
             style={{
-              background: 'radial-gradient(circle, #F4A7BB 0%, #B6264D 35%, transparent 70%)',
+              background: 'radial-gradient(circle, var(--sf-accent-text) 0%, #C5ADE5 35%, transparent 70%)',
             }}
           />
         </div>
@@ -224,7 +224,7 @@ export function TubesBackground({ children, className = '' }) {
         className="absolute inset-0 pointer-events-none z-10"
         style={{
           background:
-            'radial-gradient(ellipse at center, rgba(19,8,14,0.3) 0%, rgba(19,8,14,0.7) 70%, rgba(19,8,14,0.95) 100%)',
+            'radial-gradient(ellipse at center, transparent 0%, var(--sf-bg) 100%)',
         }}
       />
 
@@ -235,10 +235,10 @@ export function TubesBackground({ children, className = '' }) {
       )}
 
       {hasWebGL && !reducedMotion && children && (
-        <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 bg-[#210B16]/85 backdrop-blur-md border border-[#5E2A3D] p-1.5 rounded-full shadow-lg">
+        <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 bg-[var(--sf-panel)]/85 backdrop-blur-md border border-[var(--sf-border)] p-1.5 rounded-full shadow-lg">
           <button
             onClick={togglePlayback}
-            className="p-1.5 rounded-full text-[#E0CAD3] hover:text-[#F7FAF8] hover:bg-white/10 transition-colors pointer-events-auto cursor-pointer"
+            className="p-1.5 rounded-full text-[var(--sf-secondary)] hover:text-[var(--sf-text)] hover:bg-white/10 transition-colors pointer-events-auto cursor-pointer"
             title={isPlaying ? 'Pause interactive background' : 'Play interactive background'}
             aria-label={isPlaying ? 'Pause background animation' : 'Play background animation'}
           >

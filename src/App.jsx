@@ -1,5 +1,9 @@
+import ThemeToggle from './components/ui/ThemeToggle';
+import VerifyEmail from './pages/public/VerifyEmail';
+import SocialCallback from './pages/public/SocialCallback';
+import OrganizerReview from './pages/public/OrganizerReview';
 import { Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider } from './app/AppContext';
 import { ToastContainer } from './components/ui/ToastContainer';
 import LandingPage from './pages/public/MotionLandingPage';
@@ -15,15 +19,19 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/admin/organizer-review" element={<OrganizerReview />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/auth/complete" element={<SocialCallback />} />
           <Route path="/complete-profile" element={<CompleteProfile />} />
           <Route path="/forgot-password" element={<PasswordRecovery key="forgot" />} />
           <Route path="/reset-password" element={<PasswordRecovery key="reset" reset />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/organizer/auth" element={<OrganizerAuthPage />} />
           <Route path="/organizer/login" element={<OrganizerAuthPage />} />
-          <Route path="/*" element={<Suspense fallback={<div role="status" style={{minHeight:'100vh',background:'#13080e',color:'#f7faf8',padding:40}}>Opening your workspace…</div>}><Workspace /></Suspense>} />
+          <Route path="/*" element={<Suspense fallback={<div role="status" style={{minHeight:'100vh',background:'var(--sf-bg)',color:'var(--sf-text)',padding:40}}>Opening your workspace…</div>}><Workspace /></Suspense>} />
         </Routes>
         <ToastContainer />
+        <ThemeToggle />
       </BrowserRouter>
     </AppProvider>
   );

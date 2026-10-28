@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from backend.app.db.session import get_db
 from .auth import current_user
-from .db import one, rows, execute
+from .db import one, rows, execute, require
 router=APIRouter(prefix='/profiles',tags=['Profiles'])
 class ProfileUpdate(BaseModel):
     model_config=ConfigDict(extra='forbid')
@@ -27,7 +27,7 @@ def profile(user=Depends(current_user),db=Depends(get_db)):
       WHERE p.user_id=:uid''',uid=user['id']) or {}
     skills=rows(db,'''SELECT s.id AS skill_id,s.name AS skill_name,s.category,us.proficiency
       FROM hackloop.user_skills us JOIN hackloop.skills s ON s.id=us.skill_id WHERE us.user_id=:uid ORDER BY s.name''',uid=user['id'])
-    return {**p,'full_name':user['full_name'],'email':user['email'],'skills':skills,
+    return {**p,'has_password':user['has_password'],'roles':user['roles'],'full_name':user['full_name'],'email':user['email'],'skills':skills,
             'address':', '.join(str(p.get(k)) for k in ['address_line_1','city','region','postal_code','country_code'] if p.get(k))}
 
 def persist_profile(body,user,db,complete=False):
@@ -70,4 +70,6 @@ def update(body:ProfileUpdate,user=Depends(current_user),db=Depends(get_db)):
 
 @router.post('/me/onboarding')
 def complete_onboarding(body:OnboardingDetails,user=Depends(current_user),db=Depends(get_db)):
+    require(user['has_password'],409,'Create your website password before completing your profile.')
+    require('organizer' not in user['roles'],403,'Complete the organizer verification form instead')
     return persist_profile(body,user,db,complete=True)

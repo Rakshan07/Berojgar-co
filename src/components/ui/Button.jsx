@@ -1,10 +1,10 @@
 // ─── Reusable Button component ───────────────────────────────────────────
 const variants = {
-  primary:   'bg-[#B6264D] text-[#F7FAF8] hover:bg-[#D13D65] hover:shadow-lg hover:shadow-[#B6264D]/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] shadow-sm shadow-[#B6264D]/30',
-  secondary: 'bg-[#210B16] text-[#F7FAF8] border border-[#5E2A3D] hover:bg-[#32111F] hover:border-[#754356] hover:shadow-md hover:shadow-black/60 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
-  ghost:     'bg-transparent text-[#E0CAD3] hover:bg-[#210B16] hover:text-[#F7FAF8] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
-  danger:    'bg-[#B6264D] text-white hover:bg-[#D13D65] hover:shadow-lg hover:shadow-[#B6264D]/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
-  outline:   'bg-transparent text-[#F4A7BB] border border-[#B6264D] hover:bg-[#B6264D]/20 hover:border-[#F4A7BB] hover:shadow-sm hover:shadow-[#B6264D]/30 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
+  primary:   'bg-[#C5ADE5] text-[var(--sf-text)] hover:bg-[#B69BD8] hover:shadow-lg hover:shadow-[#C5ADE5]/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] shadow-sm shadow-[#C5ADE5]/30',
+  secondary: 'bg-[var(--sf-panel)] text-[var(--sf-text)] border border-[var(--sf-border)] hover:bg-[var(--sf-surface)] hover:border-[var(--sf-border-strong)] hover:shadow-md hover:shadow-black/60 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
+  ghost:     'bg-transparent text-[var(--sf-secondary)] hover:bg-[var(--sf-panel)] hover:text-[var(--sf-text)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
+  danger:    'bg-[#C5ADE5] text-ink hover:bg-[#B69BD8] hover:shadow-lg hover:shadow-[#C5ADE5]/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
+  outline:   'bg-transparent text-[var(--sf-accent-text)] border border-[#C5ADE5] hover:bg-[#C5ADE5]/20 hover:border-[var(--sf-accent-text)] hover:shadow-sm hover:shadow-[#C5ADE5]/30 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
 };
 
 const sizes = {
@@ -32,7 +32,7 @@ export function Button({
         inline-flex items-center justify-center font-medium rounded-xl
         transition-all duration-200 cursor-pointer select-none
         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
-        focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B6264D]
+        focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5ADE5]
         ${variants[variant] ?? variants.primary}
         ${sizes[size] ?? sizes.md}
         ${className}
@@ -60,7 +60,7 @@ export function IconButton({ icon, label, variant = 'ghost', size = 'sm', classN
       className={`
         inline-flex items-center justify-center rounded-md transition-all duration-150
         ${variant === 'ghost' ? 'text-ink-muted hover:text-ink hover:bg-paper' : ''}
-        ${variant === 'primary' ? 'bg-teal text-white hover:bg-teal-dark' : ''}
+        ${variant === 'primary' ? 'bg-teal text-ink hover:bg-teal-dark' : ''}
         ${size === 'sm' ? 'w-8 h-8' : size === 'md' ? 'w-9 h-9' : 'w-10 h-10'}
         ${className}
       `}

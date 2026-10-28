@@ -9,6 +9,8 @@ from backend.app.db.session import engine
 from backend.app.live import password_reset as recovery
 from backend.app.live.auth import token_hash
 
+from backend.tests_live.signup_helper import signup_token
+
 def test_reset_flow(monkeypatch):
     assert engine.url.port == 55439 or engine.url.database.startswith('codex_reset_test_')
     with engine.begin() as conn:
@@ -20,7 +22,7 @@ def test_reset_flow(monkeypatch):
     email=f'reset-{uuid.uuid4().hex}@example.com'
     old='Old-test-password-123'
     new='New-test-password-456'
-    assert client.post('/api/v1/auth/register',json={'email':email,'full_name':'Reset test','password':old,'role':'participant'}).status_code==201
+    assert client.post('/api/v1/auth/register',json={'verification_token':signup_token(email,'participant'),'email':email,'full_name':'Reset test','password':old,'role':'participant'}).status_code==201
     session=client.post('/api/v1/auth/login',json={'email_or_username':email,'password':old}).json()['access_token']
     def ask(address=email):return client.post('/api/v1/auth/forgot-password',json={'email':address})
     def reset(token):return client.post('/api/v1/auth/reset-password',json={'token':token,'password':new})

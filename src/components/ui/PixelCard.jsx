@@ -8,7 +8,7 @@ const BASE_CARD =
 const SURFACE = {
   dark: 'bg-[linear-gradient(180deg,#17151c_0%,#0f0e13_100%)] shadow-[0_24px_48px_-24px_rgba(0,0,0,0.85),0_8px_18px_-10px_rgba(0,0,0,0.6)] focus-visible:shadow-[0_24px_48px_-24px_rgba(0,0,0,0.85),0_8px_18px_-10px_rgba(0,0,0,0.6),0_0_0_3px_rgba(127,127,140,0.45)]',
   light:
-    'bg-[linear-gradient(180deg,#ffffff_0%,#f6f6f8_100%)] shadow-[0_24px_48px_-26px_rgba(24,24,27,0.32),0_8px_18px_-12px_rgba(24,24,27,0.18)] focus-visible:shadow-[0_24px_48px_-26px_rgba(24,24,27,0.32),0_8px_18px_-12px_rgba(24,24,27,0.18),0_0_0_3px_rgba(127,127,140,0.45)]'
+    'bg-[linear-gradient(180deg,var(--sf-panel)_0%,#f6f6f8_100%)] shadow-[0_24px_48px_-26px_rgba(24,24,27,0.32),0_8px_18px_-12px_rgba(24,24,27,0.18)] focus-visible:shadow-[0_24px_48px_-26px_rgba(24,24,27,0.32),0_8px_18px_-12px_rgba(24,24,27,0.18),0_0_0_3px_rgba(127,127,140,0.45)]'
 };
 
 const RIM = {
@@ -42,8 +42,8 @@ const VARIANTS = {
   pink: {
     gap: 6,
     speed: 80,
-    colors: { dark: ['#fecdd3', '#fda4af', '#e11d48'], light: ['#831843', '#be123c', '#e11d48'] },
-    glow: { dark: '#e11d48', light: '#be123c' },
+    colors: { dark: ['#fecdd3', '#fda4af', '#9672B7'], light: ['#D6C7E2', '#9672B7', '#9672B7'] },
+    glow: { dark: '#9672B7', light: '#9672B7' },
     noFocus: true
   }
 };

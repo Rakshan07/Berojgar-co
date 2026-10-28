@@ -46,7 +46,7 @@ class GeminiProvider(BaseAIProvider):
                 event_title, category, description, constraints, known_skills
             )
 
-        prompt = f"""You are the TeamWeave Event Setup Architect.
+        prompt = f"""You are the Skillfy Event Setup Architect.
 Generate structured, realistic team formation recommendations and participant assessment questions for this event:
 - Title: {event_title}
 - Category/Type: {category} (Support ANY arbitrary event type: hackathons, debates, research sprints, creative, college projects, workplace initiatives)
@@ -128,7 +128,7 @@ Return a valid JSON object matching this schema:
                 file_bytes=file_bytes, mime_type=mime_type
             )
 
-        prompt = f"""You are the TeamWeave Evidence Analyzer.
+        prompt = f"""You are the Skillfy Evidence Analyzer.
 Analyze the following {source_type} document/image for candidate '{candidate_name or "Participant"}'.
 Extract only verifiable skills, tools, and experiences. Do not hallucinate capabilities.
 

@@ -1,4 +1,4 @@
-// ─── Participant Team View ─────────────────────────────────────────────────
+// ─── Participant Skillfy ─────────────────────────────────────────────────
 import { useApp, useCurrentUser } from '../../app/AppContext';
 import { TeamBlueprint } from '../../components/teams/TeamBlueprint';
 import { LivingWeaveViz } from '../../components/teams/LivingWeaveViz';

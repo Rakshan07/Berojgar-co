@@ -7,7 +7,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from backend.app.core.config import settings
 from backend.app.db.session import engine
-from backend.app.live import auth, profiles, events, workspace, password_reset
+from backend.app.live import auth, profiles, events, workspace, password_reset, documents, social_login, email_signup
 
 @asynccontextmanager
 async def lifespan(app):
@@ -18,12 +18,12 @@ async def lifespan(app):
         conn.execute(text('SELECT user_id FROM hackloop.profile_private_details LIMIT 0'))
     yield
 
-app=FastAPI(title='TeamWeave API',version='1.1.0',lifespan=lifespan)
-app.add_middleware(CORSMiddleware,allow_origins=[x.strip() for x in settings.CORS_ORIGINS.split(',') if x.strip()],allow_methods=['GET','POST','PATCH','OPTIONS'],allow_headers=['Authorization','Content-Type'])
+app=FastAPI(title='Skillfy API',version='1.1.0',lifespan=lifespan)
+app.add_middleware(CORSMiddleware,allow_origins=[x.strip() for x in settings.CORS_ORIGINS.split(',') if x.strip()],allow_methods=['GET','POST','PATCH','DELETE','OPTIONS'],allow_headers=['Authorization','Content-Type'])
 @app.exception_handler(SQLAlchemyError)
 async def database_error(request:Request,exc:SQLAlchemyError):
     return JSONResponse(status_code=503,content={'detail':'The database could not complete this request. Please try again.'})
-for router in (auth.router,profiles.router,events.router,workspace.router,password_reset.router):
+for router in (auth.router,profiles.router,events.router,workspace.router,password_reset.router,documents.router,social_login.router,email_signup.router):
     app.include_router(router,prefix=settings.API_V1_PREFIX)
 @app.get('/health')
 @app.get('/api/v1/health')

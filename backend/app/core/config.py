@@ -5,7 +5,7 @@ from sqlalchemy.engine import URL
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 class Settings(BaseSettings):
-    APP_NAME: str = 'TeamWeave API'
+    APP_NAME: str = 'Skillfy API'
     API_V1_PREFIX: str = '/api/v1'
     ENVIRONMENT: str = 'development'
     DEBUG: bool = False
@@ -21,6 +21,10 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
     SESSION_EXPIRE_HOURS: int = 24
     CORS_ORIGINS: str = 'http://localhost:5173,http://127.0.0.1:5173,http://localhost:4173,http://127.0.0.1:4173'
+    GOOGLE_CLIENT_ID: str = ''
+    GOOGLE_CLIENT_SECRET: str = ''
+    GITHUB_CLIENT_ID: str = ''
+    GITHUB_CLIENT_SECRET: str = ''
     SMTP_HOST: str = ''
     SMTP_PORT: int = 587
     SMTP_USERNAME: str = ''

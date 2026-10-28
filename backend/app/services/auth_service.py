@@ -48,7 +48,7 @@ class AuthService:
         # Create initial profile
         profile = Profile(
             user_id=user.id,
-            tagline="New collaborator on TeamWeave",
+            tagline="New collaborator on Skillfy",
             bio="Building skills and exploring teams.",
             timezone="UTC",
             hours_per_week=15

@@ -89,3 +89,55 @@ Validation: frontend production build and changed-file lint pass. Account/event 
 password-reset integration tests pass in a disposable database with mail delivery
 mocked. Gmail TLS authentication was verified without sending email. Inbox delivery
 and browser visual verification still require a manual check.
+
+## Organizer identity details and private documents
+
+Apply `backend/sql/organizer_documents.sql` to each existing database before starting
+this version of the backend. It adds profile_documents, organizer_application_details,
+and organizer_application_documents. It has been applied to the local hackloop database.
+
+Organizer signup asks for name, email and password, then /complete-profile asks for
+university, organization, club, lead name, work email, phone, full address, country,
+PIN/postal code and qualifications. All fields and affiliation, authorization and
+qualification evidence are required. Submit creates a pending review, not approval.
+Phone validation checks format only; ownership is not verified by SMS. Work email is
+validated syntactically, not independently verified. Indian PIN codes must be six digits.
+
+Participants can optionally upload documents during onboarding or later in My Profile.
+Uploads are limited to PDF/JPEG/PNG signatures, 5 MB per file, 10 files per account.
+File bytes are stored in PostgreSQL, never in public frontend assets or Git. Access
+requires a signed-in owner or administrator; downloads are forced attachments with
+no-store and nosniff headers. Signature checks are not antivirus scanning. Submitted
+organizer evidence cannot be deleted through the user interface because reviews retain it.
+
+Existing admins can open /admin/organizer-review (also linked from their workspace).
+They can view the required details, download evidence and approve/reject with notes.
+Existing approved applications may be revoked. No admin role is granted through signup.
+An applicant cannot approve their own application. Older incomplete organizer accounts
+will be routed back to submit verification details. Approved event-write checks remain.
+
+Verification: disposable-database integration tests cover duplicate-email rejection,
+organizer-only login, document privacy and invalid formats, missing evidence, phone/PIN
+validation, submitted-document retention, admin-only access, approval and event creation.
+Frontend production build passes. Restart backend and refresh frontend after pulling.
+
+## Social login
+
+Google/GitHub sign-in is implemented alongside email/password. See SOCIAL_LOGIN.md
+for provider app registration, exact callback URLs, environment keys and limitations.
+Apply backend/sql/social_login.sql on teammate databases and install updated
+backend/requirements-live.txt. Provider credentials are required before real login works.
+
+## Email signup (current flow)
+
+Get Started displays Google and GitHub logo buttons and Use email instead.
+Email signup asks for full name, email and a new website password, creates the account,
+signs in, then opens the primary-details form. There is no signup verification email.
+Email/password accounts are not marked email-verified merely because they registered.
+Forgot Password still sends its reset link. Organizer document/admin verification remains.
+
+The temporary email-signup verification feature was removed at the user's request.
+Its unused tables/nullable username column were left in the local database to avoid
+removing stored data; current signup does not depend on them. Old verification links
+redirect to signup. Social providers still verify their own identities and require
+OAuth Client IDs and Client Secrets; the Gmail SMTP App Password cannot replace them.

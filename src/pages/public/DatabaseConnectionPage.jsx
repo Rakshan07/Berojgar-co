@@ -19,7 +19,7 @@ export default function DatabaseConnectionPage() {
     <Link to="/">← Back to website</Link>
     <h1 style={{fontSize:30,marginTop:24}}>Local database connection</h1>
     <p>This development check reads real PostgreSQL data through the backend.</p>
-    <button onClick={check} disabled={busy} style={{margin:'24px 0',padding:'12px 20px',background:'#B92345',color:'white',borderRadius:8}}>{busy ? 'Checking…' : 'Check database connection'}</button>
+    <button onClick={check} disabled={busy} style={{margin:'24px 0',padding:'12px 20px',background:'#9672B7',color:'white',borderRadius:8}}>{busy ? 'Checking…' : 'Check database connection'}</button>
     <p role="status">{status}</p>
     {events && <section style={{marginTop:24}}><h2>Published events ({events.length})</h2>
       {events.length === 0 ? <p>No published events exist in the database. No sample records were inserted.</p> : <ul>{events.map(event=><li key={event.id}>{event.title} — {event.organizer_name}</li>)}</ul>}
