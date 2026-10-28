@@ -32,7 +32,7 @@ button,a,input,select,textarea {touch-action:manipulation}
 .motion-landing .hero h1 em {color:var(--sf-apricot-text)}
 .motion-landing .hero-photo figcaption,.motion-landing .hero-photo figcaption strong,.motion-landing .intro-card .label,.motion-landing .intro-card .label small,.motion-landing .picture>span {color:white;text-shadow:0 2px 5px #000b}
 .motion-landing .intro-card .label {background:linear-gradient(transparent,rgba(13,8,20,.9));padding:30px 14px 14px;left:0;right:0;bottom:0;line-height:1.3}
-.motion-landing .intro-copy {z-index:900;max-width:90%;padding:16px 22px;border-radius:18px;background:var(--sf-panel);box-shadow:0 8px 32px #20152f18;color:var(--sf-text)}
+.motion-landing .intro-copy {z-index:20;max-width:90%;bottom:6%;padding:0;border-radius:0;background:transparent;box-shadow:none;color:var(--sf-text);text-shadow:0 1px 5px var(--sf-bg),0 0 16px var(--sf-bg)}
 .motion-landing .intro-copy h1 {color:var(--sf-text);font-size:clamp(26px,4vw,55px);line-height:1.15;letter-spacing:-1px;overflow-wrap:break-word}
 .motion-landing .intro-copy>span {color:var(--sf-accent-text)}
 .motion-landing .intro-nav {z-index:1000}
@@ -55,7 +55,7 @@ button:has(svg path[fill='#EA4335']) {background:white!important;color:#1f1f1f!i
 @media(max-width:700px) {
  .skillfy-theme-toggle {bottom:12px;right:12px;padding:10px}
  .skillfy-theme-toggle span {display:none}
- .motion-landing .intro-copy {width:88%;padding:14px;bottom:12%;}
+ .motion-landing .intro-copy {width:88%;padding:0;bottom:7%;}
  .motion-landing .nav {gap:10px;padding-inline:4%}
  .motion-landing .nav-right {gap:12px}
  .motion-landing .brand .skillfy-wordmark {font-size:20px!important}
