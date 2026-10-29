@@ -260,3 +260,27 @@
 #tw-workspace-review .tw-button.secondary { background:#FFF;color:#62467E;border-color:#DCCCE8; }
 #tw-workspace-review .tw-profile-growth { background:linear-gradient(115deg,#EEE4F7,#FFF0E4); }
 #tw-workspace-review .tw-badge { background:#F5E9DF;color:#805132; }
+
+/* Skillfy Teaming, Assessment & Chat additions */
+#tw-workspace-review .tw-chat-card { display:flex; flex-direction:column; height:560px; border:1px solid var(--sf-border); border-radius:8px; background:var(--sf-surface); overflow:hidden; }
+#tw-workspace-review .tw-chat-header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-bottom:1px solid var(--sf-border); background:var(--sf-panel); font-size:12px; }
+#tw-workspace-review .tw-chat-history { flex:1; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:12px; }
+#tw-workspace-review .tw-chat-msg { max-width:75%; padding:10px 14px; border-radius:12px; font-size:13px; line-height:1.45; word-break:break-word; }
+#tw-workspace-review .tw-chat-msg.self { align-self:flex-end; background:#E5D6F5; color:#361C4E; border-bottom-right-radius:2px; }
+#tw-workspace-review .tw-chat-msg.other { align-self:flex-start; background:var(--sf-panel); border:1px solid var(--sf-border); color:var(--sf-text); border-bottom-left-radius:2px; }
+#tw-workspace-review .tw-chat-meta { display:flex; gap:8px; font-size:10px; color:var(--sf-muted); margin-bottom:4px; }
+#tw-workspace-review .tw-chat-form { display:flex; gap:10px; padding:12px 16px; border-top:1px solid var(--sf-border); background:var(--sf-panel); }
+#tw-workspace-review .tw-chat-form input { flex:1; border-radius:20px; padding:10px 16px; }
+
+#tw-workspace-review .tw-assessment-question { border:1px solid var(--sf-border); background:var(--sf-surface); border-radius:8px; padding:22px; margin-bottom:20px; }
+#tw-workspace-review .tw-q-header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
+#tw-workspace-review .tw-q-prompt { font-size:14px; line-height:1.6; margin-bottom:16px; color:var(--sf-text); white-space:pre-wrap; }
+#tw-workspace-review .tw-eval-card { border:1px solid var(--sf-border); background:var(--sf-panel); border-radius:8px; padding:24px; margin-bottom:20px; }
+#tw-workspace-review .tw-eval-top { display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+#tw-workspace-review .tw-score-badge { font-size:32px; font-weight:600; color:#5A3580; background:#EADFF6; padding:8px 18px; border-radius:8px; }
+#tw-workspace-review .tw-pill-list { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 16px; }
+#tw-workspace-review .tw-pill-strength { background:#E2F2E4; color:#22552B; border:1px solid #C4E2C7; border-radius:4px; padding:4px 10px; font-size:11px; }
+#tw-workspace-review .tw-pill-improve { background:#FBF0DF; color:#784918; border:1px solid #ECCFA4; border-radius:4px; padding:4px 10px; font-size:11px; }
+
+#tw-workspace-review .tw-candidate-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; margin-top:14px; }
+#tw-workspace-review .tw-candidate-card { border:1px solid var(--sf-border); background:var(--sf-surface); border-radius:8px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; gap:12px; }
