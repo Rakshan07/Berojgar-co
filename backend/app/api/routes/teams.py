@@ -145,6 +145,33 @@ def apply_replacement(
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
+from backend.app.services.team_collaboration_service import TeamCollaborationService
+from backend.app.schemas.ai_integration import TeamJoinRequestPayload, TeamLeaveRequestPayload, TeamActionResponse
+
+@router.post("/{team_id}/join", response_model=TeamActionResponse)
+def join_team(
+    team_id: uuid.UUID,
+    payload: Optional[TeamJoinRequestPayload] = None,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    service = TeamCollaborationService(db)
+    role = payload.requested_role if payload else None
+    res = service.join_team(team_id=team_id, user_id=current_user.id, requested_role=role)
+    return TeamActionResponse(**res)
+
+@router.post("/{team_id}/leave", response_model=TeamActionResponse)
+def leave_team(
+    team_id: uuid.UUID,
+    payload: Optional[TeamLeaveRequestPayload] = None,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    service = TeamCollaborationService(db)
+    reason = payload.departure_reason if payload else "Participant left team"
+    res = service.leave_team(team_id=team_id, user_id=current_user.id, departure_reason=reason)
+    return TeamActionResponse(**res)
+
 @router.post("/{team_id}/messages", response_model=TeamMessageResponse)
 def post_team_message(
     team_id: uuid.UUID,
@@ -152,15 +179,21 @@ def post_team_message(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    service = TeamService(db)
-    msg = service.send_message(team_id, current_user.id, req.message)
+    service = TeamCollaborationService(db)
+    user_role_ids = [r.id for r in current_user.roles]
+    msg = service.post_team_message(
+        team_id=team_id,
+        user_id=current_user.id,
+        roles=user_role_ids,
+        message_text=req.message
+    )
     return TeamMessageResponse(
-        id=msg.id,
-        team_id=msg.team_id,
-        user_id=msg.user_id,
-        user_name=current_user.full_name,
-        message=msg.message,
-        created_at=msg.created_at
+        id=msg["id"],
+        team_id=msg["team_id"],
+        user_id=msg["user_id"],
+        user_name=msg["user_name"],
+        message=msg["message"],
+        created_at=msg["created_at"]
     )
 
 @router.get("/{team_id}/messages", response_model=List[TeamMessageResponse])
@@ -169,16 +202,22 @@ def get_team_messages(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    service = TeamService(db)
-    messages = service.list_messages(team_id)
+    service = TeamCollaborationService(db)
+    user_role_ids = [r.id for r in current_user.roles]
+    messages = service.get_team_messages(
+        team_id=team_id,
+        user_id=current_user.id,
+        roles=user_role_ids
+    )
     return [
         TeamMessageResponse(
-            id=m.id,
-            team_id=m.team_id,
-            user_id=m.user_id,
-            user_name=m.user.full_name if m.user else "",
-            message=m.message,
-            created_at=m.created_at
+            id=m["id"],
+            team_id=m["team_id"],
+            user_id=m["user_id"],
+            user_name=m.get("user_name") or "",
+            message=m["message"],
+            created_at=m["created_at"]
         )
         for m in messages
     ]
+

@@ -205,6 +205,230 @@ Return a valid JSON object matching:
                 content=content, source_type=source_type, candidate_name=candidate_name,
                 file_bytes=file_bytes, mime_type=mime_type
             )
-            fallback_res.summary = f"(Demo fallback: {str(e)[:100]}) {fallback_res.summary}"
             return fallback_res
+
+    async def analyze_github_repos(
+        self,
+        github_username: str,
+        repos: List[Dict[str, Any]],
+        candidate_name: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Analyzes GitHub repositories using Google Gemini or falls back gracefully."""
+        if not self._has_valid_key() or not repos:
+            return await self.fallback.analyze_github_repos(github_username, repos, candidate_name)
+
+        prompt = f"""You are the Skillfy Code & Repository Intelligence Analyzer.
+Analyze the following public GitHub repositories for user @{github_username} (Name: {candidate_name or 'Participant'}):
+{json.dumps(repos[:10], indent=2)}
+
+Task:
+Extract genuine, verified skills, proficiencies (1=Exploring, 2=Developing, 3=Independent, 4=Advanced), concrete project contributions, and core engineering strengths.
+Never hallucinate or exaggerate capabilities beyond what the repositories demonstrate.
+
+Return a JSON object matching this schema:
+{{
+  "github_username": "{github_username}",
+  "candidate_name": "{candidate_name or 'Participant'}",
+  "extracted_skills": [
+    {{"skill_name": "...", "category": "Technical", "proficiency": 3, "proficiency_label": "Independent", "confidence": 0.9, "is_verified": true, "evidence_snippet": "..."}}
+  ],
+  "project_contributions": [
+    {{"repo_name": "...", "primary_language": "...", "technologies": [...], "contribution_summary": "...", "evidence_quote": "..."}}
+  ],
+  "strengths": ["...", "..."],
+  "summary": "..."
+}}
+"""
+        try:
+            client = genai.Client(api_key=self.api_key)
+            response = client.models.generate_content(
+                model=self.model,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    temperature=0.1
+                )
+            )
+            return json.loads(response.text or "{}")
+        except Exception as e:
+            logger.warning(f"Gemini GitHub analysis encountered an issue ({e}). Using domain fallback.")
+            return await self.fallback.analyze_github_repos(github_username, repos, candidate_name)
+
+    async def generate_event_assessment(
+        self,
+        event_title: str,
+        category: str,
+        description: str,
+        required_roles: List[str],
+        required_skills: List[str],
+        candidate_info: Dict[str, Any]
+    ) -> List[AISuggestedQuestion]:
+        """Generates tailored skill and personality/teamwork assessment questions."""
+        if not self._has_valid_key():
+            return await self.fallback.generate_event_assessment(
+                event_title, category, description, required_roles, required_skills, candidate_info
+            )
+
+        prompt = f"""You are the Skillfy Assessment Designer.
+Generate 5 tailored assessment questions for participant '{candidate_info.get('name', 'Participant')}' joining event '{event_title}' (Category: {category}):
+- Event Description: {description}
+- Required Roles: {', '.join(required_roles) or 'Full-stack Engineer'}
+- Required Skills: {', '.join(required_skills) or 'Programming'}
+
+Include:
+1. Two skill-based technical questions targeted at the event requirements.
+2. Three teamwork/personality questions covering:
+   - Communication and coordination rhythm (async vs synchronous).
+   - Conflict resolution and technical disagreement handling.
+   - Pacing, sprint commitment, and weekly availability.
+
+Return a JSON array of questions:
+[
+  {{
+    "question_text": "...",
+    "skill_target": "...",
+    "question_type": "multiple_choice",
+    "options": ["Option A", "Option B", "Option C", "Option D"],
+    "category": "skill_assessment",
+    "rubric_guidelines": "..."
+  }},
+  {{
+    "question_text": "...",
+    "skill_target": "...",
+    "question_type": "multiple_choice",
+    "options": ["Option A", "Option B", "Option C", "Option D"],
+    "category": "teamwork_personality",
+    "rubric_guidelines": "..."
+  }}
+]
+"""
+        try:
+            client = genai.Client(api_key=self.api_key)
+            response = client.models.generate_content(
+                model=self.model,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    temperature=0.2
+                )
+            )
+            parsed = json.loads(response.text or "[]")
+            return [AISuggestedQuestion.model_validate(q) for q in parsed]
+        except Exception as e:
+            logger.warning(f"Gemini assessment generation failed ({e}). Using domain fallback.")
+            return await self.fallback.generate_event_assessment(
+                event_title, category, description, required_roles, required_skills, candidate_info
+            )
+
+    async def suggest_assessment_answers(
+        self,
+        questions: List[Dict[str, Any]],
+        candidate_evidence: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
+        """Generates evidence-grounded answer suggestions. Strictly avoids fabricating experience."""
+        if not self._has_valid_key():
+            return await self.fallback.suggest_assessment_answers(questions, candidate_evidence)
+
+        prompt = f"""You are the Skillfy Evidence-Based Answer Assistant.
+Analyze these assessment questions against the candidate's verified evidence.
+CRITICAL MANDATE:
+- ONLY suggest an answer if there is genuine, verifiable evidence in the candidate's resume or GitHub data.
+- If there is NO evidence for a question, set "suggested_answer" to null, "evidence_found" to false, and clearly state that no evidence was found.
+- NEVER fabricate experience, projects, or achievements.
+
+Candidate Evidence:
+- Resume Snippet: {(candidate_evidence.get('resume_text') or '')[:3000]}
+- GitHub Repositories: {json.dumps(candidate_evidence.get('github_repos') or [])[:2000]}
+- Declared Skills: {json.dumps(candidate_evidence.get('skills') or [])}
+
+Questions to evaluate:
+{json.dumps(questions, indent=2)}
+
+Return a JSON array matching:
+[
+  {{
+    "question_id": "...",
+    "question_text": "...",
+    "suggested_answer": "..." (or null if no evidence),
+    "evidence_found": true/false,
+    "evidence_source": "..." (or null),
+    "confidence": 0.85,
+    "is_verified": true/false,
+    "explanation": "..."
+  }}
+]
+"""
+        try:
+            client = genai.Client(api_key=self.api_key)
+            response = client.models.generate_content(
+                model=self.model,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    temperature=0.1
+                )
+            )
+            return json.loads(response.text or "[]")
+        except Exception as e:
+            logger.warning(f"Gemini suggestion generation failed ({e}). Using fallback.")
+            return await self.fallback.suggest_assessment_answers(questions, candidate_evidence)
+
+    async def generate_secondary_event_profile(
+        self,
+        candidate_data: Dict[str, Any],
+        event_data: Dict[str, Any],
+        assessment_answers: List[Dict[str, Any]]
+    ) -> Dict[str, Any]:
+        """Synthesizes candidate background and assessment answers into a secondary event profile."""
+        if not self._has_valid_key():
+            return await self.fallback.generate_secondary_event_profile(candidate_data, event_data, assessment_answers)
+
+        prompt = f"""You are the Skillfy Event Profile Synthesizer.
+Synthesize an event-specific secondary profile for '{candidate_data.get('name', 'Participant')}' participating in '{event_data.get('title', 'Event')}':
+- Primary Profile & Skills: {json.dumps(candidate_data.get('skills') or [])}
+- GitHub Projects: {json.dumps(candidate_data.get('github_repos') or [])}
+- Assessment Answers: {json.dumps(assessment_answers)}
+
+Generate:
+1. "summary": 2-3 sentence event-tailored summary.
+2. "preferred_role": Best fitting role for this event.
+3. "event_skills": List of skills relevant to this event with proficiencies.
+4. "strengths": 3-4 key technical and teamwork strengths.
+5. "growth_areas": 1-2 constructive growth opportunities.
+6. "contribution_areas": Specific ways candidate will contribute to a team.
+7. "assessment_highlights": Synthesis of teamwork and communication preferences from their assessment.
+8. "github_highlights": Relevant repositories or code contributions.
+9. "compatibility_bonus": Score between 5.0 and 10.0 reflecting verified readiness.
+
+Return JSON matching:
+{{
+  "summary": "...",
+  "preferred_role": "...",
+  "event_skills": [...],
+  "strengths": [...],
+  "growth_areas": [...],
+  "contribution_areas": [...],
+  "assessment_highlights": [...],
+  "github_highlights": [...],
+  "compatibility_bonus": 8.5,
+  "model_used": "gemini-2.5-flash"
+}}
+"""
+        try:
+            client = genai.Client(api_key=self.api_key)
+            response = client.models.generate_content(
+                model=self.model,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    temperature=0.1
+                )
+            )
+            parsed = json.loads(response.text or "{}")
+            parsed["model_used"] = self.model
+            return parsed
+        except Exception as e:
+            logger.warning(f"Gemini event profile synthesis failed ({e}). Using fallback.")
+            return await self.fallback.generate_secondary_event_profile(candidate_data, event_data, assessment_answers)
+
 

@@ -6,7 +6,7 @@ from backend.app.core.config import settings
 engine = create_engine(
     settings.database_url,
     pool_pre_ping=True,
-    connect_args={"connect_timeout": 5, "options": "-c statement_timeout=10000"},
+    connect_args={"connect_timeout": 5},
     pool_size=10,
     max_overflow=20,
 )

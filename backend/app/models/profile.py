@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime, timezone, time
 from typing import Optional
-from sqlalchemy import String, Integer, Boolean, DateTime, Time, ForeignKey, Text
+from sqlalchemy import String, Integer, Boolean, DateTime, Time, ForeignKey, Text, Numeric
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.app.db.base import Base
@@ -76,3 +76,24 @@ class ParticipantAvailability(Base):
     is_busy: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     note: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+
+class EventProfile(Base):
+    __tablename__ = "event_profiles"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("hackloop.users.id", ondelete="CASCADE"), nullable=False)
+    event_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("hackloop.events.id", ondelete="CASCADE"), nullable=False)
+    summary: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    preferred_role: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    event_skills: Mapped[list] = mapped_column(JSONB, default=list, nullable=False)
+    strengths: Mapped[list] = mapped_column(JSONB, default=list, nullable=False)
+    growth_areas: Mapped[list] = mapped_column(JSONB, default=list, nullable=False)
+    contribution_areas: Mapped[list] = mapped_column(JSONB, default=list, nullable=False)
+    assessment_highlights: Mapped[list] = mapped_column(JSONB, default=list, nullable=False)
+    github_highlights: Mapped[list] = mapped_column(JSONB, default=list, nullable=False)
+    compatibility_bonus: Mapped[float] = mapped_column(Numeric(5, 2), default=0.0, nullable=False)
+    generated_by: Mapped[str] = mapped_column(String(50), default="ai", nullable=False)
+    model_used: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+

@@ -80,3 +80,19 @@ Return a valid JSON object matching this schema:
             return await self.fallback.generate_event_setup(
                 event_title, category, description, constraints, known_skills
             )
+
+    async def analyze_profile_evidence(self, *args, **kwargs):
+        return await self.fallback.analyze_profile_evidence(*args, **kwargs)
+
+    async def analyze_github_repos(self, *args, **kwargs):
+        return await self.fallback.analyze_github_repos(*args, **kwargs)
+
+    async def generate_event_assessment(self, *args, **kwargs):
+        return await self.fallback.generate_event_assessment(*args, **kwargs)
+
+    async def suggest_assessment_answers(self, *args, **kwargs):
+        return await self.fallback.suggest_assessment_answers(*args, **kwargs)
+
+    async def generate_secondary_event_profile(self, *args, **kwargs):
+        return await self.fallback.generate_secondary_event_profile(*args, **kwargs)
+

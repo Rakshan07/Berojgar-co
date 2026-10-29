@@ -17,18 +17,40 @@ def get_current_user(
 ) -> User:
     """Authenticates the current user via Bearer JWT or demo header for rapid local pairing."""
     if auth and auth.credentials:
+        import hashlib
+        from sqlalchemy import text
+
         payload = decode_access_token(auth.credentials)
-        if not payload or "sub" not in payload:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid or expired authentication token",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        user_id = uuid.UUID(payload["sub"])
-        user = db.get(User, user_id)
-        if not user or not user.is_active:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User account is inactive or not found")
-        return user
+        if payload and "sub" in payload:
+            try:
+                user_id = uuid.UUID(payload["sub"])
+                user = db.get(User, user_id)
+                if user and user.is_active:
+                    return user
+            except (ValueError, TypeError):
+                pass
+
+        # Check session token from hackloop.auth_tokens (used by live frontend)
+        token_hash = hashlib.sha256(auth.credentials.encode()).hexdigest()
+        session_row = db.execute(
+            text("""
+                SELECT user_id FROM hackloop.auth_tokens 
+                WHERE token_hash = :th AND purpose = 'session' 
+                  AND revoked_at IS NULL AND consumed_at IS NULL AND expires_at > now()
+            """),
+            {"th": token_hash}
+        ).fetchone()
+        if session_row:
+            user = db.get(User, session_row[0])
+            if user and user.is_active:
+                return user
+
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired authentication token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
 
     # Support testing / demo persona switching if X-User-Id header provided
     if x_user_id:

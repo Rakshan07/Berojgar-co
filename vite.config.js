@@ -9,6 +9,6 @@ const proxy = {
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  server: { proxy },
-  preview: { proxy },
+  server: { port: 5174, proxy },
+  preview: { port: 5174, proxy },
 })

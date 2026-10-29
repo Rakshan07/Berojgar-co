@@ -37,7 +37,9 @@ def config(provider):
     return (settings.GOOGLE_CLIENT_ID,settings.GOOGLE_CLIENT_SECRET) if provider=='google' else (settings.GITHUB_CLIENT_ID,settings.GITHUB_CLIENT_SECRET)
 
 def origin_check(request):
-    require(request.headers.get('origin')==app_url(),403,'Please start sign-in from the website')
+    origin = request.headers.get('origin')
+    valid = {app_url(), 'http://localhost:5174', 'http://127.0.0.1:5174', 'http://localhost:5173', 'http://127.0.0.1:5173'}
+    require(origin in valid, 403, 'Please start sign-in from the website')
 
 def cookie(response,name,value,max_age):
     response.set_cookie(name,value,max_age=max_age,httponly=True,secure=app_url().startswith('https:'),samesite='lax',path=COOKIE_PATH)
